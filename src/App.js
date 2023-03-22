@@ -1,55 +1,104 @@
-import "./App.css";
-import { useState } from "react";
-import Account from "./Account";
-import { getAccount } from "./stellar";
+import React, { useState } from "react";
+import StellarSdk from "stellar-sdk";
+import QRCode from "qrcode.react";
 
-function App() {
-  const [loading, setLoading] = useState(false);
-  const [submit, setSubmit] = useState(false);
-  const [accountAddress, setAccountAddress] = useState('GCDTOO2NWAGR4JIT57HVKY4GOCHMFWNWKLHQG2TU6S77SNFWWEBSEYOM');
-  const [walletDetails, setWalletDetails] = useState(null);
+const App = () => {
+  const [connected, setConnected] = useState(false);
+  const [publicKey, setPublicKey] = useState("");
+  const [qrCodeModalOpen, setQrCodeModalOpen] = useState(false);
 
-  const alreadyAccount = async() => {
-    setLoading(true);
-    const data = await getAccount(accountAddress);
-    console.log(JSON.stringify(data, null, 2));
-    if (data?.balances) {
-      setWalletDetails(data);
-      setSubmit(true);
+  const handleConnect = async () => {
+    try {
+      // Set the Stellar server endpoint
+      var server = new StellarSdk.Server("https://horizon-testnet.stellar.org");
+
+      // Generate a new Stellar keypair
+      const keypair = StellarSdk.Keypair.random();
+
+      // Load the account details for the keypair
+      const account = await server.loadAccount(keypair.publicKey());
+
+      // Log the account details to the console
+      console.log("Account ID:", account.id);
+      console.log("Balances:");
+      account.balances.forEach((balance) => {
+        console.log(`  Type: ${balance.asset_type}, Balance: ${balance.balance}`);
+      });
+
+      // Set the public key and connection status
+      setPublicKey(keypair.publicKey());
+      setConnected(true);
+    } catch (error) {
+      console.error(error);
     }
-    setLoading(false);
+  };
+
+  const handleOpenQrCodeModal = () => {
+    setQrCodeModalOpen(true);
+  };
+
+  const handleCloseQrCodeModal = () => {
+    setQrCodeModalOpen(false);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {submit ? (
-          <Account setSubmit={setSubmit} wallet={walletDetails} />
-        ) : (
-          <>
-            <h2>Do you already have an account?</h2>
-              <div>
-                <label htmlFor="publicKey">Enter source account number</label>
-                <br />
-                <input
-                  style={{marginTop: 20, marginBottom: 20, height: 50, width: 300}}
-                  type="text"
-                  value={accountAddress}
-                  onChange={(e) =>
-                    setAccountAddress(e.target.value)
-                  }
-                />
-              </div>
-              {!loading ? 
-                <button onClick={()=>alreadyAccount()} disabled={loading}>Submit
-                </button>
-              : <button disabled={loading}>Please Wait...
-              </button>}
-          </>
-        )}
-      </header>
+    <div>
+      {!connected ? (
+        <button onClick={handleConnect}>Connect to Stellar</button>
+      ) : (
+        <div>
+          <p>Connected to Stellar!</p>
+          <p>Public Key: {publicKey}</p>
+          <button onClick={handleOpenQrCodeModal}>Show QR Code</button>
+        </div>
+      )}
+
+      {qrCodeModalOpen && (
+        <div className="qr-code-modal">
+          <div className="qr-code-wrapper">
+            <QRCode value={publicKey} size={200} />
+          </div>
+          <button onClick={handleCloseQrCodeModal}>Close</button>
+        </div>
+      )}
+
+      <style>
+        {`
+          .qr-code-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          .qr-code-wrapper {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+          }
+
+          .qr-code-wrapper::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-style: solid;
+            border-width: 0 10px 10px 10px;
+            border-color: transparent transparent #fff transparent;
+          }
+        `}
+      </style>
     </div>
   );
-}
+};
 
 export default App;
