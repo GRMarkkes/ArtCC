@@ -11,7 +11,7 @@ const App = () => {
     try {
       // Set the Stellar server endpoint
       var server = new StellarSdk.Server("https://horizon-testnet.stellar.org");
-
+      // const server = new StellarSdk.Server("https://horizon.stellar.org");
       // Generate a new Stellar keypair
       const keypair = StellarSdk.Keypair.random();
 
