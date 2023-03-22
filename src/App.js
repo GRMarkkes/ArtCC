@@ -29,7 +29,7 @@ function App() {
           <Account setSubmit={setSubmit} wallet={walletDetails} />
         ) : (
           <>
-            {/* existing user */}s
+            {/* existing user */}
             <h2>Do you already have an account?</h2>
               <div>
                 <label htmlFor="publicKey">Enter source account number</label>

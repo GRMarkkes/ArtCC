@@ -13,7 +13,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
     "SCJ4DETZH4P6ESXA5DAWE7L5EJHI2F3ZCW5RJ4YSQK2CNTIL3FZX3R4Z"
   );
   const [destinationAddress, setDestinationAddress] = useState(
-    "GBNQE6ZMQHRUIQWOMBPPCTIZFW3NUD5HG2H6AG24SMZFN4E4ATU5JYOG"
+    "GCDTOO2NWAGR4JIT57HVKY4GOCHMFWNWKLHQG2TU6S77SNFWWEBSEYOM"
   );
 
   const [destination, setDestination] = useState({
@@ -29,7 +29,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
   // // Transaction will hold a built transaction we can resubmit if the result is unknown.
 
   const handler = () => {
-    alert("test");
+    setLoading(true);
     var server = new StellarSdk.Server("https://horizon-testnet.stellar.org");
     var sourceKeys = StellarSdk.Keypair.fromSecret(accountAddress);
     var destinationId = destinationAddress; // Transaction will hold a built transaction we can resubmit if the result is unknown.
@@ -62,7 +62,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
               // Because Stellar allows transaction in many currencies, you must
               // specify the asset type. The special "native" asset represents Lumens.
               asset: StellarSdk.Asset.native(),
-              amount: "10",
+              amount: "15",
             })
           )
           // A memo allows you to add your own metadata to a transaction. It's
@@ -78,7 +78,8 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
       })
       .then(function (result: any) {
         alert("Fund transfer successfully");
-        setSubmit(true);
+        setLoading(false);
+        setSubmit(false);
         console.log("Success! Results:", result);
       })
       .catch(function (error: any) {
@@ -142,9 +143,15 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
                 onChange={(e) => setDestinationAddress(e.target.value)}
               />
             </div>
-            <button onClick={handler} disabled={loading}>
-              Send Payments
-            </button>
+            {!loading ? (
+              <button onClick={handler} disabled={loading}>
+                Send Payments
+              </button>
+            ) : (
+              <button disabled={loading}>
+                Please Wait...
+              </button>
+            )}
           </form>
         </div>
       )}
