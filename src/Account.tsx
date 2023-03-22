@@ -15,11 +15,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
   const [destinationAddress, setDestinationAddress] = useState(
     "GCDTOO2NWAGR4JIT57HVKY4GOCHMFWNWKLHQG2TU6S77SNFWWEBSEYOM"
   );
-
-  const [destination, setDestination] = useState({
-    publicKey: "",
-    amount: 0,
-  });
+  const [amount, setAmount] = useState("");
 
   // var sourceKeys = StellarSdk.Keypair.fromSecret(
   //   "SCJ4DETZH4P6ESXA5DAWE7L5EJHI2F3ZCW5RJ4YSQK2CNTIL3FZX3R4Z"
@@ -62,7 +58,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
               // Because Stellar allows transaction in many currencies, you must
               // specify the asset type. The special "native" asset represents Lumens.
               asset: StellarSdk.Asset.native(),
-              amount: "15",
+              amount: amount,
             })
           )
           // A memo allows you to add your own metadata to a transaction. It's
@@ -95,7 +91,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
       {loading ? (
         <p>Please Wait</p>
       ) : (
-        <div>
+        <div style={{paddingBottom: 40}}>
           {/* display wallet balances */}
           <p>Your Balance: {wallet?.balances[0]?.balance} XLM</p>
           <p>Wallet Address: {wallet?.account_id}</p>
@@ -104,17 +100,13 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
             onSubmit={async (e) => {
               e.preventDefault();
               setLoading(true);
-              const sent = await sendFunds(
-                destination?.publicKey,
-                wallet?.secretKey,
-                destination?.amount
-              );
+            
               // unless an error, transactions always take few seconds / minutes to be completely done
               setLoading(false);
             }}
           >
             <div>
-              <label htmlFor="publicKey">Enter source account number</label>
+              <label htmlFor="publicKey">Enter source account secret key</label>
               <br />
               <input
                 style={{
@@ -130,6 +122,8 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
               />
             </div>
             <div>
+            <label htmlFor="publicKey">Enter destination source account id</label>
+              <br />
               <input
                 style={{
                   marginTop: 20,
@@ -143,14 +137,28 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
                 onChange={(e) => setDestinationAddress(e.target.value)}
               />
             </div>
+            <div>
+            <label htmlFor="publicKey">Enter amount to transfer</label>
+              <br />
+              <input
+                style={{
+                  marginTop: 20,
+                  marginBottom: 20,
+                  height: 50,
+                  width: 300,
+                }}
+                value={amount}
+                type="text"
+                name="amount"
+                onChange={(e) => setAmount(e.target.value)}
+              />
+            </div>
             {!loading ? (
               <button onClick={handler} disabled={loading}>
                 Send Payments
               </button>
             ) : (
-              <button disabled={loading}>
-                Please Wait...
-              </button>
+              <button disabled={loading}>Please Wait...</button>
             )}
           </form>
         </div>
