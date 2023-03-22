@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import StellarSdk from "stellar-sdk";
 import QRCode from "qrcode.react";
+import { Server } from 'stellar-sdk';
 
 const App = () => {
   const [connected, setConnected] = useState(false);
@@ -10,23 +11,32 @@ const App = () => {
   const handleConnect = async () => {
     try {
       // Set the Stellar server endpoint
-      var server = new StellarSdk.Server("https://horizon-testnet.stellar.org");
+      const server = new Server('https://horizon.stellar.org');
+      server.loadAccount('GCQ6BP4ZBB7BR4AMHCJPXISKDER2COM4RIKMS4QYIXA3J2LINNDQBELN')
+      .then((account) => {
+        console.log(account);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+      setPublicKey('GCQ6BP4ZBB7BR4AMHCJPXISKDER2COM4RIKMS4QYIXA3J2LINNDQBELN');
+      // var server = new StellarSdk.Server("https://horizon.stellar.org");
       // const server = new StellarSdk.Server("https://horizon.stellar.org");
       // Generate a new Stellar keypair
-      const keypair = StellarSdk.Keypair.random();
+      // const keypair = StellarSdk.Keypair.random();
 
-      // Load the account details for the keypair
-      const account = await server.loadAccount(keypair.publicKey());
+      // // Load the account details for the keypair
+      // const account = await server.loadAccount(keypair.publicKey());
 
-      // Log the account details to the console
-      console.log("Account ID:", account.id);
-      console.log("Balances:");
-      account.balances.forEach((balance) => {
-        console.log(`  Type: ${balance.asset_type}, Balance: ${balance.balance}`);
-      });
+      // // Log the account details to the console
+      // console.log("Account ID:", account.id);
+      // console.log("Balances:");
+      // account.balances.forEach((balance) => {
+      //   console.log(`  Type: ${balance.asset_type}, Balance: ${balance.balance}`);
+      // });
 
-      // Set the public key and connection status
-      setPublicKey(keypair.publicKey());
+      // // Set the public key and connection status
+      // setPublicKey(keypair.publicKey());
       setConnected(true);
     } catch (error) {
       console.error(error);

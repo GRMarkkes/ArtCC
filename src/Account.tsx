@@ -15,6 +15,7 @@ const Account: React.FC<Props> = ({ setSubmit, wallet }: any) => {
   const [destinationAddress, setDestinationAddress] = useState(
     "GCDTOO2NWAGR4JIT57HVKY4GOCHMFWNWKLHQG2TU6S77SNFWWEBSEYOM"
   );
+  let transaction;
   const [amount, setAmount] = useState("");
 
   const handler = () => {
