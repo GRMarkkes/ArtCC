@@ -4,7 +4,7 @@ import * as StellarSdk from 'stellar-sdk';
 
 interface Props {
   accounts: any;
-  balance: any
+  balance: any;
   setSubmit: any;
 }
 
