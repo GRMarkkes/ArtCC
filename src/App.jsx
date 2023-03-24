@@ -94,7 +94,6 @@ function App() {
       server
         .loadAccount(address.replace("stellar:pubnet:", ""))
         .then((account) => {
-          alert('test'+ account);
           console.log(account.balances);
           const balances = account.balances;
           const xlmBalance = balances.find(
