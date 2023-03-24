@@ -1,14 +1,18 @@
-import { useState } from "react";
-import { sendFunds } from "./stellar";
-import * as StellarSdk from 'stellar-sdk';
+import { useEffect, useState } from "react";
+import * as StellarSdk from "stellar-sdk";
+import WalletConnectClient from "@walletconnect/client";
 
 interface Props {
   accounts: any;
-  balance: any
+  balance: any;
   setSubmit: any;
 }
 
-const Account: React.FC<Props> = ({ setSubmit, accounts, balance }: any) => {
+const Account: React.FC<Props> = ({
+  setSubmit,
+  accounts,
+  balance,
+}: any) => {
   const [loading, setLoading] = useState(false);
   const [accountAddress, setAccountAddress] = useState(
     "SCALMKS5KZJ53VY4RPUCOY2BJMV2WMKCYQLE7SHZXV5Y7AK5JEWZVC6R"
@@ -16,6 +20,24 @@ const Account: React.FC<Props> = ({ setSubmit, accounts, balance }: any) => {
   const [destinationAddress, setDestinationAddress] = useState(
     "GCQ6BP4ZBB7BR4AMHCJPXISKDER2COM4RIKMS4QYIXA3J2LINNDQBELN"
   );
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const client = new WalletConnectClient({
+  //       /* options */
+  //     });
+
+  //     // check if the client is currently connected to a session
+  //     if (client.connected) {
+  //       console.log("Client is connected to a session");
+  //     } else {
+  //       console.log("Client is not currently connected to a session");
+  //     }
+  //     console.log("This will run every second!");
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
   let transaction;
   const [amount, setAmount] = useState("");
 
@@ -38,7 +60,7 @@ const Account: React.FC<Props> = ({ setSubmit, accounts, balance }: any) => {
       .then(function (sourceAccount: any) {
         transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
           fee: StellarSdk.BASE_FEE,
-          networkPassphrase: StellarSdk.Networks.TESTNET,
+          networkPassphrase: StellarSdk.Networks.PUBLIC,
         })
           .addOperation(
             StellarSdk.Operation.payment({
@@ -56,7 +78,7 @@ const Account: React.FC<Props> = ({ setSubmit, accounts, balance }: any) => {
       .then(function (result: any) {
         alert("Fund transfer successfully");
         setLoading(false);
-        setSubmit('');
+        setSubmit("");
         console.log("Success! Results:", result);
       })
       .catch(function (error: any) {
@@ -77,22 +99,6 @@ const Account: React.FC<Props> = ({ setSubmit, accounts, balance }: any) => {
           <p>Wallet Address: {accounts}</p>
           <p>Send Funds</p>
           <form>
-            <div>
-              <label htmlFor="publicKey">Enter source account secret key</label>
-              <br />
-              <input
-                style={{
-                  marginTop: 20,
-                  marginBottom: 20,
-                  height: 50,
-                  width: 300,
-                }}
-                value={accountAddress}
-                type="text"
-                name="publicKey"
-                onChange={(e) => setAccountAddress(e.target.value)}
-              />
-            </div>
             <div>
               <label htmlFor="publicKey">
                 Enter destination source account id
