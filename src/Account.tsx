@@ -21,23 +21,6 @@ const Account: React.FC<Props> = ({
     "GCQ6BP4ZBB7BR4AMHCJPXISKDER2COM4RIKMS4QYIXA3J2LINNDQBELN"
   );
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const client = new WalletConnectClient({
-  //       /* options */
-  //     });
-
-  //     // check if the client is currently connected to a session
-  //     if (client.connected) {
-  //       console.log("Client is connected to a session");
-  //     } else {
-  //       console.log("Client is not currently connected to a session");
-  //     }
-  //     console.log("This will run every second!");
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   let transaction;
   const [amount, setAmount] = useState("");
 
@@ -66,7 +49,7 @@ const Account: React.FC<Props> = ({
             StellarSdk.Operation.payment({
               destination: destinationId,
               asset: StellarSdk.Asset.native(),
-              amount: amount,
+              amount: amount?.toString(),
             })
           )
           .addMemo(StellarSdk.Memo.text("Test Transaction"))

@@ -141,12 +141,7 @@ function App() {
         <Account accounts={accounts} setSubmit={setAccounts} balance={balance} />
       ) : (
         <>
-          <p>Account: {accounts}</p>
-
-          <p>Balance : {balance}</p>
-
-          <button onClick={handleConnect}> Connect</button>
-          <button onClick={handleDisconnect}> Disconnect</button>
+          <button style={{marginTop: 30}} onClick={handleConnect}>Click to Connect</button>
         </>
       )}
     </div>
