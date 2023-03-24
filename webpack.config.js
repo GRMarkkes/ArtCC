@@ -1,10 +1,14 @@
 module.exports = {
-  resolve: {
-    fallback: {
-      https: require.resolve("https-browserify"),
-      url: require.resolve("url/"),
-      http: require.resolve("stream-http"),
-      util: false,
-    },
-  },
-};
+        module: {
+          rules: [
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+              use: {
+                loader: "babel-loader"
+              }
+            }
+          ]
+        }
+      }
+      
