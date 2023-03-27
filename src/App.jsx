@@ -18,6 +18,7 @@ const PROJECT_ID = '69191a30a0b6a905c0b4c4f2e2ca5a1a';
 const METADATA = {
     name: 'Stellar Test Connection APP By Adnan Naeem',
     description: 'Stellar Test Connection APP Stellar Test Connection APP Stellar Test Connection APP',
+    url: 'https://quantumbases.com', //This is my small agency
     icons: ['https://avatars.githubusercontent.com/u/25021964?s=200&v=4.png'],
 };
 
@@ -132,10 +133,10 @@ const server = new StellarSdk.Server('https://horizon.stellar.org');
        
         const sourceAccount = await server.loadAccount(accounts);
         const destinationId = 'GCEN6CP6PJYQEQJG4XHNHOQZQVDKE3FOXJRXH5N4HDTFOINEEIM4FNWR';
-        const amount = '0.01';
+        const amount = '2';
 
         const transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
-          fee: '100000',
+          fee: '0.000001',
           networkPassphrase: StellarSdk.Networks.PUBLIC,
         })
           .addOperation(StellarSdk.Operation.payment({
@@ -171,8 +172,6 @@ const server = new StellarSdk.Server('https://horizon.stellar.org');
 
     const reset = () => {
       setAccounts([]);
-      setBalance("");
-
       setSessions([]);
     };
 
