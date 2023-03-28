@@ -27,6 +27,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "art"
+version = "0.1.0"
+dependencies = [
+ "soroban-sdk",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -602,13 +609,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e472a104799c74b514a57226160104aa483546de37e839ec50e3c2e41dd87534"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "project-name"
-version = "0.1.0"
-dependencies = [
- "soroban-sdk",
 ]
 
 [[package]]
