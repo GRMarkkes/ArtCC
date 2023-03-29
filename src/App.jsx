@@ -18,7 +18,7 @@ const PROJECT_ID = '69191a30a0b6a905c0b4c4f2e2ca5a1a';
 const METADATA = {
     name: 'Stellar Test Connection APP By Adnan Naeem',
     description: 'Stellar Test Connection APP Stellar Test Connection APP Stellar Test Connection APP',
-    url: 'https://quantumbases.com', //This is my small agency
+    url: '', 
     icons: ['https://avatars.githubusercontent.com/u/25021964?s=200&v=4.png'],
 };
 
