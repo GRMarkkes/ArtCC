@@ -1,11 +1,22 @@
 #![no_std]
-use soroban_sdk::{contractimpl, symbol, vec, Env, Symbol, Vec};
+use soroban_sdk::{ Address, contractimpl, symbol, vec, Env, Symbol, Vec};
 
-pub struct Contract;
+pub struct  CrowdFunding {
+        address: owner,
+        title: String,
+        description:String ,
+        target:i32,
+        deadline:i32,
+        amountCollected: i32,
+        image :i32,
+        donators:Address[],
+        donations:i32[],
+}
 
 #[contractimpl]
-impl Contract {
-    pub fn hello(env: Env, to: Symbol) -> Vec<Symbol> {
-        vec![&env, symbol!("Hello"), to]
+impl CrowdFunding {
+    pub fn ArtProject(){
+
     }
 }
+
