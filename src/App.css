@@ -32,7 +32,90 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+
+
+/* Staller Main Page Code */
+
+
+.main_div {
+  display: flex;
+  flex-direction: column;
+}
+
+.main_sub_div1 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.img_div {
+  position: absolute;
+  z-index: -1;
+  background-color: black;
+}
+
+.main_center_modal {
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  height: 411px;
+  width: 393px;
+  text-align: center;
+  align-items: center;
+  color: white;
+}
+
+.text_1 {
+  width: 300px;
+  height: 20px;
+  /* font-family: 'Roboto'; */
+  font-style: normal;
+  font-weight: "500";
+  font-size: 24px;
+  line-height: 32px;
+  color: #FFFFFF;
+}
+
+.text_2 {
+  width: 205px;
+  height: 20px;
+  /* font-family: 'Montserrat'; */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #BFBFBF;
+}
+
+.wallet_button {
+  border-color: transparent;
+  background-color: #141414;
+  width: 293px;
+  height: 28px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.line {
+  width: 123px;
+  height: 0px;
+  border: 1px solid #595959;
+  flex: none;
+  order: 0;
+  align-self: center;
+  flex-grow: 0;
+}
+.Account_notExist{
+  color: #01A19A;
 }

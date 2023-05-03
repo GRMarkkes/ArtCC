@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    background-color: black;
+    justify-content: space-between;
+    color: white;
+    height: 40px;
+    padding: 20px;
+    text-align: center;
+  }
+  .header_button{
+    background-color:transparent;
+    color:white;
+    border-color:transparent;
+    display:flex;
+    align-items:flex-end;
+  }
+  

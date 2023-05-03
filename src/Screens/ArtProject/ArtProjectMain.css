@@ -1,0 +1,247 @@
+
+.Art_main {
+    margin: 0px;
+    padding: 0px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.87) 88.02%);
+
+}
+
+.mid_header_p1 {
+    width: 481px;
+    height: 72px;
+
+
+    /* font-family: 'Roboto'; */
+    font-style: normal;
+    font-weight: "500";
+    font-size: 46px;
+    line-height: 46px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #FFFFFF;
+    padding-left: 30px;
+
+}
+
+.hor_line {
+    width: 58px;
+    height: 0px;
+    display: flex;
+    border: 1px solid #FFFFFF;
+    transform: rotate(90deg);
+    align-self: center;
+    /* Inside auto layout */
+}
+
+.mid_header_title {
+    /* width: 154px;
+    height: 10px; */
+    /* Body/regular */
+
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    /* line-height: 16px; */
+    /* identical to box height */
+
+
+    /* Neutral/1 */
+
+    color: #FFFFFF;
+}
+
+.mid_header_number {
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 40px;
+    margin: 0
+}
+
+
+/*chatgpt code for help*/
+/* .container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+} */
+
+.container_1 {
+    position: relative;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.87) 88.02%);
+    margin: 0px;
+    padding: 0px;
+}
+
+.bg-image {
+    width: 100%;
+    height: auto;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.87) 71.87%);
+    width: 100%;
+}
+
+.card {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    bottom: 8%;
+    /* top: 70%; */
+    /* bottom:20px; */
+    /* left: 1%; */
+    /* gap: 1px; */
+    /* background-color: red; */
+    /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.87) 71.87%); */
+    width: 100%;
+    /* transform: translate(-20%, 20%); */
+    /* background-color: white; */
+    /* padding: 20px; */
+    /* text-align: center; */
+    /* width: 300px; */
+    /* margin: 20px; */
+    /* padding: 30px; */
+    height: 251px;
+    /* background-color: white; */
+    /* box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15); */
+}
+
+.background-image {
+    position: absolute;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../Asset/Images/MarketPlace_main.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.7;
+}
+
+.discount_div {
+    position: absolute;
+    bottom: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* width:100%; */
+    height: 38px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
+}
+
+.discount_tag {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    /* padding: 1px 20px; */
+
+    /* gap: 10px; */
+    margin: 0;
+    width: 99px;
+    height: 30px;
+
+    /* NeonRed */
+
+    background: #FF0000;
+    border-radius: 2px;
+
+    /* Inside auto layout */
+
+    /* flex: none; */
+    /* order: 1; */
+    /* flex-grow: 0; */
+}
+
+.flat-list {
+    position: absolute;
+    top: 70%;
+    left: 1.5%;
+    width: 100%;
+    /* transform: translate(-210%, 95%); */
+    /* background-color: #fff; */
+    /* padding: 20px; */
+    border-radius: 10px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+    max-width: 50%;
+    max-height: 50%;
+    /* overflow-y: scroll; */
+}
+
+.flat-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    list-style: none;
+}
+
+.card_div_1 {
+    width: 25.5%;
+    margin-left: 30px;
+    /* padding: 30px; */
+    height: 302px;
+    background-color: black;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+
+}
+
+.card_image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card_text_div_1 {
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    /* padding: 0px; */
+    padding-left: 10px;
+    color: white;
+    /* background-color: white; */
+    /* box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15); */
+
+}
+
+.body {
+    background-image: url('/src//Asset/Images//MarketPlace_main.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    /* z-index: -1; */
+}
+
+.About_us {
+    display: flex;
+    background: linear-gradient(90deg, #312783 0%, #00A19A 100%);
+    width: 100%;
+    height: 132px;
+    margin-bottom: -16px;
+    padding: 0px;
+    align-items: center;
+    justify-content: center;
+}
+
+.about_main {
+    display: flex;
+    width: 80%;
+    height: 72px;
+    justify-content: space-between;
+    background: #001426;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.about_line {
+    width: 50%;
+    height: 0px;
+
+    /* Character / Primary(inverse) */
+
+    border: 1px solid #FFFFFF;
+}
