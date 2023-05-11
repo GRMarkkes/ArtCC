@@ -76,7 +76,7 @@
     position: relative;
     width: 100%;
     height: auto;
-    margin:0px;
+    margin: 0px;
     padding: 0px;
     /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.87) 71.87%); */
 }
@@ -85,21 +85,22 @@
     width: 100%;
     height: auto;
     margin-bottom: -5px;
-    
+
 }
 
-.card {
+.card_1{
     position: absolute;
     display: flex;
-    justify-content: space-between;
-    bottom: 4%;
+    justify-content: space-around;
+    bottom: 8%;
+    /* padding-bottom: 30px; */
     /* top: 70%; */
     /* bottom:20px; */
     /* left: 1%; */
     /* gap: 1px; */
     /* background-color: red; */
     /* background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.87) 71.87%); */
-    width:100%;
+    width: 100%;
     /* transform: translate(-20%, 20%); */
     /* background-color: white; */
     /* padding: 20px; */
@@ -126,71 +127,66 @@
 }
 
 .discount_div {
-    position:absolute;
-    bottom:40%;
-    display:flex;
-    flex-direction:row;
-    justify-content:space-between;
+    position: absolute;
+    /* bottom:40%; */
+    width: 100%;
+    /* height: 150px; */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     /* width:100%; */
+    width: 23.5%;
+    height: 38px;
+    /* transform: translate(0%, 150%); */
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
+    object-fit: cover;
+}
+
+.discount_div_cate {
+    position: absolute;
+    margin-top: 110px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 23.5%;
     height: 38px;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(2px);
+    object-fit: cover;
 }
 
 .discount_tag {
     display: flex;
-    flex-direction: row;
     align-items: flex-start;
-    /* padding: 1px 20px; */
-    
-    /* gap: 10px; */
-    margin:0;
+    text-align: center;
+    justify-content: center;
+    align-self: center;
+    margin-left: 10px;
     width: 99px;
     height: 30px;
-
-    /* NeonRed */
-
     background: #FF0000;
     border-radius: 2px;
-
-    /* Inside auto layout */
-
-    /* flex: none; */
-    /* order: 1; */
-    /* flex-grow: 0; */
-}
-
-.flat-list {
-    position: absolute;
-    top: 70%;
-    left: 1.5%;
-    width: 100%;
-    /* transform: translate(-210%, 95%); */
-    /* background-color: #fff; */
-    /* padding: 20px; */
-    border-radius: 10px;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
-    max-width: 50%;
-    max-height: 50%;
-    /* overflow-y: scroll; */
-}
-
-.flat-list li {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    list-style: none;
+    color: #FFFFFF;
+    border-radius: 2px;
 }
 
 .card_div {
-    width: 25.5%;
-    margin-left: 30px;
-    /* padding: 30px; */
+    width: 23.5%;
     height: 251px;
+    display: flex;
+    flex-direction: column;
     background-color: white;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
 
+}
+
+.box_dump {
+    background-color: white;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .card_image {

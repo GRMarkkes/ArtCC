@@ -15,6 +15,7 @@ import Walletconnection from './Screens/WalletConnect/walletConnection';
 import MarketPlace from './Screens/MarketPlace/marketplaceMain';
 import { Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
 import ArtProject from './Screens/ArtProject/ArtProjectMain';
+import MainApp from './Screens/MainScreen/MainApp.jsx';
 const PUBNET = 'stellar:pubnet';
 
 const web3Modal = new Web3Modal({
@@ -187,11 +188,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Walletconnection
-          accounts={accounts}
-          handleConnect={handleConnect}
-          handleDisconnect={handleDisconnect}
-          txnHash={txnHash}/>}/>
+        <Route path="/" element={<MainApp/>}/>
         <Route path="/marketplace" element={<MarketPlace />} />
         <Route path="/ArtProject" element={<ArtProject />} />
       </Routes>

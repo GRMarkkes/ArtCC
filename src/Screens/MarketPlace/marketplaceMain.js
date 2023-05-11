@@ -4,115 +4,107 @@ import Header from "../Component/Header/Header";
 import Footer from "../Component/Footer/Footer";
 import marketplacebackground_image from '../../Asset/Images/MarketPlace_main.png'
 // import card_image from '../../Asset/Images/card_image.png'
+import discount_arrow_icon from '../../Asset/SVG/Discount_arrow_icon.svg'
 function marketplace() {
-    const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']; // array of items for the flat list
-    const big_discount=[{title:'Art Title Name',company:'Company',}]
+    const big_discount = [{ title: 'Art Title Name', company: 'Company', Address: { City: 'Lahore', Pro: "punjab", Country: "pakistan" } },
+    { title: 'Art 101', company: 'Company', Address: { City: 'Lahore', Pro: "punjab", Country: "pakistan" } },
+    { title: 'Art 102 Name', company: 'Company', Address: { City: 'Kalam', Pro: "KPK", Country: "pakistan" } },
+    { title: 'Art 103 Name', company: 'Company', Address: { City: 'Skardu', Pro: "KPK", Country: "pakistan" } }]
+    const Component = (item) => {
+        return (
+            <div style={{ width: "23.5%", height: 251, display: 'flex', flexDirection: "column", }} className="box_dump">
+                <div style={{ position: "relative", display: "inline-block", display: 'flex' }}>
+                    <img className="card_image" src={marketplacebackground_image} />
 
+                    <div style={{ position: "absolute", bottom: 0, left: 0, display: 'flex', width: "100%",justifyContent:"space-around" }} className="discount_div">
+                        <div className="discount_tag"><p style={{ margin: 0, fontSize: 20, fontWeight: 500, }}>80%</p>
+                            <p style={{ margin: 2.5, font: 12 }}> off</p></div>
+                        <img style={{ paddingRight: 0 }} src={discount_arrow_icon} />
+                        <p style={{ paddingRight: 10, fontWeight: 400, fontSize: 13 }}>1000 ARTcredits</p>
+                    </div>
+
+
+                </div>
+                <div className="card_text_div">
+                    <h4 style={{ margin: 0, padding: 0 }}>{item?.title}</h4>
+                    <p style={{ margin: 0, paddingTop: 5 }}>{"item?.company"}</p>
+                    <div style={{ color: '#2196CC', display: 'flex', height: 30, width: "100%", margin: 0, paddingTop: 5 }}>
+                        <p>{"Lahore,"}</p>
+                        <p>{"Punjab,"}</p>
+                        <p>pakistan</p>
+                    </div>
+                </div>
+            </div>
+        )
+
+    }
     return (
         <div >
-            <Header color={'yellow'}/>
+
             <div class="container">
+                <Header color={'true'} />
                 <img src={marketplacebackground_image} alt="background image" class="bg-image" />
-                <div class="card">
-                    <div className="card_div">
-                        <div style={{display:'flex'}}><img className="card_image" src={marketplacebackground_image} />
-                        <div className="discount_div">
-                            <p className='discount_tag'>80% off</p>
-                            {/* <p>b</p>
-                            <p>c</p> */}
-                        </div></div>
-                        <div className="card_text_div">
-                            <h4 style={{ margin: 0, padding: 0 }}>Art Title Name</h4>
-                            <p style={{ margin: 0, paddingTop: 5 }}>Company</p>
-                            <div style={{ color: '#2196CC', display: 'flex', margin: 0, paddingTop: 5 }}>
-                                <p>Lahore,</p>
-                                <p>Punjab,</p>
-                                <p>Pakistan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card_div">
-                        <img className="card_image" src={marketplacebackground_image} />
-                        <div className="card_text_div">
-                            <h4 style={{ margin: 0, padding: 0 }}>Art Title Name</h4>
-                            <p style={{ margin: 0, paddingTop: 5 }}>Company</p>
-                            <div style={{ color: '#2196CC', display: 'flex', margin: 0, paddingTop: 5 }}>
-                                <p>Lahore,</p>
-                                <p>Punjab,</p>
-                                <p>Pakistan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card_div">
-                        <img className="card_image" src={marketplacebackground_image} />
-                        <div className="card_text_div">
-                            <h4 style={{ margin: 0, padding: 0 }}>Art Title Name</h4>
-                            <p style={{ margin: 0, paddingTop: 5 }}>Company</p>
-                            <div style={{ color: '#2196CC', display: 'flex', margin: 0, paddingTop: 5 }}>
-                                <p>Lahore,</p>
-                                <p>Punjab,</p>
-                                <p>Pakistan</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card_div">
-                        <img className="card_image" src={marketplacebackground_image} />
-                        <div className="card_text_div">
-                            <h4 style={{ margin: 0, padding: 0 }}>Art Title Name</h4>
-                            <p style={{ margin: 0, paddingTop: 5 }}>Company</p>
-                            <div style={{ color: '#2196CC', display: 'flex', margin: 0, paddingTop: 5 }}>
-                                <p>Lahore,</p>
-                                <p>Punjab,</p>
-                                <p>Pakistan</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card_1">
+                    {
+                        big_discount.map((item) => {
+                            return (
+                                <>{Component(item)}</>
+                            )
+                        })
+                    }
                 </div>
             </div>
             <div className='body'></div>
             <div className='mid_header'>
                 <p className="mid_header_p1"> OVERVIEW USABILITY</p>
-
                 <div className="hor_line"></div>
-                {/* <div style={{ height: 72, width: 154, display: 'flex', flexDirection: 'column' }}> */}
-                {/* <p className="mid_header_title">Discount Opportunities</p> */}
-                {/* <p className="mid_header_number">3,456</p> */}
                 <ul style={{ display: 'flex', flexDirection: 'column', color: 'white', margin: 0, padding: 20 }}>
                     <p style={{ height: 0, paddingBottom: 10 }}>Discount Opportunities</p>
                     <p className="mid_header_number">3,456</p>
                 </ul>
-                {/* </div> */}
                 <div className="hor_line"></div>
-
                 <ul style={{ display: 'flex', flexDirection: 'column', color: 'white', margin: 0, padding: 15 }}>
                     <p style={{ display: 'flex', height: 0, paddingBottom: 10, justifyContent: 'center' }}>Savings</p>
                     <p className="mid_header_number">8,765</p>
                 </ul>
-
-
                 <div className="hor_line"></div>
-                {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}> */}
                 <ul style={{ display: 'flex', flexDirection: 'column', color: 'white', margin: 0, padding: 20 }}>
                     <p style={{ height: 0, paddingBottom: 10 }}>(average 1000sek per discount) and still counting</p>
                     <p className="mid_header_number">450,532 SEK</p>
                 </ul>
-                {/* </div> */}
             </div>
+            <div style={{display:'flex',justifyContent:"space-around"}}>
+                {/* <div class="card"> */}
+                    {
+                        big_discount.map((item) => {
+                            return (
+                                <>{Component(item)}</>
+                            )
+                        })
+                    }
+                {/* </div> */}
+                {/* <div style={{ width: "23.5%", height: 251, display: 'flex', flexDirection: "column", }} className="box_dump">
+                <div style={{ position: "relative", display: "inline-block", display: 'flex' }}>
+                    <img className="card_image" src={marketplacebackground_image} />
 
-            <div className="card_div">
-                <img className="card_image" src={marketplacebackground_image} />
-                <div className="card_text_div">
-                    <h4 style={{ margin: 0, padding: 0 }}>Art Title Name</h4>
-                    <p style={{ margin: 0, paddingTop: 5 }}>Company</p>
-                    <div style={{ color: '#2196CC', display: 'flex', margin: 0, paddingTop: 5 }}>
-                        <p>Lahore,</p>
-                        <p>Punjab,</p>
-                        <p>Pakistan</p>
+                    <div style={{ position: "absolute", bottom: 0, left: 0, display: 'flex', width: "100%" }} className="discount_div">
+                        <div className="discount_tag"><p style={{ margin: 0, fontSize: 20, fontWeight: 500 }}>80%</p>
+                            <p style={{ margin: 2.5, font: 12 }}> off</p></div>
+                        <img style={{ paddingRight: 0 }} src={discount_arrow_icon} />
+                        <p style={{ paddingRight: 10, fontWeight: 400, fontSize: 13 }}>1000 ARTcredits</p>
                     </div>
                 </div>
+                <div className="card_text_div">
+                    <h4 style={{ margin: 0, padding: 0 }}>{"item?.title"}</h4>
+                    <p style={{ margin: 0, paddingTop: 5 }}>{"item?.company"}</p>
+                    <div style={{ color: '#2196CC', display: 'flex', height: 30, width: "100%", margin: 0, paddingTop: 5 }}>
+                        <p>{"Lahore,"}</p>
+                        <p>{"Punjab,"}</p>
+                        <p>pakistan</p>
+                    </div>
+                </div>
+            </div> */}
             </div>
-            
-            
             <Footer />
         </div>)
 }
