@@ -1,0 +1,40 @@
+.start_noww {
+    height: 209px;
+    background: linear-gradient(90deg, #312783 0%, #00A19A 100%);
+    align-items: center;
+    
+}
+.start_now_mobilee {
+    height: 250px;
+    background: linear-gradient(90deg, #312783 0%, #00A19A 100%);
+    align-items: center;
+}
+.about_mainn {
+    display: flex;
+    margin-top: 30px;
+    background-color: #001426;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    width: 80%;
+}
+
+.about_linee {
+    width: 70%;
+    /* height: 0px; */
+    border: 1px solid #FFFFFF;
+    
+}
+
+.about_textt {
+    /* font-family: 'Montserrat'; */
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+}
+@media screen and (max-width: 680px){
+    .flex-column {
+        padding-top: 15%;
+    }
+}

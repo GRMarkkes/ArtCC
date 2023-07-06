@@ -166,3 +166,27 @@
   color: #01A19A;
   border-bottom: 1px solid #01A19A;
 }
+
+
+@media screen and (min-width: 920px){
+  .menu-toggle{
+    margin-right: -25%;
+  }        
+}
+@media screen and (min-width: 820px){
+  .menu-toggle{
+    margin-right: -15%;
+  }        
+}
+@media screen and (min-width: 800px){
+  .menu-toggle{
+    margin-right: -10%;
+  }        
+}
+@media screen and (min-width: 780px){
+  .menu-toggle{
+    margin-right: -5%;
+  }        
+}
+
+

@@ -1,0 +1,54 @@
+
+.matching {
+    color: #46d369;
+    white-space: unset;
+    max-width: 300px;
+    opacity: 1;
+    transition: max-width .55s cubic-bezier(.86,0,.07,1) 1.65s,opacity .15s linear 2.2s;
+    font-weight: 500;
+    font-size: 20px;
+    display: inline-block;
+    line-height: 1.2;
+  }
+  .aging {
+    margin-left: 2%;
+    white-space: nowrap;
+    padding: 1px 4px;
+    font-weight: 500;
+    color: white;
+    border: 1px solid hsla(0,0%,100%,.4);
+    font-family: Netflix Sans,Helvetica Neue,Segoe UI,Roboto,Ubuntu,sans-serif;
+  }
+  .seasoing {
+    color: #fff; /* White color for 2021 6 Seasons */
+    font-weight: 400;
+    margin-left: 2%;
+    font-size: 18px;
+    font-family: Netflix Sans,Helvetica Neue,Segoe UI,Roboto,Ubuntu,sans-serif;
+    line-height: 1.2;
+  }
+.pagging{
+    font-size: 16px;
+    line-height: 26px;
+    color: #fff;
+    font-family: Netflix Sans,Helvetica Neue,Segoe UI,Roboto,Ubuntu,sans-serif;
+}
+.Gener {
+    color: #777;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0.5em 0.5em 0.5em 0;
+    word-break: break-word;
+    font-family: Netflix Sans,Helvetica Neue,Segoe UI,Roboto,Ubuntu,sans-serif;
+    marginTop:"6%"
+}
+.Genering{
+    color: #ddd;
+    cursor: pointer;
+    margin: 0;
+    outline-color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0.5em 0.5em 0.5em 0;
+    word-break: break-word;
+}
