@@ -1,6 +1,6 @@
 import  { useEffect, useState } from "react";
-import arrow from '../../Asset/SVG/arrow.svg'
-import down_arrow from '../../Asset/SVG/down_arrow.svg'
+import arrow from '../../Asset/arrow.png'
+import down_arrow from '../../Asset/down_arrow.png'
 import '../Component/CardSlider/CardSlider.css'
 // import { useNavigate } from "react-router-dom";
 

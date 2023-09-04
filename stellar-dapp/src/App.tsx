@@ -12,7 +12,12 @@ import MainPage from "./Screens/MainPage/MainPage";
 // import Balanace from "./pages/balance";
 // import AllCampaigns from "./pages/allcampaigns";
 // ISupportedWallet
-import { StellarWalletsKit, WalletNetwork, WalletType, ISupportedWallet } from "stellar-wallets-kit";
+import {
+  StellarWalletsKit,
+  WalletNetwork,
+  WalletType,
+  ISupportedWallet,
+} from "stellar-wallets-kit";
 import { FUTURENET_DETAILS } from "./helper/network";
 
 function App(): JSX.Element {
@@ -21,6 +26,7 @@ function App(): JSX.Element {
 
   // Initial state, empty states for token/transaction details
   const [activePubKey, setActivePubKey] = React.useState("");
+  const [connectWallet, setConnectWallet] = React.useState(true);
   // const [error, setError] = React.useState(null as string | null);
 
   // Setup swc, user will set the desired wallet on connect
@@ -38,7 +44,11 @@ function App(): JSX.Element {
   const connect = () => {
     // See https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main for more options
     SWKKit.openModal({
-      allowedWallets: [WalletType.ALBEDO, WalletType.FREIGHTER, WalletType.XBULL],
+      allowedWallets: [
+        WalletType.ALBEDO,
+        WalletType.FREIGHTER,
+        WalletType.XBULL,
+      ],
       onWalletSelected: async (option: ISupportedWallet) => {
         try {
           // Set selected wallet,  network, and public key
@@ -46,6 +56,7 @@ function App(): JSX.Element {
           const publicKey = await SWKKit.getPublicKey();
 
           setActivePubKey(publicKey);
+          setConnectWallet(false);
 
           console.log("publicKey", publicKey);
 
@@ -58,13 +69,37 @@ function App(): JSX.Element {
   };
 
   useEffect(() => {
-    connect();
-  });
+    if (connectWallet) {
+      connect();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectWallet]);
+
   return (
     <Router>
       <Routes>
-        <Route path="/MainApp" element={<MainApp />} />
-        <Route path="/" element={<MainPage />} />
+        <Route
+          path="/MainApp"
+          element={
+            <MainApp
+              networkDetails={selectedNetwork}
+              setPubKey={setActivePubKey}
+              swkKit={SWKKit}
+              pubKey={activePubKey}
+            />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <MainPage
+              networkDetails={selectedNetwork}
+              setPubKey={setActivePubKey}
+              swkKit={SWKKit}
+              pubKey={activePubKey}
+            />
+          }
+        />
         <Route
           path="/marketplace"
           element={
@@ -76,37 +111,20 @@ function App(): JSX.Element {
             />
           }
         />
-        <Route path="/ArtProject" element={<ArtProject />} />
+        <Route
+          path="/ArtProject"
+          element={
+            <ArtProject
+              networkDetails={selectedNetwork}
+              setPubKey={setActivePubKey}
+              swkKit={SWKKit}
+              pubKey={activePubKey}
+            />
+          }
+        />
       </Routes>
     </Router>
   );
-
-  // return (
-  //   <ProviderExample>
-  //     <Router>
-  //       <Navbar />
-  //       <Routes>
-  //         <Route path="/" element={<Home />} />
-  //         <Route path="/all-campaigns" element={<AllCampaigns />} />
-  //         <Route
-  //           path="/create-campaigns"
-  //           element={
-  //             <CreateCampaigns
-  // networkDetails={selectedNetwork}
-  // setPubKey={setActivePubKey}
-  // swkKit={SWKKit}
-  // pubKey={activePubKey}
-  //             />
-  //           }
-  //         />
-  //         <Route
-  //           path="/balance"
-  //           element={<Balanace setPubKey={setActivePubKey} swkKit={SWKKit} pubKey={activePubKey} />}
-  //         />
-  //       </Routes>
-  //     </Router>
-  //   </ProviderExample>
-  // );
 }
 
 export default App;

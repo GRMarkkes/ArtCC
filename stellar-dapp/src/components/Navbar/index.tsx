@@ -6,7 +6,6 @@ import {
   NavMenu,
   NavBtn,
   // NavBtnLink,
-  //links
 } from './NavbarElements';
 import { WalletData } from '../wallet-data';
 

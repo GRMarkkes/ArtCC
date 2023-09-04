@@ -5,6 +5,7 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import { MdOutlineReportProblem } from "react-icons/md";
 import decimg from "../../../Asset/ModalImg.png";
+import * as crowdFund from "CrowdFund";
 import {
   AiOutlineCloseCircle,
   AiOutlineCalendar,
@@ -13,24 +14,118 @@ import {
 import { BiChevronDown } from "react-icons/bi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../NewCard/NewCard.css";
-import cardimg from "../../../Asset/Images/Card_Image.png";
 import "./Card.css";
 import Modal from "react-modal";
 import { motion } from "framer-motion";
-interface CardProps {
+import cardImg from "../../../Asset/Images/Card_Image.png";
+import {
+  getServer,
+  submitTx,
+  getTxBuilder,
+  donateToCampaignByID,
+} from "../../../helper/soroban";
+import { NetworkDetails, signTx } from "helper/network";
+import { StellarWalletsKit } from "stellar-wallets-kit";
+
+interface Web3PageProps {
+  networkDetails: NetworkDetails;
+  setPubKey: (pubKey: string) => void;
+  swkKit: StellarWalletsKit;
+  pubKey: string;
   index: number;
+  onPress?: (created: any) => void;
   movieData: {
+    amount_collected: i128;
+    deadline: u64;
+    description: string;
+    donations: Array<i128>;
+    donators: Array<Address>;
+    id: u32;
     image: string;
-    name: string;
+    owner: Address;
+    status: boolean;
+    target: i128;
+    title: string;
   };
   isLiked?: boolean;
 }
 
-const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
+export type u32 = number;
+export type i32 = number;
+export type u64 = bigint;
+export type i64 = bigint;
+export type u128 = bigint;
+export type i128 = bigint;
+export type u256 = bigint;
+export type i256 = bigint;
+export type Address = string;
+export type Option<T> = T | undefined;
+export type Typepoint = bigint;
+export type Duration = bigint;
+
+const Card = (props: Web3PageProps) => {
   // const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth >= 1220);
+
+  const NATIVE_TOKEN =
+    "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
+
+  async function donateToCampaign(id: number) {
+    try {
+      console.log("donateToCampaign");
+
+      const server = getServer(props.networkDetails);
+      // Gets a transaction builder and use it to add a "swap" operation and build the corresponding XDR
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        "1000000",
+        server,
+        props.networkDetails.networkPassphrase
+      );
+
+      const { preparedTransaction, footprint } = await donateToCampaignByID(
+        crowdFund.CONTRACT_ID,
+        id, // Campaign id
+        props.pubKey, // Donor public key
+        "100", // amount to donate
+        NATIVE_TOKEN, // XLM Native Addresss
+        "",
+        server,
+        props.networkDetails.networkPassphrase,
+        txBuilder
+      );
+
+      console.log("footprint", footprint);
+      console.log("preparedTransaction", preparedTransaction);
+
+      const _signedXdr = await signTx(
+        preparedTransaction.toXDR(),
+        props.pubKey,
+        props.swkKit
+      );
+
+      try {
+        const result = await submitTx(
+          _signedXdr,
+          props.networkDetails.networkPassphrase,
+          server
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+          props?.onPress(true);
+        console.log("result", result);
+        alert("Donated Successfully");
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,7 +141,6 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
   const openModal = () => {
     setIsHovered(false);
     setIsModalOpen(true);
-
   };
 
   const closeModal = () => {
@@ -56,7 +150,7 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
   interface TagProps {
     text: string;
   }
-  
+
   const Tag: React.FC<TagProps> = ({ text }) => {
     return <div className="tag">{text}</div>;
   };
@@ -108,7 +202,7 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
       </div>
     );
   };
- 
+
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("disable-pointer-events");
@@ -129,19 +223,25 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{
         marginLeft:
-          (index === 0 || index === 5 || index === 10 || index === 15) &&
+          (props.index === 0 ||
+            props.index === 5 ||
+            props.index === 10 ||
+            props.index === 15) &&
           isHovered
             ? "60px"
-            : (index === 4 || index === 9 || index === 14 || index === 19) &&
+            : (props.index === 4 ||
+                props.index === 9 ||
+                props.index === 14 ||
+                props.index === 19) &&
               isHovered
             ? "-50px"
             : "0",
       }}
     >
       {isWideScreen ? (
-        <img src={movieData.image} alt="card" />
+        <img src={cardImg} alt="card" />
       ) : (
-        <img src={movieData.image} alt="card" onClick={openModal} />
+        <img src={cardImg} alt="card" onClick={openModal} />
       )}
 
       {isHovered && (
@@ -164,7 +264,7 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
           className="hover"
         >
           <div className="image-video-container">
-            <img src={movieData.image} alt="card" />
+            <img src={cardImg} alt="card" />
             {/* <video src={video} autoPlay={true} loop muted /> */}
           </div>
           <div className="info-container flex column" style={{ color: "#fff" }}>
@@ -172,14 +272,11 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
               style={{ fontSize: "15px", fontWeight: "700" }}
               className="name"
             >
-              {movieData.name}
+              {props.movieData?.title}
             </h3>
 
             <div className="icons flex j-between">
               <div className="controls flex">
-                <MdOutlineLocationOn
-                  style={{ color: "#2196CC", marginLeft: "-5px" }}
-                />
                 <p
                   style={{
                     color: "#2196CC",
@@ -187,7 +284,7 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
                     marginLeft: "-3px",
                   }}
                 >
-                  Bemowo, Warsaw, Poland
+                  {props.movieData?.description}
                 </p>
               </div>
               <div
@@ -212,15 +309,18 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <>
                   <p style={{ height: 5, paddingRight: 5, color: "#45AFD9" }}>
-                    Kr. 4.799
+                    Deadline
                   </p>
                   <p style={{ height: 5, color: "#45AFD9" }}>SEK</p>
                 </>
-                <p style={{ height: 5, paddingRight: 10 }}>100 Supporters</p>
+                <button
+                  onClick={() => donateToCampaign(props.movieData?.id)}
+                  style={{ border: "none", color: "#45AFD9" }}
+                >
+                  Donate To Campaign
+                </button>
               </div>
-             
             </div>
-           
           </div>
         </motion.div>
       )}
@@ -240,7 +340,7 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
             <AiOutlineCloseCircle onClick={closeModal} className="close-icon" />
             <div className="modal-length">
               <div className="col-md-12">
-                <img src={cardimg} alt="movie" className="img-fluid" />
+                <img src={cardImg} alt="movie" className="img-fluid" />
               </div>
               <div className="container bg-custom">
                 <div className="modal-main" style={{ marginLeft: "3%" }}>
@@ -249,25 +349,49 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
                       className="modal-main-heading"
                       style={{ paddingTop: "4%" }}
                     >
-                      CAMILLO FRANCESCO VILLA
+                      {props.movieData.title}
                     </p>
-                    <p className="modal-after-main">
-                      Creator: Goncalo Marques, John Simms
+                  </div>
+
+                  <div>
+                    <p className="modal-paragraph ">
+                      Description: {props.movieData.description}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="modal-paragraph ">
+                      DeadLine: {props.movieData.deadline.toString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="modal-paragraph ">
+                      Target: {props.movieData.target.toString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="modal-paragraph ">
+                      Total donation: {props.movieData.donations.toString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="modal-paragraph">Donators:</p>
+                    <ul>
+                      {props.movieData.donators.map((donator, index) => (
+                        <li key={index} style={{ color: "white" }}>
+                          {donator}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="modal-paragraph ">
+                      Owner: {props.movieData.owner}
                     </p>
                   </div>
                   <div className="modal-tags">
                     <Tag text="green" />
                     <Tag text="green" />
                     <Tag text="green" />
-                  </div>
-                  <div>
-                    <p className="modal-paragraph ">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book.
-                    </p>
                   </div>
 
                   <div className="modal-rating-location">
@@ -352,7 +476,8 @@ const Card: React.FC<CardProps> = React.memo(({ index, movieData }) => {
       </Modal>
     </Container>
   );
-});
+};
+
 export default Card;
 const Container = styled.div`
   max-width: 222px;
@@ -456,4 +581,3 @@ const Container = styled.div`
     }
   }
 `;
-

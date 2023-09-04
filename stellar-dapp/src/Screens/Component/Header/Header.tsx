@@ -1,27 +1,92 @@
+/* eslint-disable react/jsx-pascal-case */
 import { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import staller_header_logo from "../../../Asset/Images/main_logo.png";
-import search_icon from "../../../Asset/SVG/icon-wrapper.svg";
-import Menu_Icon from "../../../Asset/SVG/Menu_Icon.svg";
+import Search_icon from "../../../Asset/icon-wrapper.png";
+import Menu_Icon from "../../../Asset/Menu_Icon.png";
 import "./Header.css";
+import { NetworkDetails, signTx } from "../../../helper/network";
+import { StellarWalletsKit } from "stellar-wallets-kit";
+import * as crowdFund from "CrowdFund";
+import {
+  BASE_FEE,
+  createNewCampaign,
+  getServer,
+  getTxBuilder,
+  submitTx,
+} from "helper/soroban";
 
-interface HeaderProps {
+interface Web3PageProps {
+  networkDetails: NetworkDetails;
+  setPubKey: (pubKey: string) => void;
+  swkKit: StellarWalletsKit;
+  pubKey: string;
   value?: string;
+  onPress?: (created: any) => void;
 }
-
-function Header(props: HeaderProps) {
+function Header(props: Web3PageProps) {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-  // const [color, setColor] = useState<boolean>();
-
-  // const marketPlace = () => {
-  //   navigate("/marketplace");
-  //   setColor(true);
-  // };
-
   function toggleMenu() {
     setShowMenu(!showMenu);
+  }
+  async function createCampaign() {
+    try {
+      console.log("create campaign");
+
+      const server = getServer(props.networkDetails);
+      // Gets a transaction builder and use it to add a "swap" operation and build the corresponding XDR
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        props.networkDetails.networkPassphrase
+      );
+      const { preparedTransaction, footprint } = await createNewCampaign(
+        crowdFund.CONTRACT_ID,
+        props.pubKey,
+        "Book Campaign",
+        "Fund to Book Campaign",
+        "image url Book",
+        "2000",
+        "1694745533",
+        "",
+        server,
+        props.networkDetails.networkPassphrase,
+        txBuilder
+      );
+
+      console.log("footprint", footprint);
+      console.log(
+        "preparedTransaction",
+        preparedTransaction.toXDR(),
+        props.swkKit
+      );
+
+      const _signedXdr = await signTx(
+        preparedTransaction.toXDR(),
+        props.pubKey,
+        props.swkKit
+      );
+
+      try {
+        const result = await submitTx(
+          _signedXdr,
+          props.networkDetails.networkPassphrase,
+          server
+        );
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        props?.onPress(true);
+        console.log("result", result);
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
   }
 
   return (
@@ -65,7 +130,6 @@ function Header(props: HeaderProps) {
                   onClick={() => {
                     navigate("/ArtProject");
                   }}
-                 
                 >
                   ART PROJECTS
                 </Nav.Link>
@@ -81,20 +145,23 @@ function Header(props: HeaderProps) {
               </Nav.Link>
             </Nav>
             <Nav style={{ marginLeft: "20%" }}>
-              <Nav.Link style={{ color: "#01A19A", marginTop: '3%' }}>
-                Create Wallet
+              <Nav.Link
+                style={{ color: "#01A19A", marginTop: "3%" }}
+                onClick={createCampaign}
+              >
+                Create Campgain
               </Nav.Link>
               <Nav.Link
-                style={{ color: "#01A19A", marginTop: '3%' }}
+                style={{ color: "#01A19A", marginTop: "3%" }}
                 onClick={() => {
                   navigate("/MainApp");
                 }}
               >
                 Connect Wallet
               </Nav.Link>
-              <Nav.Link>
-                <img src={search_icon} alt="Search" />
-              </Nav.Link>
+                <Nav.Link>
+                <img src={Search_icon} alt="Search" />
+                </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

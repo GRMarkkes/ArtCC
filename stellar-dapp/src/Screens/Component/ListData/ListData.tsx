@@ -24,18 +24,19 @@ const ListData: React.FC = () => {
       <div className="carousel-item">
         <NewCard />
       </div>
-      <div className="carousel-item">
+      
+      {/* <div className="carousel-item">
         <NewCard />
-      </div>
-      <div className="carousel-item">
+      </div> */}
+      {/* <div className="carousel-item">
         <NewCard />
-      </div>
-      <div className="carousel-item">
+      </div> */}
+      {/* <div className="carousel-item">
         <NewCard />
-      </div>
-      <div className="carousel-item">
+      </div> */}
+      {/* <div className="carousel-item">
         <NewCard />
-      </div>
+      </div> */}
       <div className="carousel-item">
         <NewCard />
       </div>

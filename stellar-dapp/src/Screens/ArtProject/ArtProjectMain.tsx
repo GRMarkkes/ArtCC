@@ -2,439 +2,91 @@
 import styled from "styled-components";
 // import { useNavigate } from "react-router-dom";
 import Slider from "../Component/Slider/Slider";
-import cardimg from "../../Asset/Images/Card_Image.png";
 import Header from "../Component/Header/Header";
 import artimg from "../../Asset/Images/ArtProject_main.png";
-import './ArtProjectMain.css'
+import "./ArtProjectMain.css";
 import ArtFooter from "../Component/ArtFooter";
+import * as crowdFund from "CrowdFund";
+import { useEffect, useState } from "react";
+import { NetworkDetails } from "helper/network";
+import { StellarWalletsKit } from "stellar-wallets-kit";
+
 // interface Movie {
 //   genres: string[];
 //   id: number;
 //   image: string[];
 //   name: string;
 // }
+interface Web3PageProps {
+  networkDetails: NetworkDetails;
+  setPubKey: (pubKey: string) => void;
+  swkKit: StellarWalletsKit;
+  pubKey: string;
+}
 
-function ArtProject() {
-  // const [isScrolled, setIsScrolled] = useState(false);
-  
-  const movies = [
-    {
-      genres: ["Animation", "Family", "Adventure"],
-      id: 502356,
-      image: cardimg,
-      name: "PROJECT TITLE",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "PROJECT TITLE",
-    },
-    {
-      genres: ["Adventure", "Fantasy", "Comedy"],
-      id: 493529,
-      image: cardimg,
-      name: "PROJECT TITLE",
-    },
-    {
-      genres: ["Thriller", "Horror", "Fantasy"],
-      id: 713704,
-      image: cardimg,
-      name: "Evil Dead Rise",
-    },
-    {
-      genres: ["Science Fiction", "Adventure", "Action"],
-      id: 447365,
-      image: cardimg,
-      name: "PROJECT TITLE",
-    },
-    {
-      genres: ["Action", "Adventure", "Science Fiction"],
-      id: 640146,
-      image: cardimg,
-      name: "PROJECT TITLE",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-    {
-      genres: ["Action", "Crime", "Thriller"],
-      id: 385687,
-      image: cardimg,
-      name: "Fast X",
-    },
-  ];
- 
-  
-  // const navigate = useNavigate();
-  // // const [showModal, setShowModal] = useState(false);
+export type u32 = number;
+export type i32 = number;
+export type u64 = bigint;
+export type i64 = bigint;
+export type u128 = bigint;
+export type i128 = bigint;
+export type u256 = bigint;
+export type i256 = bigint;
+export type Address = string;
+export type Option<T> = T | undefined;
+export type Typepoint = bigint;
+export type Duration = bigint;
 
-  
+type Campaign = {
+  amount_collected: i128;
+  deadline: u64;
+  description: string;
+  donations: Array<i128>;
+  donators: Array<Address>;
+  id: u32;
+  image: string;
+  owner: Address;
+  status: boolean;
+  target: i128;
+  title: string;
+};
 
-  // window.onscroll = () => {
-  //   setIsScrolled(window.pageYOffset === 0 ? false : true);
-  //   return () => (window.onscroll = null);
-  // };
-  // const toggleModal = () => {
-  //   setShowModal(!showModal);
-  // };
-  
+const ArtProject = (props: Web3PageProps) => {
+  const [loading, setLoading] = useState(false);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
+  async function getCampaings() {
+    try {
+      setLoading(true);
+      let data = await crowdFund.getCampaigns();
+      setCampaigns(data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (props?.pubKey) {
+      getCampaings();
+    }
+  }, [props]);
+
+  const getResult = (res: any) => {
+    if (res === true) {
+      getCampaings();
+    }
+  };
 
   return (
     <div>
-      <Header />
+      <Header
+        networkDetails={props.networkDetails}
+        setPubKey={props.setPubKey}
+        swkKit={props.swkKit}
+        pubKey={props.pubKey}
+        onPress={getResult}
+      />
       <img className="img-fluid" src={artimg} alt="art" />
       <Container>
         {/* <Navbar isScrolled={isScrolled} /> */}
@@ -464,18 +116,32 @@ function ArtProject() {
             </div> */}
           </div>
         </div>
-        <Slider movies={movies} />
+        {loading ? (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only"></span>
+            </div>
+          </div>
+        ) : (
+          <Slider
+            networkDetails={props.networkDetails}
+            setPubKey={props.setPubKey}
+            swkKit={props.swkKit}
+            pubKey={props.pubKey}
+            campaigns={campaigns}
+            onPress={getResult}
+          />
+        )}
       </Container>
-     {/* <AboutFooter onvalue={'/ArtProject'}/> */}
-     <ArtFooter />
-    
+      {/* <AboutFooter onvalue={'/ArtProject'}/> */}
+      <ArtFooter />
     </div>
   );
-}
+};
 
 const Container = styled.div`
   background-color: black;
- 
+
   .hero {
     position: relative;
     .background-image {
@@ -487,7 +153,7 @@ const Container = styled.div`
     }
     .container {
       position: absolute;
-   
+
       bottom: 5rem;
       .logo {
         img {

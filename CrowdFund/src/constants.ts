@@ -3,7 +3,7 @@ import { Contract } from 'soroban-client'
 /**
  * The Soroban contract ID for the CrowdFund contract.
  */
-export const CONTRACT_ID = 'CA7QB2U5BKYC3LDVCYMWDSDYDMFATPKTJD7PHUZ6GJEZZIZGSKYEY4MB'
+export const CONTRACT_ID = 'CDZU7T527UR7NOCBIDIPGUHTQ3UMUEWEEP4OLNEBVD3ACVDBF3MYLSX2'
 
 /**
  * The Soroban contract ID for the CrowdFund contract, in hex.

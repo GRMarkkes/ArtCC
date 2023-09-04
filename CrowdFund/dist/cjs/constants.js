@@ -5,7 +5,7 @@ const soroban_client_1 = require("soroban-client");
 /**
  * The Soroban contract ID for the CrowdFund contract.
  */
-exports.CONTRACT_ID = 'CA7QB2U5BKYC3LDVCYMWDSDYDMFATPKTJD7PHUZ6GJEZZIZGSKYEY4MB';
+exports.CONTRACT_ID = 'CDZU7T527UR7NOCBIDIPGUHTQ3UMUEWEEP4OLNEBVD3ACVDBF3MYLSX2';
 /**
  * The Soroban contract ID for the CrowdFund contract, in hex.
  * If {@link CONTRACT_ID} is a new-style `C…` string, you will need this hex
