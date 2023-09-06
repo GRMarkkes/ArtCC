@@ -25,6 +25,7 @@ export const signData = async (
     blob,
     publicKey,
   } as any as IStellarWalletsKitSignParams);
+
   return signedXDR;
 };
 

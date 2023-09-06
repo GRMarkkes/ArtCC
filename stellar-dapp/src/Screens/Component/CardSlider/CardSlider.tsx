@@ -3,136 +3,177 @@ import styled from "styled-components";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import Card from "../Card/Card";
 import { motion } from "framer-motion";
+import { NetworkDetails } from "helper/network";
+import { StellarWalletsKit } from "stellar-wallets-kit";
 
-interface MovieData {
-  id: number;
+export type u32 = number;
+export type i32 = number;
+export type u64 = bigint;
+export type i64 = bigint;
+export type u128 = bigint;
+export type i128 = bigint;
+export type u256 = bigint;
+export type i256 = bigint;
+export type Address = string;
+export type Option<T> = T | undefined;
+export type Typepoint = bigint;
+export type Duration = bigint;
+
+interface Campaign {
+  amount_collected: i128;
+  deadline: u64;
+  description: string;
+  donations: Array<i128>;
+  donators: Array<Address>;
+  id: u32;
   image: string;
-  name: string;
-}
-
-interface CardSliderProps {
-  data: MovieData[];
+  owner: Address;
+  status: boolean;
+  target: i128;
   title: string;
 }
 
-const CardSlider: React.FC<CardSliderProps> = React.memo(
-  function ({ data, title }) {
-    const listRef = useRef<HTMLDivElement>(null);
-    const [sliderPosition, setSliderPosition] = useState(0);
-    const [showControls, setShowControls] = useState(false);
-    const [isMobileView, setIsMobileView] = useState(false);
-    const [touchStartX, setTouchStartX] = useState(0);
-    const [showLeftArrow, setShowLeftArrow] = useState(false);
+interface Web3PageProps {
+  networkDetails: NetworkDetails;
+  setPubKey: (pubKey: string) => void;
+  swkKit: StellarWalletsKit;
+  pubKey: string;
+  data: Campaign[];
+  title: string;
+  onPress?: (created: any) => void;
+}
 
-    const handleDirection = (direction: "left" | "right") => {
-      const slideWidth = 240;
-      const numVisibleCards = isMobileView ? 1 : 5;
-      const totalSlides = data.length;
-      var newPosition = sliderPosition; // Initialize with a default value
-    
-      if (direction === "left") {
-        newPosition -= numVisibleCards;
-        if (newPosition < 0) {
-          newPosition = totalSlides - Math.abs(newPosition % totalSlides);
-        }
-      } else if (direction === "right") {
-        newPosition += numVisibleCards;
-        if (newPosition >= totalSlides) {
-          newPosition %= totalSlides;
-        }
-        setShowLeftArrow(true);
+const CardSlider = React.memo(function(props: Web3PageProps, { title }) {
+  const [data, setData] = useState<Campaign[]>([]);
+
+  useEffect(() => {
+    if (props.data) {
+      setData(props?.data);
+    }
+  }, [props]);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [sliderPosition, setSliderPosition] = useState(0);
+  const [showControls, setShowControls] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+
+  const handleDirection = (direction: "left" | "right") => {
+    const slideWidth = 240;
+    const numVisibleCards = isMobileView ? 1 : 5;
+    const totalSlides = data.length;
+    var newPosition = sliderPosition; // Initialize with a default value
+
+    if (direction === "left") {
+      newPosition -= numVisibleCards;
+      if (newPosition < 0) {
+        newPosition = totalSlides - Math.abs(newPosition % totalSlides);
       }
-    
-      // const distance = slideWidth * numVisibleCards;
-      if (listRef.current) {
-        listRef.current.style.transform = `translateX(-${slideWidth * newPosition}px)`;
+    } else if (direction === "right") {
+      newPosition += numVisibleCards;
+      if (newPosition >= totalSlides) {
+        newPosition %= totalSlides;
       }
-      setSliderPosition(newPosition);
-    };
-    
+      setShowLeftArrow(true);
+    }
 
-    useEffect(() => {
-      const handleResize = () => {
-        const screenWidth = window.innerWidth;
-        setIsMobileView(screenWidth <= 768);
-      };
+    // const distance = slideWidth * numVisibleCards;
+    if (listRef.current) {
+      listRef.current.style.transform = `translateX(-${slideWidth *
+        newPosition}px)`;
+    }
+    setSliderPosition(newPosition);
+  };
 
-      handleResize();
-      window.addEventListener("resize", handleResize);
-
-      return () => {
-        window.removeEventListener("resize", handleResize);
-      };
-    }, []);
-
-    const handleTouchStart = (event: React.TouchEvent) => {
-      setTouchStartX(event.touches[0].clientX);
-    };
-
-    const handleTouchEnd = (event: React.TouchEvent) => {
-      const touchEndX = event.changedTouches[0].clientX;
-      const swipeDistance = touchEndX - touchStartX;
-      const swipeThreshold = 50;
-
-      if (swipeDistance > swipeThreshold) {
-        handleDirection(isMobileView ? "left" : "right");
-      } else if (swipeDistance < -swipeThreshold) {
-        handleDirection(isMobileView ? "right" : "left");
-      }
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      setIsMobileView(screenWidth <= 768);
     };
 
-    return (
-      <Container
-        className="flex column"
-        onMouseEnter={() => setShowControls(true)}
-        onMouseLeave={() => setShowControls(false)}
-      >
-        <h1 style={{ fontWeight: "300", fontSize: "20px" }}>{title}</h1>
-        <div className="wrapper">
-          {!isMobileView && showLeftArrow && (
-            <div
-              className={`slider-action left ${
-                !showControls ? "none" : ""
-              } flex j-center a-center`}
-            >
-              <AiOutlineLeft onClick={() => handleDirection("left")} />
-            </div>
-          )}
-          <motion.div
-            className="slider flex"
-            ref={listRef}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    setTouchStartX(event.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    const touchEndX = event.changedTouches[0].clientX;
+    const swipeDistance = touchEndX - touchStartX;
+    const swipeThreshold = 50;
+
+    if (swipeDistance > swipeThreshold) {
+      handleDirection(isMobileView ? "left" : "right");
+    } else if (swipeDistance < -swipeThreshold) {
+      handleDirection(isMobileView ? "right" : "left");
+    }
+  };
+
+  return (
+    <Container
+      className="flex column"
+      onMouseEnter={() => setShowControls(true)}
+      onMouseLeave={() => setShowControls(false)}
+    >
+      <h1 style={{ fontWeight: "300", fontSize: "20px" }}>{title}</h1>
+      <div className="wrapper">
+        {!isMobileView && showLeftArrow && (
+          <div
+            className={`slider-action left ${
+              !showControls ? "none" : ""
+            } flex j-center a-center`}
           >
-            {data.map((movie, index) => (
-              <motion.div
-                key={movie.id}
-                className="card-wrapper"
-                initial={{ opacity: 0, x: -100 }}
-                animate={{
-                  opacity: 1,
-                  x: 0,
-                  transition: { duration: 0.5, delay: index * 0.1 },
-                }}
-              >
-                <Card movieData={movie} index={index} />
-              </motion.div>
-            ))}
-          </motion.div>
-          {!isMobileView && (
-            <div
-              className={`slider-action right ${
-                !showControls ? "none" : ""
-              } flex j-center a-center`}
+            <AiOutlineLeft onClick={() => handleDirection("left")} />
+          </div>
+        )}
+        <motion.div
+          className="slider flex"
+          ref={listRef}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          {data?.map((movie, index) => (
+            <motion.div
+              key={movie.id}
+              className="card-wrapper"
+              initial={{ opacity: 0, x: -100 }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.5, delay: index * 0.1 },
+              }}
             >
-              <AiOutlineRight onClick={() => handleDirection("right")} />
-            </div>
-          )}
-        </div>
-      </Container>
-    );
-  }
-);
+              <Card
+                networkDetails={props.networkDetails}
+                setPubKey={props.setPubKey}
+                swkKit={props.swkKit}
+                pubKey={props.pubKey}
+                movieData={movie}
+                index={index}
+                onPress={props.onPress}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+        {!isMobileView && (
+          <div
+            className={`slider-action right ${
+              !showControls ? "none" : ""
+            } flex j-center a-center`}
+          >
+            <AiOutlineRight onClick={() => handleDirection("right")} />
+          </div>
+        )}
+      </div>
+    </Container>
+  );
+});
 
 export default CardSlider;
 

@@ -58,14 +58,13 @@ const Web3Page = (props: Web3PageProps) => {
       const server = getServer(props.networkDetails);
       // Gets a transaction builder and use it to add a "swap" operation and build the corresponding XDR
       const txBuilder = await getTxBuilder(props.pubKey, BASE_FEE, server, props.networkDetails.networkPassphrase);
-
       const { preparedTransaction, footprint } = await createNewCampaign(
         crowdFund.CONTRACT_ID,
         props.pubKey,
-        "Food Campaign",
-        "Fund to Food Campaign",
-        "image url food",
-        "5000",
+        "Book Campaign",
+        "Fund to Book Campaign",
+        "image url Book",
+        "2000",
         "1694745533",
         "",
         server,
@@ -74,9 +73,10 @@ const Web3Page = (props: Web3PageProps) => {
       );
 
       console.log("footprint", footprint);
-      console.log("preparedTransaction", preparedTransaction);
+      console.log("preparedTransaction", preparedTransaction.toXDR(),props.swkKit);
 
       const _signedXdr = await signTx(preparedTransaction.toXDR(), props.pubKey, props.swkKit);
+
 
       try {
         const result = await submitTx(_signedXdr, props.networkDetails.networkPassphrase, server);
@@ -101,9 +101,9 @@ const Web3Page = (props: Web3PageProps) => {
 
       const { preparedTransaction, footprint } = await donateToCampaignByID(
         crowdFund.CONTRACT_ID,
-        2, // Campaign id
+        1, // Campaign id
         props.pubKey, // Donor public key
-        "200", // amount to donate
+        "2000", // amount to donate
         NATIVE_TOKEN, // XLM Native Addresss
         "",
         server,
@@ -131,15 +131,15 @@ const Web3Page = (props: Web3PageProps) => {
 
   async function getCampaings() {
     try {
-      console.log("getCampaings");
-      console.log("crowdFund.CONTRACT_ID", crowdFund.CONTRACT_ID);
-      console.log("props.pubKey", props.pubKey);
+      // console.log("getCampaings");
+      // console.log("crowdFund.CONTRACT_ID", crowdFund.CONTRACT_ID);
+      // console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
 
       setCampaigns(data);
 
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       alert(error);
       console.log(error);

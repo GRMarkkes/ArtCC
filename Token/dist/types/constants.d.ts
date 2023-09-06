@@ -1,7 +1,7 @@
 /**
  * The Soroban contract ID for the Token contract.
  */
-export declare const CONTRACT_ID = "CBLFCXPKQ63ZTVSUZHPR7XLJTFKLKVRY6XTE7GJB2WDMMMPRRHSNOTSB";
+export declare const CONTRACT_ID = "CCHCHX45UIWAN3L4QHGXP4BJ6H3YMUIOIPYWS7SKCUCWHP5WHTYCETCK";
 /**
  * The Soroban contract ID for the Token contract, in hex.
  * If {@link CONTRACT_ID} is a new-style `C…` string, you will need this hex

@@ -1,7 +1,7 @@
 /**
  * The Soroban contract ID for the CrowdFund contract.
  */
-export declare const CONTRACT_ID = "CA7QB2U5BKYC3LDVCYMWDSDYDMFATPKTJD7PHUZ6GJEZZIZGSKYEY4MB";
+export declare const CONTRACT_ID = "CBYYWZYIWWWRBMFMZRK2NQUZJX5YXAKUO44T4W757EO6YCDTND2XUF3P";
 /**
  * The Soroban contract ID for the CrowdFund contract, in hex.
  * If {@link CONTRACT_ID} is a new-style `C…` string, you will need this hex
