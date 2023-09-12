@@ -1,0 +1,153 @@
+.listItem {
+  position: relative;
+  width: 225px;
+  margin: 10px;
+}
+
+.card-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.listItem:hover .card-img {
+
+  transform: translateY(-10px) scale(1.2);
+}
+.listItem:hover .itemInfo {
+  opacity: 1;
+  transform: translateY(-10px) scale(1.2);
+  
+}
+
+.itemInfo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  top: 98%;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s;
+   
+}
+.icons {
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  margin-top: 10px;
+}
+
+.icon {
+  font-size: 16px;
+  color: #fff;
+  margin-right: 10px;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.playIcon {
+  color: #fff; /* Red color for Play icon */
+}
+
+.addIcon {
+  color: #fff; /* White color for Add icon */
+}
+
+.thumbsUpIcon {
+  color: #fff; /* Light green color for Thumb Up icon */
+}
+
+.thumbsDownIcon {
+  color: #fff; /* Yellow color for Thumb Down icon */
+}
+
+.itemInfoTop {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  color: gray;
+}
+.infoIcon {
+  color: #fff; /* White color for More Info icon */
+  margin-right: 20px; /* Add some spacing between icons */
+}
+
+.limit {
+  border: 1px solid gray;
+  padding: 1px 3px;
+  margin: 0 10px;
+}
+
+.genre {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+.desc {
+  font-size: 16px;
+  margin-top: 4%;
+  font-weight: 300;
+  color: #fff; /* White color for description text */
+}
+
+.match {
+  color:#39b54a ;
+  font-weight: 400;
+}
+
+.age {
+  border: 1px solid #000; /* Border for 18+ */
+  padding: 1px 4px;
+  font-weight: 500;
+}
+
+.season {
+  color: #fff; /* White color for 2021 6 Seasons */
+  font-weight: 400;
+}
+
+.genre-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
+.genre-list ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 2%;
+  font-weight: 500;
+}
+
+.genre-item::before {
+  content: "•";
+  margin-right: 5px;
+}
+
+body {
+  font-family: "Netflix Sans", Arial, sans-serif; /* Replace with desired font family */
+  font-size: 14px;
+}
+
+.listItem:hover .itemInfo {
+  opacity: 1;
+}
+
+
+
+
+
+
