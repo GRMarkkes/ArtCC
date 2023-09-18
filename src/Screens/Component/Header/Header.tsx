@@ -84,7 +84,7 @@ function Header(props: Web3PageProps) {
         console.log(error);
       }
     } catch (error) {
-      alert(error);
+      alert("Can not Create contract");
       console.log(error);
     }
   }
