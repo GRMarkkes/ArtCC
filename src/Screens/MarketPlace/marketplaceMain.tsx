@@ -1,12 +1,16 @@
 import "./marketPlace.css";
+
 import Header from "../Component/Header/Header";
-import Web3Page from "Screens/Component/Web3Page/Web3Page";
+import { NetworkDetails } from "../../helper/network";
+import { StellarWalletsKit } from "stellar-wallets-kit";
+import Web3Page from "../Component/Web3Page/Web3Page";
+
 // import Footer from "../Component/Footer/Footer";
 // import marketplacebackground_image from '../../Asset/Images/MarketPlace_main.png'
 
-import { StellarWalletsKit } from "stellar-wallets-kit";
 
-import { NetworkDetails } from "../../helper/network";
+
+
 
 interface MarketplaceMainProps {
   networkDetails: NetworkDetails;
