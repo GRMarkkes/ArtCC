@@ -56,7 +56,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --config config/webpack.dev.js",
-    "build": "react-scripts build",
+    "build": "webpack --config config/webpack.prod.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
