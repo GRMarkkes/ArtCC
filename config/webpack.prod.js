@@ -34,7 +34,9 @@ const prodConfig = (env = { PRODUCTION: false, TRANSLATIONS: false }) => ({
       : []),
   ],
   performance: {
-    hints: "warning",
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
   },
 });
 
