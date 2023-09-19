@@ -11,7 +11,11 @@ const prodConfig = (env = { PRODUCTION: false, TRANSLATIONS: false }) => ({
     minimize: env.PRODUCTION,
     runtimeChunk: "single",
   },
-
+  devServer: {
+    port: 8080,
+    allowedHosts: "all",
+    historyApiFallback: false,
+  },
   plugins: [
     new webpack.DefinePlugin({
       DEV_SERVER: false,
