@@ -7,6 +7,7 @@ const devConfig = {
   devtool: "inline-source-map",
   devServer: {
     port: 8080,
+    allowedHosts: "all",
     historyApiFallback: true,
   },
   plugins: [
