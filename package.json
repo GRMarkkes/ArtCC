@@ -55,8 +55,8 @@
     "webpack-dev-middleware": "^6.1.1"
   },
   "scripts": {
-    "dev": "webpack-dev-server --hot  --config config/webpack.dev.js --host 0.0.0.0",
-    "start": "webpack serve --hot  --config config/webpack.prod.js --host 0.0.0.0",
+    "dev": "webpack-dev-server --hot  --config config/webpack.dev.js",
+    "start": "webpack serve --hot  --config config/webpack.prod.js",
     "build": "webpack  --config config/webpack.prod.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -127,6 +127,7 @@ const commonConfig = (env) => ({
     //   ]
     // }),
     new HtmlWebPackPlugin({
+      favicon: path.resolve(__dirname, "../public/favicon.png"),
       template: path.resolve(__dirname, "../public/index.html"),
       chunks: ["index"],
       filename: `${BUILD_PATH}/index.html`,
