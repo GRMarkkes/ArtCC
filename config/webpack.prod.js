@@ -12,7 +12,7 @@ const prodConfig = (env = { PRODUCTION: false, TRANSLATIONS: false }) => ({
     runtimeChunk: "single",
   },
   devServer: {
-    port: 8080,
+    port: process.env.PORT||8080,
     allowedHosts: "all",
     historyApiFallback: false,
   },
