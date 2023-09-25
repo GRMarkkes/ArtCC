@@ -3,10 +3,10 @@ import styled from "styled-components";
 // import { useNavigate } from "react-router-dom";
 import Slider from "../Component/Slider/Slider";
 import Header from "../Component/Header/Header";
+import * as Crowdfund from "CrowdFund";
 import artimg from "../../Asset/Images/ArtProject_main.png";
 import "./ArtProjectMain.css";
 import ArtFooter from "../Component/ArtFooter";
-import * as crowdFund from "CrowdFund";
 import { useEffect, useState } from "react";
 import { NetworkDetails } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
@@ -37,23 +37,20 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-type Campaign = {
-  amount_collected: i128;
-  deadline: u64;
-  description: string;
-  donations: Array<i128>;
-  donators: Array<Address>;
-  id: u32;
-  image: string;
-  owner: Address;
-  status: boolean;
-  target: i128;
-  title: string;
-};
+const networkUrl = "https://rpc-futurenet.stellar.org:443";
+
+const contractIdCrowdFund =
+  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+
+const crowdFund = new Crowdfund.Contract({
+  contractId: contractIdCrowdFund,
+  networkPassphrase: "Test SDF Future Network ; October 2022",
+  rpcUrl: networkUrl,
+});
 
 const ArtProject = (props: Web3PageProps) => {
   const [loading, setLoading] = useState(false);
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
 
   async function getCampaings() {
     try {

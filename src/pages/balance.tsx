@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import * as token from "token";
-
+import * as Token from "token";
+import { Address } from "soroban-client";
 import { StellarWalletsKit } from "stellar-wallets-kit";
+
+
+const networkUrl = "https://rpc-futurenet.stellar.org:443";
+const token = new Token.Contract({
+  contractId: "CBEBCROGH2E35N7CXZKCOPPMOBOYJKVUFLYAPMB76JUAALV5K2SVETPR",
+  networkPassphrase: "Test SDF Future Network ; October 2022",
+  rpcUrl: networkUrl,
+});
 
 interface BalanaceProps {
   setPubKey: (pubKey: string) => void;
@@ -10,6 +18,8 @@ interface BalanaceProps {
 }
 
 const Balanace = (props: BalanaceProps) => {
+  const contractIdToken =
+  "CBEBCROGH2E35N7CXZKCOPPMOBOYJKVUFLYAPMB76JUAALV5K2SVETPR";
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
@@ -18,15 +28,16 @@ const Balanace = (props: BalanaceProps) => {
   async function tokenDetail() {
     let name = await token.name();
     let symbol = await token.symbol();
+    let publicKey = new Address(props.pubKey);
 
-    let balance = await token.balance({ id: props.pubKey });
+    let balance = await token.balance({ id: publicKey });
     let formatted_balance = Number(balance) / 100000000;
 
     setBalance(formatted_balance);
 
     setTokenName(name);
     setTokenSymbol(symbol);
-    setTokenAddress(token.CONTRACT_ID);
+    setTokenAddress(contractIdToken);
   }
 
   useEffect(() => {

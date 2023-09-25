@@ -9,9 +9,6 @@ import Web3Page from "../Component/Web3Page/Web3Page";
 // import marketplacebackground_image from '../../Asset/Images/MarketPlace_main.png'
 
 
-
-
-
 interface MarketplaceMainProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;
@@ -28,10 +25,10 @@ const MarketplaceMain = (props: MarketplaceMainProps) => {
         swkKit={props.swkKit}
         pubKey={props.pubKey}
       />
+      
       <div style={{ marginTop: "20%", marginLeft: "20%" }}>
         <Web3Page
           networkDetails={props.networkDetails}
-          setPubKey={props.setPubKey}
           swkKit={props.swkKit}
           pubKey={props.pubKey}
         />

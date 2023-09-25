@@ -1,7 +1,4 @@
-import {
-  StellarWalletsKit,
-  IStellarWalletsKitSignParams,
-} from "stellar-wallets-kit";
+import { StellarWalletsKit } from "stellar-wallets-kit";
 
 export interface NetworkDetails {
   network: string;
@@ -12,21 +9,8 @@ export interface NetworkDetails {
 // Soroban is only supported on Futurenet right now
 export const FUTURENET_DETAILS = {
   network: "FUTURENET",
-  networkUrl: "https://horizon-futurenet.stellar.org",
+  networkUrl: "https://rpc-futurenet.stellar.org:443",
   networkPassphrase: "Test SDF Future Network ; October 2022",
-};
-
-export const signData = async (
-  blob: string,
-  publicKey: string,
-  kit: StellarWalletsKit,
-) => {
-  const { signedXDR } = await kit.sign({
-    blob,
-    publicKey,
-  } as any as IStellarWalletsKitSignParams);
-
-  return signedXDR;
 };
 
 export const signTx = async (

@@ -8,7 +8,6 @@ import Menu_Icon from "../../../Asset/Menu_Icon.png";
 import "./Header.css";
 import { NetworkDetails, signTx } from "../../../helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
-import * as crowdFund from "CrowdFund";
 import {
   BASE_FEE,
   createNewCampaign,
@@ -28,54 +27,55 @@ interface Web3PageProps {
 function Header(props: Web3PageProps) {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+  const contractIdCrowdFund =
+  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+
   function toggleMenu() {
     setShowMenu(!showMenu);
   }
+
   async function createCampaign() {
     try {
       console.log("create campaign");
 
       const server = getServer(props.networkDetails);
-      // Gets a transaction builder and use it to add a "swap" operation and build the corresponding XDR
+
       const txBuilder = await getTxBuilder(
         props.pubKey,
         BASE_FEE,
         server,
         props.networkDetails.networkPassphrase
       );
-      const { preparedTransaction, footprint } = await createNewCampaign(
-        crowdFund.CONTRACT_ID,
-        props.pubKey,
-        "Book Campaign",
-        "Fund to Book Campaign",
-        "image url Book",
-        "2000",
-        "1694745533",
-        "",
-        server,
-        props.networkDetails.networkPassphrase,
-        txBuilder
-      );
 
-      console.log("footprint", footprint);
-      console.log(
-        "preparedTransaction",
-        preparedTransaction.toXDR(),
-        props.swkKit
-      );
+      const preparedTransaction = await createNewCampaign({
+        contractID: contractIdCrowdFund,
+        artistPubKey: props.pubKey,
+        title: "Food Campaign",
+        desc: "Fund to Food Campaign",
+        imageUrl: "image url food",
+        target: "5000",
+        deadline: "1700613645",
+        memo: "",
+        txBuilderC: txBuilder,
+        server: server,
+        networkPassphrase: props.networkDetails.networkPassphrase,
+      });
 
-      const _signedXdr = await signTx(
-        preparedTransaction.toXDR(),
-        props.pubKey,
-        props.swkKit
-      );
+      console.log("preparedTransaction", preparedTransaction);
 
       try {
+        const signedTx = await signTx(
+          preparedTransaction,
+          props.pubKey,
+          props.swkKit
+        );
+
         const result = await submitTx(
-          _signedXdr,
+          signedTx,
           props.networkDetails.networkPassphrase,
           server
         );
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         props?.onPress(true);
@@ -84,7 +84,7 @@ function Header(props: Web3PageProps) {
         console.log(error);
       }
     } catch (error) {
-      alert("Can not Create contract");
+      alert(error);
       console.log(error);
     }
   }
@@ -159,9 +159,9 @@ function Header(props: Web3PageProps) {
               >
                 Connect Wallet
               </Nav.Link>
-                <Nav.Link>
+              <Nav.Link>
                 <img src={Search_icon} alt="Search" />
-                </Nav.Link>
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

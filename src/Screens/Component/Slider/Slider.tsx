@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CardSlider from "../CardSlider/CardSlider";
 import { NetworkDetails } from "helper/network";
+import * as Crowdfund from "CrowdFund";
 import { StellarWalletsKit } from "stellar-wallets-kit";
 
 export type u32 = number;
@@ -17,31 +18,18 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-interface Campaign {
-  amount_collected: i128;
-  deadline: u64;
-  description: string;
-  donations: Array<i128>;
-  donators: Array<Address>;
-  id: u32;
-  image: string;
-  owner: Address;
-  status: boolean;
-  target: i128;
-  title: string;
-}
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
-  campaigns: Campaign[];
+  campaigns: Crowdfund.Campaign[];
   onPress?: (created: any) => void;
 }
 
 const Slider = (props: Web3PageProps) => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
 
   useEffect(() => {
     if (props?.campaigns) {

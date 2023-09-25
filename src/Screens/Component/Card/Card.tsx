@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { FaStar } from "react-icons/fa";
 import { MdOutlineReportProblem } from "react-icons/md";
 import decimg from "../../../Asset/ModalImg.png";
-import * as crowdFund from "CrowdFund";
+import * as Crowdfund from "CrowdFund";
 import {
   AiOutlineCloseCircle,
   AiOutlineCalendar,
@@ -34,19 +33,7 @@ interface Web3PageProps {
   pubKey: string;
   index: number;
   onPress?: (created: any) => void;
-  movieData: {
-    amount_collected: i128;
-    deadline: u64;
-    description: string;
-    donations: Array<i128>;
-    donators: Array<Address>;
-    id: u32;
-    image: string;
-    owner: Address;
-    status: boolean;
-    target: i128;
-    title: string;
-  };
+  movieData: u32;
   isLiked?: boolean;
 }
 
@@ -62,18 +49,52 @@ export type Address = string;
 export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
+const networkUrl = "https://rpc-futurenet.stellar.org:443";
+
+const contractIdCrowdFund =
+"CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+
+const crowdFund = new Crowdfund.Contract({
+  contractId: contractIdCrowdFund,
+  networkPassphrase: "Test SDF Future Network ; October 2022",
+  rpcUrl: networkUrl,
+});
 
 const Card = (props: Web3PageProps) => {
-  // const navigate = useNavigate();
+  const [singleCampaign, setSingleCampaign] = useState<Crowdfund.Campaign>();
+  useEffect(()=>{
+    if(props?.movieData){
+      getCampaingByID(props?.movieData)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[props])
+
+  const getCampaingByID = async(id: number) => {
+    try {
+
+      let data = await crowdFund.getCampaign({campaign_id: id});
+
+      setSingleCampaign(data);
+
+      console.log(singleCampaign);
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+  };
+
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth >= 1220);
 
+  const contractIdCrowdFund =
+  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+  
   const NATIVE_TOKEN =
     "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 
-  async function donateToCampaign(id: number) {
+  async function donateToCampaign(id: u32) {
     try {
       console.log("donateToCampaign");
 
@@ -86,36 +107,37 @@ const Card = (props: Web3PageProps) => {
         props.networkDetails.networkPassphrase
       );
 
-      const { preparedTransaction, footprint } = await donateToCampaignByID(
-        crowdFund.CONTRACT_ID,
-        id, // Campaign id
-        props.pubKey, // Donor public key
-        "100", // amount to donate
-        NATIVE_TOKEN, // XLM Native Addresss
-        "",
-        server,
-        props.networkDetails.networkPassphrase,
-        txBuilder
-      );
+      const preparedTransaction = await donateToCampaignByID({
+        contractID: contractIdCrowdFund,
+        id: id, // Campaign id
+        donorPubKey: props.pubKey, // Donor public key
+        amount: "150", // amount to donate
+        nativeToken: NATIVE_TOKEN, // XLM Native Addresss
+        memo: "",
+        txBuilderC: txBuilder,
+        server: server,
+        networkPassphrase: props.networkDetails.networkPassphrase,
+      });
 
-      console.log("footprint", footprint);
       console.log("preparedTransaction", preparedTransaction);
 
-      const _signedXdr = await signTx(
-        preparedTransaction.toXDR(),
-        props.pubKey,
-        props.swkKit
-      );
-
       try {
+        const signedTx = await signTx(
+          preparedTransaction,
+          props.pubKey,
+          props.swkKit
+        );
+
         const result = await submitTx(
-          _signedXdr,
+          signedTx,
           props.networkDetails.networkPassphrase,
           server
         );
+
+        console.log("result", result);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-          props?.onPress(true);
+        props?.onPress(true);
         console.log("result", result);
         alert("Donated Successfully");
       } catch (error) {
@@ -272,7 +294,7 @@ const Card = (props: Web3PageProps) => {
               style={{ fontSize: "15px", fontWeight: "700" }}
               className="name"
             >
-              {props.movieData?.title}
+              {singleCampaign?.title}
             </h3>
 
             <div className="icons flex j-between">
@@ -284,7 +306,7 @@ const Card = (props: Web3PageProps) => {
                     marginLeft: "-3px",
                   }}
                 >
-                  {props.movieData?.description}
+                  {singleCampaign?.description}
                 </p>
               </div>
               <div
@@ -314,7 +336,7 @@ const Card = (props: Web3PageProps) => {
                   <p style={{ height: 5, color: "#45AFD9" }}>SEK</p>
                 </>
                 <button
-                  onClick={() => donateToCampaign(props.movieData?.id)}
+                  onClick={() => {if(singleCampaign?.id)donateToCampaign(singleCampaign?.id)}}
                   style={{ border: "none", color: "#45AFD9" }}
                 >
                   Donate To Campaign
@@ -349,43 +371,43 @@ const Card = (props: Web3PageProps) => {
                       className="modal-main-heading"
                       style={{ paddingTop: "4%" }}
                     >
-                      {props.movieData.title}
+                      {singleCampaign?.title}
                     </p>
                   </div>
 
                   <div>
                     <p className="modal-paragraph ">
-                      Description: {props.movieData.description}
+                      Description: {singleCampaign?.description}
                     </p>
                   </div>
                   <div>
                     <p className="modal-paragraph ">
-                      DeadLine: {props.movieData.deadline.toString()}
+                      DeadLine: {singleCampaign?.deadline.toString()}
                     </p>
                   </div>
                   <div>
                     <p className="modal-paragraph ">
-                      Target: {props.movieData.target.toString()}
+                      Target: {singleCampaign?.target.toString()}
                     </p>
                   </div>
                   <div>
                     <p className="modal-paragraph ">
-                      Total donation: {props.movieData.donations.toString()}
+                      Total donation: {singleCampaign?.donations.toString()}
                     </p>
                   </div>
                   <div>
                     <p className="modal-paragraph">Donators:</p>
                     <ul>
-                      {props.movieData.donators.map((donator, index) => (
+                      {singleCampaign?.donators.map((donator, index) => (
                         <li key={index} style={{ color: "white" }}>
-                          {donator}
+                          {donator.toString()}
                         </li>
                       ))}
                     </ul>
                   </div>
                   <div>
                     <p className="modal-paragraph ">
-                      Owner: {props.movieData.owner}
+                      Owner: {singleCampaign?.owner.toString()}
                     </p>
                   </div>
                   <div className="modal-tags">

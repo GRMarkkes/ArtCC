@@ -14,14 +14,13 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTokenAdmin = exports.getArtyToken = exports.getLaunchpadAcc = exports.getDevAcc = exports.getDonators = exports.donateToCampaign = exports.getCampaign = exports.getCampaigns = exports.createCampaign = exports.initialize = exports.Err = exports.Ok = void 0;
+exports.Contract = exports.networks = exports.Err = exports.Ok = exports.Address = void 0;
 const soroban_client_1 = require("soroban-client");
+Object.defineProperty(exports, "Address", { enumerable: true, get: function () { return soroban_client_1.Address; } });
 const buffer_1 = require("buffer");
-const convert_js_1 = require("./convert.js");
 const invoke_js_1 = require("./invoke.js");
-__exportStar(require("./constants.js"), exports);
-__exportStar(require("./server.js"), exports);
 __exportStar(require("./invoke.js"), exports);
+__exportStar(require("./method-options.js"), exports);
 ;
 ;
 class Ok {
@@ -66,247 +65,196 @@ if (typeof window !== 'undefined') {
     //@ts-ignore Buffer exists
     window.Buffer = window.Buffer || buffer_1.Buffer;
 }
-const regex = /ContractError\((\d+)\)/;
-function getError(err) {
-    const match = err.match(regex);
+const regex = /Error\(Contract, #(\d+)\)/;
+function parseError(message) {
+    const match = message.match(regex);
     if (!match) {
         return undefined;
     }
-    if (Errors == undefined) {
+    if (Errors === undefined) {
         return undefined;
     }
-    // @ts-ignore
     let i = parseInt(match[1], 10);
-    if (i < Errors.length) {
-        return new Err(Errors[i]);
+    let err = Errors[i];
+    if (err) {
+        return new Err(err);
     }
     return undefined;
 }
-const Errors = [
-    { message: "" },
-    { message: "" },
-    { message: "" },
-    { message: "" },
-    { message: "" },
-    { message: "" },
-    { message: "" },
-    { message: "" }
-];
-function CampaignToXdr(campaign) {
-    if (!campaign) {
-        return soroban_client_1.xdr.ScVal.scvVoid();
+exports.networks = {
+    futurenet: {
+        networkPassphrase: "Test SDF Future Network ; October 2022",
+        contractId: "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6",
     }
-    let arr = [
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("amount_collected"), val: ((i) => (0, convert_js_1.i128ToScVal)(i))(campaign["amount_collected"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("deadline"), val: ((i) => soroban_client_1.xdr.ScVal.scvU64(soroban_client_1.xdr.Uint64.fromString(i.toString())))(campaign["deadline"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("description"), val: ((i) => soroban_client_1.xdr.ScVal.scvString(i))(campaign["description"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("donations"), val: ((i) => soroban_client_1.xdr.ScVal.scvVec(i.map((i) => (0, convert_js_1.i128ToScVal)(i))))(campaign["donations"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("donators"), val: ((i) => soroban_client_1.xdr.ScVal.scvVec(i.map((i) => (0, convert_js_1.addressToScVal)(i))))(campaign["donators"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("id"), val: ((i) => soroban_client_1.xdr.ScVal.scvU32(i))(campaign["id"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("image"), val: ((i) => soroban_client_1.xdr.ScVal.scvString(i))(campaign["image"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("owner"), val: ((i) => (0, convert_js_1.addressToScVal)(i))(campaign["owner"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("status"), val: ((i) => soroban_client_1.xdr.ScVal.scvBool(i))(campaign["status"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("target"), val: ((i) => (0, convert_js_1.i128ToScVal)(i))(campaign["target"]) }),
-        new soroban_client_1.xdr.ScMapEntry({ key: ((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("title"), val: ((i) => soroban_client_1.xdr.ScVal.scvString(i))(campaign["title"]) })
-    ];
-    return soroban_client_1.xdr.ScVal.scvMap(arr);
-}
-function CampaignFromXdr(base64Xdr) {
-    let scVal = (0, convert_js_1.strToScVal)(base64Xdr);
-    let obj = scVal.map().map(e => [e.key().str(), e.val()]);
-    let map = new Map(obj);
-    if (!obj) {
-        throw new Error('Invalid XDR');
+};
+const Errors = {
+    1: { message: "" },
+    2: { message: "" },
+    3: { message: "" },
+    4: { message: "" },
+    5: { message: "" },
+    6: { message: "" },
+    7: { message: "" },
+    8: { message: "" }
+};
+class Contract {
+    options;
+    spec;
+    constructor(options) {
+        this.options = options;
+        this.spec = new soroban_client_1.ContractSpec([
+            "AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAACAAAAAAAAAAWRGVhZGxpbmVTaG91bGRCZUZ1dHVyZQAAAAAAAQAAAAAAAAAQQ2FtcGFpZ25Ob3RFeGlzdAAAAAIAAAAAAAAAEUFtb3VudE11c3ROb25aZXJvAAAAAAAAAwAAAAAAAAANVGFyZ2V0UmVhY2hlZAAAAAAAAAQAAAAAAAAAF0Ftb3VudEV4Y2VlZFRhcmdldExpbWl0AAAAAAUAAAAAAAAAFENhbXBhaWduQWxyZWFkeUV4aXN0AAAABgAAAAAAAAAVSWRDYW1wYWlnbk11c3ROb25aZXJvAAAAAAAABwAAAAAAAAAUTG93QW1vdW50Rm9yU3BsaXR0ZXIAAAAI",
+            "AAAAAQAAAAAAAAAAAAAACENhbXBhaWduAAAACwAAAAAAAAAQYW1vdW50X2NvbGxlY3RlZAAAAAsAAAAAAAAACGRlYWRsaW5lAAAABgAAAAAAAAALZGVzY3JpcHRpb24AAAAAEAAAAAAAAAAJZG9uYXRpb25zAAAAAAAD6gAAAAsAAAAAAAAACGRvbmF0b3JzAAAD6gAAABMAAAAAAAAAAmlkAAAAAAAEAAAAAAAAAAVpbWFnZQAAAAAAABAAAAAAAAAABW93bmVyAAAAAAAAEwAAAAAAAAAGc3RhdHVzAAAAAAABAAAAAAAAAAZ0YXJnZXQAAAAAAAsAAAAAAAAABXRpdGxlAAAAAAAAEA==",
+            "AAAAAgAAAAAAAAAAAAAAB0RhdGFLZXkAAAAABAAAAAAAAAAAAAAACkRldkFjY291bnQAAAAAAAAAAAAAAAAAEExhdW5jaHBhZEFjY291bnQAAAAAAAAAAAAAAAlBcnR5VG9rZW4AAAAAAAAAAAAAAAAAAApUb2tlbkFkbWluAAA=",
+            "AAAAAAAAAAAAAAAKaW5pdGlhbGl6ZQAAAAAABAAAAAAAAAAHZGV2X2FjYwAAAAATAAAAAAAAAA1sYXVuY2hwYWRfYWNjAAAAAAAAEwAAAAAAAAAKYXJ0eV90b2tlbgAAAAAAEwAAAAAAAAALdG9rZW5fYWRtaW4AAAAAEwAAAAA=",
+            "AAAAAAAAAAAAAAAPY3JlYXRlX2NhbXBhaWduAAAAAAYAAAAAAAAACm93bmVyX2FkZHIAAAAAABMAAAAAAAAACXRpdGxlX2NtcAAAAAAAABAAAAAAAAAACGRlc2NfY21wAAAAEAAAAAAAAAAJaW1hZ2VfY21wAAAAAAAAEAAAAAAAAAAKdGFyZ2V0X2NtcAAAAAAACwAAAAAAAAAMZGVhZGxpbmVfY21wAAAABgAAAAEAAAPpAAAH0AAAAAhDYW1wYWlnbgAAAAM=",
+            "AAAAAAAAAAAAAAANZ2V0X2NhbXBhaWducwAAAAAAAAAAAAABAAAD6gAAB9AAAAAIQ2FtcGFpZ24=",
+            "AAAAAAAAAAAAAAAMZ2V0X2NhbXBhaWduAAAAAQAAAAAAAAALY2FtcGFpZ25faWQAAAAABAAAAAEAAAfQAAAACENhbXBhaWdu",
+            "AAAAAAAAAAAAAAASZG9uYXRlX3RvX2NhbXBhaWduAAAAAAAEAAAAAAAAAAJpZAAAAAAABAAAAAAAAAANZG9ub3JfYWRkcmVzcwAAAAAAABMAAAAAAAAABmFtb3VudAAAAAAACwAAAAAAAAAIdG9rZW5faWQAAAATAAAAAQAAA+kAAAPtAAAAAwAAAAsAAAALAAAACwAAAAM=",
+            "AAAAAAAAAAAAAAAMZ2V0X2RvbmF0b3JzAAAAAQAAAAAAAAACaWQAAAAAAAQAAAABAAAD6QAAA+oAAAATAAAAAw==",
+            "AAAAAAAAAAAAAAALZ2V0X2Rldl9hY2MAAAAAAAAAAAEAAAAT",
+            "AAAAAAAAAAAAAAARZ2V0X2xhdW5jaHBhZF9hY2MAAAAAAAAAAAAAAQAAABM=",
+            "AAAAAAAAAAAAAAAOZ2V0X2FydHlfdG9rZW4AAAAAAAAAAAABAAAAEw==",
+            "AAAAAAAAAAAAAAAPZ2V0X3Rva2VuX2FkbWluAAAAAAAAAAABAAAAEw=="
+        ]);
     }
-    return {
-        amount_collected: (0, convert_js_1.scValToJs)(map.get("amount_collected")),
-        deadline: (0, convert_js_1.scValToJs)(map.get("deadline")),
-        description: (0, convert_js_1.scValToJs)(map.get("description")),
-        donations: (0, convert_js_1.scValToJs)(map.get("donations")),
-        donators: (0, convert_js_1.scValToJs)(map.get("donators")),
-        id: (0, convert_js_1.scValToJs)(map.get("id")),
-        image: (0, convert_js_1.scValToJs)(map.get("image")),
-        owner: (0, convert_js_1.scValToJs)(map.get("owner")),
-        status: (0, convert_js_1.scValToJs)(map.get("status")),
-        target: (0, convert_js_1.scValToJs)(map.get("target")),
-        title: (0, convert_js_1.scValToJs)(map.get("title"))
-    };
-}
-function DataKeyToXdr(dataKey) {
-    if (!dataKey) {
-        return soroban_client_1.xdr.ScVal.scvVoid();
+    async initialize({ dev_acc, launchpad_acc, arty_token, token_admin }, options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'initialize',
+            args: this.spec.funcArgsToScVals("initialize", { dev_acc, launchpad_acc, arty_token, token_admin }),
+            ...options,
+            ...this.options,
+            parseResultXdr: () => { },
+        });
     }
-    let res = [];
-    switch (dataKey.tag) {
-        case "DevAccount":
-            res.push(((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("DevAccount"));
-            break;
-        case "LaunchpadAccount":
-            res.push(((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("LaunchpadAccount"));
-            break;
-        case "ArtyToken":
-            res.push(((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("ArtyToken"));
-            break;
-        case "TokenAdmin":
-            res.push(((i) => soroban_client_1.xdr.ScVal.scvSymbol(i))("TokenAdmin"));
-            break;
-    }
-    return soroban_client_1.xdr.ScVal.scvVec(res);
-}
-function DataKeyFromXdr(base64Xdr) {
-    let [tag, values] = (0, convert_js_1.strToScVal)(base64Xdr).vec().map(convert_js_1.scValToJs);
-    if (!tag) {
-        throw new Error('Missing enum tag when decoding DataKey from XDR');
-    }
-    return { tag, values };
-}
-async function initialize({ dev_acc, launchpad_acc, arty_token, token_admin }, options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'initialize',
-        args: [((i) => (0, convert_js_1.addressToScVal)(i))(dev_acc),
-            ((i) => (0, convert_js_1.addressToScVal)(i))(launchpad_acc),
-            ((i) => (0, convert_js_1.addressToScVal)(i))(arty_token),
-            ((i) => (0, convert_js_1.addressToScVal)(i))(token_admin)],
-        ...options,
-        parseResultXdr: () => { },
-    });
-}
-exports.initialize = initialize;
-async function createCampaign({ owner_addr, title_cmp, desc_cmp, image_cmp, target_cmp, deadline_cmp }, options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'create_campaign',
-        args: [((i) => (0, convert_js_1.addressToScVal)(i))(owner_addr),
-            ((i) => soroban_client_1.xdr.ScVal.scvString(i))(title_cmp),
-            ((i) => soroban_client_1.xdr.ScVal.scvString(i))(desc_cmp),
-            ((i) => soroban_client_1.xdr.ScVal.scvString(i))(image_cmp),
-            ((i) => (0, convert_js_1.i128ToScVal)(i))(target_cmp),
-            ((i) => soroban_client_1.xdr.ScVal.scvU64(soroban_client_1.xdr.Uint64.fromString(i.toString())))(deadline_cmp)],
-        ...options,
-        parseResultXdr: (xdr) => {
-            try {
-                return new Ok((0, convert_js_1.scValStrToJs)(xdr));
-            }
-            catch (e) {
-                //@ts-ignore
-                let err = getError(e.message);
-                if (err) {
+    async createCampaign({ owner_addr, title_cmp, desc_cmp, image_cmp, target_cmp, deadline_cmp }, options = {}) {
+        try {
+            return await (0, invoke_js_1.invoke)({
+                method: 'create_campaign',
+                args: this.spec.funcArgsToScVals("create_campaign", { owner_addr, title_cmp, desc_cmp, image_cmp, target_cmp, deadline_cmp }),
+                ...options,
+                ...this.options,
+                parseResultXdr: (xdr) => {
+                    return new Ok(this.spec.funcResToNative("create_campaign", xdr));
+                },
+            });
+        }
+        catch (e) {
+            if (typeof e === 'string') {
+                let err = parseError(e);
+                if (err)
                     return err;
-                }
-                else {
-                    throw e;
-                }
             }
-        },
-    });
-}
-exports.createCampaign = createCampaign;
-async function getCampaigns(options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_campaigns',
-        ...options,
-        parseResultXdr: (xdr) => {
-            return (0, convert_js_1.scValStrToJs)(xdr);
-        },
-    });
-}
-exports.getCampaigns = getCampaigns;
-async function getCampaign({ campaign_id }, options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_campaign',
-        args: [((i) => soroban_client_1.xdr.ScVal.scvU32(i))(campaign_id)],
-        ...options,
-        parseResultXdr: (xdr) => {
-            return CampaignFromXdr(xdr);
-        },
-    });
-}
-exports.getCampaign = getCampaign;
-async function donateToCampaign({ id, donor_address, amount, token_id }, options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'donate_to_campaign',
-        args: [((i) => soroban_client_1.xdr.ScVal.scvU32(i))(id),
-            ((i) => (0, convert_js_1.addressToScVal)(i))(donor_address),
-            ((i) => (0, convert_js_1.i128ToScVal)(i))(amount),
-            ((i) => (0, convert_js_1.addressToScVal)(i))(token_id)],
-        ...options,
-        parseResultXdr: (xdr) => {
-            try {
-                return new Ok((0, convert_js_1.scValStrToJs)(xdr));
-            }
-            catch (e) {
-                //@ts-ignore
-                let err = getError(e.message);
-                if (err) {
+            throw e;
+        }
+    }
+    async getCampaigns(options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'get_campaigns',
+            args: this.spec.funcArgsToScVals("get_campaigns", {}),
+            ...options,
+            ...this.options,
+            parseResultXdr: (xdr) => {
+                return this.spec.funcResToNative("get_campaigns", xdr);
+            },
+        });
+    }
+    async getCampaign({ campaign_id }, options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'get_campaign',
+            args: this.spec.funcArgsToScVals("get_campaign", { campaign_id }),
+            ...options,
+            ...this.options,
+            parseResultXdr: (xdr) => {
+                return this.spec.funcResToNative("get_campaign", xdr);
+            },
+        });
+    }
+    async donateToCampaign({ id, donor_address, amount, token_id }, options = {}) {
+        try {
+            return await (0, invoke_js_1.invoke)({
+                method: 'donate_to_campaign',
+                args: this.spec.funcArgsToScVals("donate_to_campaign", { id, donor_address, amount, token_id }),
+                ...options,
+                ...this.options,
+                parseResultXdr: (xdr) => {
+                    return new Ok(this.spec.funcResToNative("donate_to_campaign", xdr));
+                },
+            });
+        }
+        catch (e) {
+            if (typeof e === 'string') {
+                let err = parseError(e);
+                if (err)
                     return err;
-                }
-                else {
-                    throw e;
-                }
             }
-        },
-    });
-}
-exports.donateToCampaign = donateToCampaign;
-async function getDonators({ id }, options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_donators',
-        args: [((i) => soroban_client_1.xdr.ScVal.scvU32(i))(id)],
-        ...options,
-        parseResultXdr: (xdr) => {
-            try {
-                return new Ok((0, convert_js_1.scValStrToJs)(xdr));
-            }
-            catch (e) {
-                //@ts-ignore
-                let err = getError(e.message);
-                if (err) {
+            throw e;
+        }
+    }
+    async getDonators({ id }, options = {}) {
+        try {
+            return await (0, invoke_js_1.invoke)({
+                method: 'get_donators',
+                args: this.spec.funcArgsToScVals("get_donators", { id }),
+                ...options,
+                ...this.options,
+                parseResultXdr: (xdr) => {
+                    return new Ok(this.spec.funcResToNative("get_donators", xdr));
+                },
+            });
+        }
+        catch (e) {
+            if (typeof e === 'string') {
+                let err = parseError(e);
+                if (err)
                     return err;
-                }
-                else {
-                    throw e;
-                }
             }
-        },
-    });
+            throw e;
+        }
+    }
+    async getDevAcc(options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'get_dev_acc',
+            args: this.spec.funcArgsToScVals("get_dev_acc", {}),
+            ...options,
+            ...this.options,
+            parseResultXdr: (xdr) => {
+                return this.spec.funcResToNative("get_dev_acc", xdr);
+            },
+        });
+    }
+    async getLaunchpadAcc(options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'get_launchpad_acc',
+            args: this.spec.funcArgsToScVals("get_launchpad_acc", {}),
+            ...options,
+            ...this.options,
+            parseResultXdr: (xdr) => {
+                return this.spec.funcResToNative("get_launchpad_acc", xdr);
+            },
+        });
+    }
+    async getArtyToken(options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'get_arty_token',
+            args: this.spec.funcArgsToScVals("get_arty_token", {}),
+            ...options,
+            ...this.options,
+            parseResultXdr: (xdr) => {
+                return this.spec.funcResToNative("get_arty_token", xdr);
+            },
+        });
+    }
+    async getTokenAdmin(options = {}) {
+        return await (0, invoke_js_1.invoke)({
+            method: 'get_token_admin',
+            args: this.spec.funcArgsToScVals("get_token_admin", {}),
+            ...options,
+            ...this.options,
+            parseResultXdr: (xdr) => {
+                return this.spec.funcResToNative("get_token_admin", xdr);
+            },
+        });
+    }
 }
-exports.getDonators = getDonators;
-async function getDevAcc(options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_dev_acc',
-        ...options,
-        parseResultXdr: (xdr) => {
-            return (0, convert_js_1.scValStrToJs)(xdr);
-        },
-    });
-}
-exports.getDevAcc = getDevAcc;
-async function getLaunchpadAcc(options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_launchpad_acc',
-        ...options,
-        parseResultXdr: (xdr) => {
-            return (0, convert_js_1.scValStrToJs)(xdr);
-        },
-    });
-}
-exports.getLaunchpadAcc = getLaunchpadAcc;
-async function getArtyToken(options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_arty_token',
-        ...options,
-        parseResultXdr: (xdr) => {
-            return (0, convert_js_1.scValStrToJs)(xdr);
-        },
-    });
-}
-exports.getArtyToken = getArtyToken;
-async function getTokenAdmin(options = {}) {
-    return await (0, invoke_js_1.invoke)({
-        method: 'get_token_admin',
-        ...options,
-        parseResultXdr: (xdr) => {
-            return (0, convert_js_1.scValStrToJs)(xdr);
-        },
-    });
-}
-exports.getTokenAdmin = getTokenAdmin;
+exports.Contract = Contract;

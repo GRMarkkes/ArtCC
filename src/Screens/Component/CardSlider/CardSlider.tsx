@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import Card from "../Card/Card";
+import * as Crowdfund from "CrowdFund";
 import { motion } from "framer-motion";
 import { NetworkDetails } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
@@ -19,32 +20,18 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-interface Campaign {
-  amount_collected: i128;
-  deadline: u64;
-  description: string;
-  donations: Array<i128>;
-  donators: Array<Address>;
-  id: u32;
-  image: string;
-  owner: Address;
-  status: boolean;
-  target: i128;
-  title: string;
-}
-
 interface Web3PageProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
-  data: Campaign[];
+  data: Crowdfund.Campaign[];
   title: string;
   onPress?: (created: any) => void;
 }
 
 const CardSlider = React.memo(function(props: Web3PageProps, { title }) {
-  const [data, setData] = useState<Campaign[]>([]);
+  const [data, setData] = useState<Crowdfund.Campaign[]>([]);
 
   useEffect(() => {
     if (props.data) {
@@ -154,7 +141,7 @@ const CardSlider = React.memo(function(props: Web3PageProps, { title }) {
                 setPubKey={props.setPubKey}
                 swkKit={props.swkKit}
                 pubKey={props.pubKey}
-                movieData={movie}
+                movieData={movie.id}
                 index={index}
                 onPress={props.onPress}
               />

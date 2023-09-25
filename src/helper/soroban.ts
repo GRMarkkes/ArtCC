@@ -1,10 +1,6 @@
 import {
-  assembleTransaction as sorobanAssemble,
-  Account,
   Address,
   Contract,
-  FeeBumpTransaction,
-  hash,
   Memo,
   MemoType,
   nativeToScVal,
@@ -12,18 +8,20 @@ import {
   scValToNative,
   Server,
   SorobanRpc,
-  StrKey,
   TimeoutInfinite,
   Transaction,
   TransactionBuilder,
-  xdr,
-  scValToBigInt,
   ScInt,
+  xdr,
 } from "soroban-client";
-import { StellarWalletsKit } from "stellar-wallets-kit";
-
-import { NetworkDetails, signData } from "./network";
+import BigNumber from "bignumber.js";
+import { NetworkDetails } from "./network";
+import { stroopToXlm } from "./format";
 import { ERRORS } from "./error";
+
+// TODO: once soroban supports estimated fees, we can fetch this
+export const BASE_FEE = "100";
+export const baseFeeXlm = stroopToXlm(BASE_FEE).toString();
 
 export const SendTxStatus: {
   [index: string]: SorobanRpc.SendTransactionStatus;
@@ -34,71 +32,59 @@ export const SendTxStatus: {
   Error: "ERROR",
 };
 
-export const GetTxStatus: {
-  [index: string]: SorobanRpc.GetTransactionStatus;
-} = {
-  Success: "SUCCESS",
-  NotFound: "NOT_FOUND",
-  Failed: "FAILED",
-};
-
-export const BASE_FEE = "100";
+export const XLM_DECIMALS = 7;
 
 export const RPC_URLS: { [key: string]: string } = {
-  FUTURENET: "https://rpc-futurenet.stellar.org:443",
+  FUTURENET: "https://rpc-futurenet.stellar.org/",
 };
 
+// Can be used whenever you need an Address argument for a contract method
 export const accountToScVal = (account: string) =>
   new Address(account).toScVal();
 
-export const valueToI128String = (value: xdr.ScVal) =>
-  scValToBigInt(value).toString();
+// Can be used whenever you need an i128 argument for a contract method
+export const numberToI128 = (value: number): xdr.ScVal =>
+  nativeToScVal(value, { type: "i128" });
+
+// Given a display value for a token and a number of decimals, return the correspding BigNumber
+export const parseTokenAmount = (value: string, decimals: number) => {
+  const comps = value.split(".");
+
+  let whole = comps[0];
+  let fraction = comps[1];
+  if (!whole) {
+    whole = "0";
+  }
+  if (!fraction) {
+    fraction = "0";
+  }
+
+  // Trim trailing zeros
+  while (fraction[fraction.length - 1] === "0") {
+    fraction = fraction.substring(0, fraction.length - 1);
+  }
+
+  // If decimals is 0, we have an empty string for fraction
+  if (fraction === "") {
+    fraction = "0";
+  }
+
+  // Fully pad the string with zeros to get to value
+  while (fraction.length < decimals) {
+    fraction += "0";
+  }
+
+  const wholeValue = new BigNumber(whole);
+  const fractionValue = new BigNumber(fraction);
+
+  return wholeValue.shiftedBy(decimals).plus(fractionValue);
+};
 
 // Get a server configfured for a specific network
 export const getServer = (networkDetails: NetworkDetails) =>
   new Server(RPC_URLS[networkDetails.network], {
     allowHttp: networkDetails.networkUrl.startsWith("http://"),
   });
-
-//  Can be used whenever we need to perform a "read-only" operation
-//  Used in getTokenSymbol, getTokenName, and getTokenDecimals
-export const simulateTx = async <ArgType>(
-  tx: Transaction<Memo<MemoType>, Operation[]>,
-  server: Server,
-): Promise<ArgType> => {
-  const { results } = await server.simulateTransaction(tx);
-
-  if (!results || results.length !== 1) {
-    throw new Error("Invalid response from simulateTransaction");
-  }
-  const result = results[0];
-  const scVal = xdr.ScVal.fromXDR(result.xdr, "base64");
-  let convertedScVal: any;
-  try {
-    // handle a case where scValToNative doesn't properly handle scvString
-    convertedScVal = scVal.str().toString();
-    return convertedScVal;
-  } catch (e) {
-    console.log(e);
-  }
-  return scValToNative(scVal);
-};
-
-// Get the tokens decimals, decoded as a number
-export const getTokenDecimals = async (
-  tokenId: string,
-  txBuilder: TransactionBuilder,
-  server: Server,
-) => {
-  const contract = new Contract(tokenId);
-  const tx = txBuilder
-    .addOperation(contract.call("decimals"))
-    .setTimeout(TimeoutInfinite)
-    .build();
-
-  const result = await simulateTx<number>(tx, server);
-  return result;
-};
 
 // Get a TransactionBuilder configured with our public key
 export const getTxBuilder = async (
@@ -114,360 +100,20 @@ export const getTxBuilder = async (
   });
 };
 
-export const setAge = async (
-  contractID: string,
-
-
-  memo: string,
+//  Can be used whenever we need to perform a "read-only" operation
+//  Used in getTokenSymbol, getTokenName, and getTokenDecimals
+export const simulateTx = async <ArgType>(
+  tx: Transaction<Memo<MemoType>, Operation[]>,
   server: Server,
-  networkPassphrase: string,
-  txBuilder: TransactionBuilder,
-) => {
-  const contract = new Contract(contractID);
+): Promise<ArgType> => {
+  const response = await server.simulateTransaction(tx);
 
-  const tx = txBuilder
-    .addOperation(
-      contract.call(
-        "set_age",
-        ...[
-          new ScInt("50").toI128(),
-        ],
-      ),
-    )
-    .setTimeout(TimeoutInfinite);
-
-  if  (memo) {
-    tx.addMemo(Memo.text(memo));
+  if ("result" in response && response.result !== undefined) {
+    return scValToNative(response.result.retval);
   }
 
-  const built = tx.build();
-  const sim = await server.simulateTransaction(built);
-  const preparedTransaction = sorobanAssemble(
-    built,
-    networkPassphrase,
-    sim,
-  ) as Transaction<Memo<MemoType>, Operation[]>;
-
-  const sorobanTxData = xdr.SorobanTransactionData.fromXDR(
-    sim.transactionData,
-    "base64",
-  );
-
-  return {
-    preparedTransaction,
-    footprint: sorobanTxData.resources().footprint().toXDR("base64"),
-  };
+  throw new Error("cannot simulate transaction");
 };
-
-
-export const createNewCampaign = async (
-  contractID: string,
-  artistPubKey: string,
-  title: string,
-  desc: string,
-  imageUrl: string,
-  target: string,
-  deadline: string,
-  memo: string,
-  server: Server,
-  networkPassphrase: string,
-  txBuilder: TransactionBuilder,
-) => {
-  const contract = new Contract(contractID);
-
-  const tx = txBuilder
-    .addOperation(
-      contract.call(
-        "create_campaign",
-        ...[
-          accountToScVal(artistPubKey),
-          xdr.ScVal.scvString(title),
-          xdr.ScVal.scvString(desc),
-          xdr.ScVal.scvString(imageUrl),
-          new ScInt(target).toI128(),
-          new ScInt(deadline).toU64(),
-        ],
-      ),
-    )
-    .setTimeout(TimeoutInfinite);
-
-  if (memo) {
-    tx.addMemo(Memo.text(memo));
-  }
-
-  const built = tx.build();
-  const sim = await server.simulateTransaction(built);
-  const preparedTransaction = sorobanAssemble(
-    built,
-    networkPassphrase,
-    sim,
-  ) as Transaction<Memo<MemoType>, Operation[]>;
-
-  const sorobanTxData = xdr.SorobanTransactionData.fromXDR(
-    sim.transactionData,
-    "base64",
-  );
-
-  return {
-    preparedTransaction,
-    footprint: sorobanTxData.resources().footprint().toXDR("base64"),
-  };
-};
-
-
-export const donateToCampaignByID = async (
-  contractID: string,
-  id: number,
-  donorPubKey: string,
-  amount: string,
-  nativeToken: string,
-  memo: string,
-  server: Server,
-  networkPassphrase: string,
-  txBuilder: TransactionBuilder,
-) => {
-  const contract = new Contract(contractID);
-
-  const tx = txBuilder
-    .addOperation(
-      contract.call(
-        "donate_to_campaign",
-        ...[
-          xdr.ScVal.scvU32(id),
-          accountToScVal(donorPubKey),
-          new ScInt(amount).toI128(),
-          accountToScVal(nativeToken)
-        ],
-      ),
-    )
-    .setTimeout(TimeoutInfinite);
-
-  if (memo) {
-    tx.addMemo(Memo.text(memo));
-  }
-
-  const built = tx.build();
-  const sim = await server.simulateTransaction(built);
-  const preparedTransaction = sorobanAssemble(
-    built,
-    networkPassphrase,
-    sim,
-  ) as Transaction<Memo<MemoType>, Operation[]>;
-
-  const sorobanTxData = xdr.SorobanTransactionData.fromXDR(
-    sim.transactionData,
-    "base64",
-  );
-
-  return {
-    preparedTransaction,
-    footprint: sorobanTxData.resources().footprint().toXDR("base64"),
-  };
-};
-
-// Get the tokens symbol, decoded as a string
-// export const getTokenSymbol = async (
-//   tokenId: string,
-//   txBuilder: TransactionBuilder,
-//   server: Server,
-// ) => {
-//   const contract = new Contract(tokenId);
-
-//   const tx = txBuilder
-//     .addOperation(contract.call("symbol"))
-//     .setTimeout(TimeoutInfinite)
-//     .build();
-
-//   const result = await simulateTx<string>(tx, server);
-//   return result;
-// };
-
-export const buildContractAuth = async (
-  authEntries: xdr.SorobanAuthorizationEntry[],
-  signerPubKey: string,
-  networkPassphrase: string,
-  contractID: string,
-  server: Server,
-  kit: StellarWalletsKit,
-) => {
-  const signedAuthEntries = [];
-
-  console.dir(authEntries, { depth: 5 });
-  for (const entry of authEntries) {
-    if (
-      entry.credentials().switch() !==
-      xdr.SorobanCredentialsType.sorobanCredentialsAddress()
-    ) {
-      signedAuthEntries.push(entry);
-    } else {
-      const entryAddress = entry.credentials().address().address().accountId();
-      const entryNonce = entry.credentials().address().nonce();
-
-      console.log(
-        signerPubKey,
-        StrKey.encodeEd25519PublicKey(entryAddress.ed25519()),
-      );
-      if (
-        signerPubKey === StrKey.encodeEd25519PublicKey(entryAddress.ed25519())
-      ) {
-        let expirationLedgerSeq = 0;
-
-        const key = xdr.LedgerKey.contractData(
-          new xdr.LedgerKeyContractData({
-            contract: new Address(contractID).toScAddress(),
-            key: xdr.ScVal.scvLedgerKeyContractInstance(),
-            durability: xdr.ContractDataDurability.persistent(),
-            bodyType: xdr.ContractEntryBodyType.dataEntry(),
-          }),
-        );
-
-        // Fetch the current contract ledger seq
-        // eslint-disable-next-line no-await-in-loop
-        const entryRes = await server.getLedgerEntries([key]);
-        if (entryRes.entries && entryRes?.entries?.length) {
-          const parsed = xdr.LedgerEntryData.fromXDR(
-            entryRes.entries[0].xdr,
-            "base64",
-          );
-          expirationLedgerSeq = parsed.contractData().expirationLedgerSeq();
-        } else {
-          throw new Error(ERRORS.CANNOT_FETCH_LEDGER_ENTRY);
-        }
-
-        const passPhraseHash = hash(Buffer.from(networkPassphrase));
-        const invocation = entry.rootInvocation();
-        const hashIDPreimageAuth = new xdr.HashIdPreimageSorobanAuthorization({
-          networkId: Buffer.from(passPhraseHash).subarray(0, 32),
-          invocation,
-          nonce: entryNonce,
-          signatureExpirationLedger: expirationLedgerSeq,
-        });
-
-        const preimage =
-          xdr.HashIdPreimage.envelopeTypeSorobanAuthorization(
-            hashIDPreimageAuth,
-          );
-        const preimageHash = hash(preimage.toXDR());
-
-        // eslint-disable-next-line no-await-in-loop
-        const signature = (await signData(
-          preimageHash.toString("base64"),
-          signerPubKey,
-          kit,
-        )) as any as { data: number[] }; // not a string in this instance
-
-        const authEntry = new xdr.SorobanAuthorizationEntry({
-          credentials: xdr.SorobanCredentials.sorobanCredentialsAddress(
-            new xdr.SorobanAddressCredentials({
-              address: new Address(signerPubKey).toScAddress(),
-              nonce: hashIDPreimageAuth.nonce(),
-              signatureExpirationLedger:
-                hashIDPreimageAuth.signatureExpirationLedger(),
-              signatureArgs: [
-                nativeToScVal(
-                  {
-                    public_key: StrKey.decodeEd25519PublicKey(signerPubKey),
-                    signature: new Uint8Array(signature.data),
-                  },
-                  {
-                    type: {
-                      public_key: ["symbol", null],
-                      signature: ["symbol", null],
-                    },
-                  } as any,
-                ),
-              ],
-            }),
-          ),
-          rootInvocation: invocation,
-        });
-        signedAuthEntries.push(authEntry);
-      } else {
-        signedAuthEntries.push(entry);
-      }
-    }
-  }
-
-  return signedAuthEntries;
-};
-
-export const signContractAuth = async (
-  contractID: string,
-  signerPubKey: string,
-  tx: Transaction,
-  server: Server,
-  networkPassphrase: string,
-  kit: StellarWalletsKit,
-) => {
-  // rebuild tx and attach signed auth
-  const source = new Account(tx.source, `${parseInt(tx.sequence, 10) - 1}`);
-  const txnBuilder = new TransactionBuilder(source, {
-    fee: tx.fee,
-    networkPassphrase,
-    timebounds: tx.timeBounds,
-    ledgerbounds: tx.ledgerBounds,
-    minAccountSequence: tx.minAccountSequence,
-    minAccountSequenceAge: tx.minAccountSequenceAge,
-    minAccountSequenceLedgerGap: tx.minAccountSequenceLedgerGap,
-  });
-
-  // Soroban transaction can only have 1 operation
-  const rawInvokeHostFunctionOp = tx
-    .operations[0] as Operation.InvokeHostFunction;
-
-  const auth = rawInvokeHostFunctionOp.auth ? rawInvokeHostFunctionOp.auth : [];
-  const signedAuth = await buildContractAuth(
-    auth,
-    signerPubKey,
-    networkPassphrase,
-    contractID,
-    server,
-    kit,
-  );
-
-  txnBuilder.addOperation(
-    Operation.invokeHostFunction({
-      ...rawInvokeHostFunctionOp,
-      auth: signedAuth,
-    }),
-  );
-
-  return txnBuilder.build();
-};
-
-// export const getArgsFromEnvelope = (
-//   envelopeXdr: string,
-//   networkPassphrase: string,
-// ) => {
-//   const txEnvelope = TransactionBuilder.fromXDR(
-//     envelopeXdr,
-//     networkPassphrase,
-//   ) as Transaction<Memo<MemoType>, Operation.InvokeHostFunction[]>;
-
-//   // only one op per tx in Soroban
-//   const op = txEnvelope.operations[0].func;
-
-//   if (!op) {
-//     throw new Error(ERRORS.BAD_ENVELOPE);
-//   }
-
-//   const args = op.invokeContract();
-
-//   return {
-//     addressA: StrKey.encodeEd25519PublicKey(
-//       args[2].address().accountId().ed25519(),
-//     ),
-//     addressB: StrKey.encodeEd25519PublicKey(
-//       args[3].address().accountId().ed25519(),
-//     ),
-//     tokenA: args[4].address().contractId().toString("hex"),
-//     tokenB: args[5].address().contractId().toString("hex"),
-//     amountA: valueToI128String(args[6]),
-//     minBForA: valueToI128String(args[7]),
-//     amountB: valueToI128String(args[8]),
-//     minAForB: valueToI128String(args[9]),
-//   };
-// };
 
 // Build and submits a transaction to the Soroban RPC
 // Polls for non-pending state, returns result after status is updated
@@ -488,7 +134,7 @@ export const submitTx = async (
     let txResponse = await server.getTransaction(sendResponse.hash);
 
     // Poll this until the status is not "NOT_FOUND"
-    while (txResponse.status === GetTxStatus.NotFound) {
+    while (txResponse.status === SorobanRpc.GetTransactionStatus.NOT_FOUND) {
       // See if the transaction is complete
       // eslint-disable-next-line no-await-in-loop
       txResponse = await server.getTransaction(sendResponse.hash);
@@ -497,122 +143,222 @@ export const submitTx = async (
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    return txResponse.resultXdr!;
-    // eslint-disable-next-line no-else-return
-  } else {
-    throw new Error(
-      `Unabled to submit transaction, status: ${sendResponse.status}`,
+    if (txResponse.status === SorobanRpc.GetTransactionStatus.SUCCESS) {
+      return txResponse.resultXdr.toXDR("base64");
+    }
+  }
+  throw new Error(
+    `Unabled to submit transaction, status: ${sendResponse.status}`,
+  );
+};
+
+// Get the tokens symbol, decoded as a string
+export const getTokenSymbol = async (
+  tokenId: string,
+  txBuilder: TransactionBuilder,
+  server: Server,
+) => {
+  const contract = new Contract(tokenId);
+
+  const tx = txBuilder
+    .addOperation(contract.call("symbol"))
+    .setTimeout(TimeoutInfinite)
+    .build();
+
+  const result = await simulateTx<string>(tx, server);
+  return result;
+};
+
+// Get the tokens name, decoded as a string
+export const getTokenName = async (
+  tokenId: string,
+  txBuilder: TransactionBuilder,
+  server: Server,
+) => {
+  const contract = new Contract(tokenId);
+  const tx = txBuilder
+    .addOperation(contract.call("name"))
+    .setTimeout(TimeoutInfinite)
+    .build();
+
+  const result = await simulateTx<string>(tx, server);
+  return result;
+};
+
+// Get the tokens decimals, decoded as a number
+export const getTokenDecimals = async (
+  tokenId: string,
+  txBuilder: TransactionBuilder,
+  server: Server,
+) => {
+  const contract = new Contract(tokenId);
+  const tx = txBuilder
+    .addOperation(contract.call("decimals"))
+    .setTimeout(TimeoutInfinite)
+    .build();
+
+  const result = await simulateTx<number>(tx, server);
+  return result;
+};
+
+// Build a "mint" operation, and prepare the corresponding XDR
+// https://github.com/stellar/soroban-examples/blob/main/token/src/contract.rs#L39
+export const createNewCampaign = async ({
+  contractID,
+  artistPubKey,
+  title,
+  desc,
+  imageUrl,
+  target,
+  deadline,
+  memo,
+  txBuilderC,
+  server,
+  networkPassphrase,
+}: {
+  contractID: string,
+  artistPubKey: string,
+  title: string,
+  desc: string,
+  imageUrl: string,
+  target: string,
+  deadline: string,
+  memo: string;
+  txBuilderC: TransactionBuilder;
+  server: Server;
+  networkPassphrase: string;
+}) => {
+  const contract = new Contract(contractID);
+
+  try {
+    const tx = txBuilderC
+      .addOperation(
+        contract.call(
+          "create_campaign",
+          ...[
+            accountToScVal(artistPubKey),
+            xdr.ScVal.scvString(title),
+            xdr.ScVal.scvString(desc),
+            xdr.ScVal.scvString(imageUrl),
+            new ScInt(target).toI128(),
+            new ScInt(deadline).toU64(),
+          ],
+        ),
+      )
+      .setTimeout(TimeoutInfinite);
+
+    if (memo?.length > 0) {
+      tx.addMemo(Memo.text(memo));
+    }
+
+    const preparedTransaction = await server.prepareTransaction(
+      tx.build(),
+      networkPassphrase,
     );
+
+    return preparedTransaction.toXDR();
+  } catch (err) {
+    console.log("err");
+    return "error";
   }
 };
 
-function isSorobanTransaction(tx: Transaction): boolean {
-  if (tx.operations.length !== 1) {
-    return false;
-  }
 
-  switch (tx.operations[0].type) {
-    case "invokeHostFunction":
-    case "bumpFootprintExpiration":
-    case "restoreFootprint":
-      return true;
+export const donateToCampaignByID = async ({
+  contractID,
+  id,
+  donorPubKey,
+  amount,
+  nativeToken,
+  memo,
+  txBuilderC,
+  server,
+  networkPassphrase,
+}: {
+  contractID: string,
+  id: number,
+  donorPubKey: string,
+  amount: string,
+  nativeToken: string,
+  memo: string;
+  txBuilderC: TransactionBuilder;
+  server: Server;
+  networkPassphrase: string;
+}) => {
+  const contract = new Contract(contractID);
 
-    default:
-      return false;
-  }
-}
+  try {
+    const tx = txBuilderC
+      .addOperation(
+        contract.call(
+          "donate_to_campaign",
+          ...[
+            xdr.ScVal.scvU32(id),
+            accountToScVal(donorPubKey),
+            new ScInt(amount).toI128(),
+            accountToScVal(nativeToken)
+          ],
+        ),
+      )
+      .setTimeout(TimeoutInfinite);
 
-export const assembleTransaction = (
-  raw: Transaction | FeeBumpTransaction,
-  networkPassphrase: string,
-  simulation: SorobanRpc.SimulateTransactionResponse,
-  footprint: any,
-): Transaction<Memo<MemoType>, Operation[]> => {
-  if ("innerTransaction" in raw) {
-    return assembleTransaction(
-      raw.innerTransaction,
+    if (memo?.length > 0) {
+      tx.addMemo(Memo.text(memo));
+    }
+
+    const preparedTransaction = await server.prepareTransaction(
+      tx.build(),
       networkPassphrase,
-      simulation,
-      footprint,
     );
+
+    return preparedTransaction.toXDR();
+  } catch (err) {
+    console.log("err");
+    return "error";
+  }
+};
+
+export const getEstimatedFee = async (
+  tokenId: string,
+  quantity: number,
+  destinationPubKey: string,
+  memo: string,
+  txBuilder: TransactionBuilder,
+  server: Server,
+) => {
+  const contract = new Contract(tokenId);
+  const tx = txBuilder
+    .addOperation(
+      contract.call(
+        "mint",
+        ...[
+          accountToScVal(destinationPubKey), // to
+          numberToI128(quantity), // quantity
+        ],
+      ),
+    )
+    .setTimeout(TimeoutInfinite);
+
+  if (memo.length > 0) {
+    tx.addMemo(Memo.text(memo));
   }
 
-  if (!isSorobanTransaction(raw)) {
-    throw new TypeError(
-      "unsupported transaction: must contain exactly one " +
-        "invokeHostFunction, bumpFootprintExpiration, or restoreFootprint " +
-        "operation",
-    );
+  const raw = tx.build();
+
+  const simResponse = await server.simulateTransaction(raw);
+  if ("error" in simResponse) {
+    throw simResponse.error;
   }
 
-  if (simulation.results.length !== 1) {
-    throw new Error(`simulation results invalid: ${simulation.results}`);
+  if (!("result" in simResponse)) {
+    throw new Error("transaction simulation failed");
   }
 
-  const source = new Account(raw.source, `${parseInt(raw.sequence, 10) - 1}`);
+  // 'classic' tx fees are measured as the product of tx.fee * 'number of operations', In soroban contract tx,
+  // there can only be single operation in the tx, so can make simplification
+  // of total classic fees for the soroban transaction will be equal to incoming tx.fee + minResourceFee.
   const classicFeeNum = parseInt(raw.fee, 10) || 0;
-  const minResourceFeeNum = parseInt(simulation.minResourceFee, 10) || 0;
-  const txnBuilder = new TransactionBuilder(source, {
-    // automatically update the tx fee that will be set on the resulting tx to
-    // the sum of 'classic' fee provided from incoming tx.fee and minResourceFee
-    // provided by simulation.
-    //
-    // 'classic' tx fees are measured as the product of tx.fee * 'number of
-    // operations', In soroban contract tx, there can only be single operation
-    // in the tx, so can make simplification of total classic fees for the
-    // soroban transaction will be equal to incoming tx.fee + minResourceFee.
-    fee: (classicFeeNum + minResourceFeeNum).toString(),
-    memo: raw.memo,
-    networkPassphrase,
-    timebounds: raw.timeBounds,
-    ledgerbounds: raw.ledgerBounds,
-    minAccountSequence: raw.minAccountSequence,
-    minAccountSequenceAge: raw.minAccountSequenceAge,
-    minAccountSequenceLedgerGap: raw.minAccountSequenceLedgerGap,
-    extraSigners: raw.extraSigners,
-  });
-
-  switch (raw.operations[0].type) {
-    case "invokeHostFunction":
-      {
-        const invokeOp: Operation.InvokeHostFunction = raw.operations[0];
-        const existingAuth = invokeOp.auth ?? [];
-        txnBuilder.addOperation(
-          Operation.invokeHostFunction({
-            source: invokeOp.source,
-            func: invokeOp.func,
-            // apply the auth from the simulation
-            auth:
-              existingAuth.length > 0
-                ? existingAuth
-                : simulation.results[0].auth?.map((a) =>
-                    xdr.SorobanAuthorizationEntry.fromXDR(a, "base64"),
-                  ) ?? [],
-          }),
-        );
-      }
-      break;
-
-    case "bumpFootprintExpiration":
-      txnBuilder.addOperation(
-        Operation.bumpFootprintExpiration(raw.operations[0]),
-      );
-      break;
-
-    case "restoreFootprint":
-      txnBuilder.addOperation(Operation.restoreFootprint(raw.operations[0]));
-      break;
-    default:
-      throw new Error(`op not supported: ${raw.operations[0].type}`);
-  }
-
-  // apply the pre-built Soroban Tx Data from simulation onto the Tx
-  const sorobanTxData = xdr.SorobanTransactionData.fromXDR(
-    simulation.transactionData,
-    "base64",
-  );
-  sorobanTxData.resources().footprint(footprint);
-  txnBuilder.setSorobanData(sorobanTxData);
-
-  return txnBuilder.build();
+  const minResourceFeeNum = parseInt(simResponse.minResourceFee, 10) || 0;
+  const fee = (classicFeeNum + minResourceFeeNum).toString();
+  return fee;
 };
