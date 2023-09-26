@@ -14251,7 +14251,7 @@ stellar-base@v10.0.0-beta.1:
   optionalDependencies:
     sodium-native "^4.0.1"
 
-"stellar-wallets-kit@github:Creit-Tech/Stellar-Wallets-Kit":
+"stellar-wallets-kit@git+https://github.com/Creit-Tech/Stellar-Wallets-Kit.git":
   version "0.1.1"
   resolved "git+ssh://git@github.com/Creit-Tech/Stellar-Wallets-Kit.git#2566aedff5887fc0b3bf6d9877cd2b069c46d92f"
   dependencies:
