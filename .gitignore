@@ -5,7 +5,7 @@
 /CrowdFund/node_modules
 /Token/node_modules
 /stellar-dapp/node_modules
-./Stellar-Wallets-Kit/node_modules
+./Stellar-Wallets/node_modules
 /.pnp
 .pnp.js
 

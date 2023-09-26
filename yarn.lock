@@ -13632,7 +13632,7 @@ stellar-base@v10.0.0-beta.1:
   optionalDependencies:
     sodium-native "^4.0.1"
 
-stellar-wallets-kit@./Stellar-Wallets-Kit:
+stellar-wallets-kit@./Stellar-Wallets:
   version "0.1.1"
   dependencies:
     "@albedo-link/intent" "^0.12.0"
