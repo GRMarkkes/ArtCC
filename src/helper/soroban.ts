@@ -215,6 +215,7 @@ export const createNewCampaign = async ({
   txBuilderC,
   server,
   networkPassphrase,
+  // category,
 }: {
   contractID: string,
   artistPubKey: string,
@@ -227,6 +228,7 @@ export const createNewCampaign = async ({
   txBuilderC: TransactionBuilder;
   server: Server;
   networkPassphrase: string;
+  // category : string;
 }) => {
   const contract = new Contract(contractID);
 
@@ -238,6 +240,7 @@ export const createNewCampaign = async ({
           ...[
             accountToScVal(artistPubKey),
             xdr.ScVal.scvString(title),
+            // xdr.ScVal.scvString(category),
             xdr.ScVal.scvString(desc),
             xdr.ScVal.scvString(imageUrl),
             new ScInt(target).toI128(),

@@ -72,6 +72,7 @@ const Web3Page = (props: Web3PageProps) => {
         deadline: "1700613645",
         memo: "",
         txBuilderC: txBuilder,
+        // category: "Art",
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
       });
@@ -242,6 +243,7 @@ const Web3Page = (props: Web3PageProps) => {
             <h4>Total donation: {campaign.donations.toString()}</h4>
             <h5>Donators: [ {campaign.donators.toString()} ]</h5>
             <h5>Owner: {campaign.owner.toString()}</h5>
+            <h5>Cateogry</h5>
             <h5>
               ----------------------------------------------------------------------
             </h5>

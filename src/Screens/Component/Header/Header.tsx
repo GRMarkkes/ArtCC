@@ -8,6 +8,12 @@ import Menu_Icon from "../../../Asset/Menu_Icon.png";
 import "./Header.css";
 import { NetworkDetails, signTx } from "../../../helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
+import Modal from "react-modal";
+import { AiOutlineCloseCircle, AiFillEnvironment } from "react-icons/ai";
+
+import { motion } from "framer-motion";
+import Create from "../Create/Create";
+// import { motion } from "framer-motion";
 import {
   BASE_FEE,
   createNewCampaign,
@@ -26,14 +32,28 @@ interface Web3PageProps {
 }
 function Header(props: Web3PageProps) {
   const [showMenu, setShowMenu] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const contractIdCrowdFund =
-  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+    "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
 
   function toggleMenu() {
     setShowMenu(!showMenu);
   }
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    // setIsHovered(false);
+  };
+  interface TagProps {
+    text: string;
+  }
+  const Tag: React.FC<TagProps> = ({ text }) => {
+    return <div className="tag">{text}</div>;
+  };
   async function createCampaign() {
     try {
       console.log("create campaign");
@@ -56,6 +76,7 @@ function Header(props: Web3PageProps) {
         target: "5000",
         deadline: "1700613645",
         memo: "",
+        // category: "Art",
         txBuilderC: txBuilder,
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
@@ -147,7 +168,7 @@ function Header(props: Web3PageProps) {
             <Nav style={{ marginLeft: "20%" }}>
               <Nav.Link
                 style={{ color: "#01A19A", marginTop: "3%" }}
-                onClick={createCampaign}
+                onClick={openModal}
               >
                 Create Campgain
               </Nav.Link>
@@ -193,6 +214,131 @@ function Header(props: Web3PageProps) {
           </Nav>
         </div>
       )}
+      <div>
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          className="Header-Modal-Content"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, translateY: -100 }}
+            animate={{ opacity: 1, scale: 1, translateY: 0 }}
+            transition={{ duration: 0.5 }}
+            className="modal-header-opening"
+          >
+            <div className="ProjectInput">
+              <p>PROJECT INPUT</p>
+              <AiOutlineCloseCircle
+                onClick={closeModal}
+                className="header-modal-close-icon"
+              />
+            </div>
+            <div>
+              <form>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Creater Name</label>
+                    <input placeholder="Name" type="text" />
+                  </div>
+                  <div className="Input-Text">
+                    {" "}
+                    <label>Enter your name:</label>
+                    <input placeholder="0.00" type="text" />
+                  </div>
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Email</label>
+                    <input placeholder="Email" type="text" />
+                  </div>
+                  <div className="Input-Text">
+                    {" "}
+                    <label>Category</label>
+                    <input placeholder="Choose Category" type="text" />
+                  </div>
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Project Ttile</label>
+                    <input placeholder="Title" type="text" />
+                  </div>
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Address Account</label>
+                    <input
+                      placeholder="Wallet account used for login"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Short Description</label>
+                    <input placeholder="Short Description" type="text" />
+                  </div>
+                  <div className="Input-Text">
+                    {" "}
+                    <label>Main Location</label>
+                    <input placeholder="Set Location" type="text" />
+                  </div>
+                </div>
+
+                <div
+                  className="Input-Text"
+                  style={{ marginTop: "3%", height: "40%" }}
+                >
+                  <label>Project Description</label>
+                  <input
+                    placeholder="A design system for enterprise-level products. Create an efficient and enjoyable work experience."
+                    type="text"
+                  />
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Temporary Location</label>
+                    <input placeholder="Set Location" type="text" />
+                  </div>
+                  <div className="Input-Text">
+                    {" "}
+                    <label>Main Location</label>
+                    <i style={{ position: "absolute", top: "3%" }}>
+                      <AiFillEnvironment />
+                    </i>
+                    <input
+                      placeholder="Set Location"
+                      type="text"
+                      style={{
+                        paddingRight: "30px", // Adjust the padding to accommodate the icon
+                        backgroundImage: 'url("../../")', // Replace with your icon image
+                        backgroundPosition: "right center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "20px 20px", // Adjust the size of the icon
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="All-label-all">
+                  <div className="Input-Text-green">
+                    <input placeholder="Set Location" type="text" />
+                    <Tag text="green" />
+                    <Tag text="green" />
+                  </div>
+                </div>
+              </form>
+              <div className="Create-Header">
+                <Create />
+                <Create />
+                <Create />
+                <Create />
+                <Create />
+                <Create />
+              </div>
+            </div>
+          </motion.div>
+        </Modal>
+      </div>
+      <button onClick={createCampaign}>hello</button>
     </div>
   );
 }
