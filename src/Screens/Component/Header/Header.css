@@ -10,7 +10,7 @@
   width: 50%;
   position: fixed;
   top: 8%;
-  left: 25%;
+  left: 24%;
   bottom: 0;
   z-index: 9999;
   
@@ -44,8 +44,8 @@ line-height: 24px; /* 150% */
 }
 .header-modal-close-icon{
   position: absolute;
-  top: 3%;
-  right: 17%;
+  top: 5%;
+  right: 11%;
   color: #01A19A;
   font-size: 24px;
   cursor: pointer;
@@ -74,7 +74,7 @@ line-height: 24px; /* 150% */
 }
 .Input-Text input{
   border-radius: 2px;
-  height: 35px;
+  height: 30px;
   width: 100%;
   border: 1px solid var(--neutral-5, #D9D9D9);
   background: var(--neutral-11, #1F1F1F);
@@ -82,12 +82,35 @@ line-height: 24px; /* 150% */
   margin-top: 3%;
   color: var(--neutral-7, #8C8C8C);
   font-family: 'Poppins';
-  font-size: 14px;
+  font-size: 17px;
   font-style: normal;
   font-weight: 400;
   line-height: 22px;
   
 }
+.Input-Text textarea{
+  background: var(--neutral-11, #1F1F1F);
+  color: var(--neutral-7, #8C8C8C);
+  margin-top: 3%;
+}
+.Input-Text select{
+  background: var(--neutral-11, #1F1F1F);
+  color: var(--neutral-7, #8C8C8C);
+  margin-top: 3%;
+  height: 35px;
+
+}
+/* Style the placeholder text */
+.Input-Text textarea::placeholder {
+  color: var(--character-primary-inverse, #FFF);
+/* Body/regular */
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; 
+}
+
 #category-input {
   border: none;
   outline: none;
@@ -124,6 +147,75 @@ line-height: 24px; /* 150% */
    flex-wrap: wrap;
    justify-content: space-between;
    margin-top: 5%;
+}
+.App-image{
+  margin-top: 4%;
+  margin-bottom: 10%;
+  border: 1px solid white;
+  height: 13vh;
+  display: flex;
+}
+.App-image input{
+  padding-top: 5%;
+  padding-left: 2%;
+}
+.App-image h3{
+  color: var(--character-primary-inverse, #FFF);
+/* Body/medium */
+font-family: Roboto;
+font-size: 20px;
+font-style: normal;
+font-weight: 500;
+line-height: 22px; /* 169.231% */
+}
+.App-image p{
+  color: var(--neutral-7, #8C8C8C);
+/* Footnote/description */
+font-family: Montserrat;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: 20px; /* 166.667% */
+}
+.app-button{
+   text-decoration: none;
+  border-radius: 2px;
+  border: 1px solid var(--primary-6, #01A19A);
+  background: var(--primary-6, #01A19A);
+  box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.04);
+  width: 20vh;
+  height: 3vh;
+
+  color: var(--character-primary-inverse, #FFF);
+text-align: center;
+/* Body/regular */
+font-family: Montserrat;
+font-size: 18px;
+}
+@media screen and (max-width: 1080px){
+  .Header-Modal-Content {
+      width: 80%;
+      left: 10%;
+  }
+  
+}
+@media screen and (max-width: 810px){
+  .Header-Modal-Content {
+      width: 80%;
+      left: 5%;
+     
+      
+
+
+  }
+  .All-label{
+      display: flex;
+      flex-direction: column;
+      margin-right: 0%;
+    }
+    .App-image{
+      height: 23vh;
+    }
 }
 
 

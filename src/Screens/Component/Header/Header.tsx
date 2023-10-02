@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import staller_header_logo from "../../../Asset/Images/main_logo.png";
@@ -9,10 +9,10 @@ import "./Header.css";
 import { NetworkDetails, signTx } from "../../../helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
 import Modal from "react-modal";
-import { AiOutlineCloseCircle, AiFillEnvironment } from "react-icons/ai";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import { motion } from "framer-motion";
-import Create from "../Create/Create";
+// import Create from "../Create/Create";
 // import { motion } from "framer-motion";
 import {
   BASE_FEE,
@@ -33,6 +33,30 @@ interface Web3PageProps {
 function Header(props: Web3PageProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [file, setFile] = useState<string>(""); // Change the type to 'string'
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    targ: "",
+    addressAccount: "",
+    mainLocation: "",
+    projectDescription: "",
+    deadline: "",
+    date: "",
+    memo: "",
+  });
+
+  console.log(formData, "drtdd");
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const selectedFile = e.target.files?.[0];
+
+    if (selectedFile) {
+      console.log(selectedFile);
+      setFile(URL.createObjectURL(selectedFile));
+    }
+  }
+
   const navigate = useNavigate();
   const contractIdCrowdFund =
     "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
@@ -48,12 +72,12 @@ function Header(props: Web3PageProps) {
     setIsModalOpen(false);
     // setIsHovered(false);
   };
-  interface TagProps {
-    text: string;
-  }
-  const Tag: React.FC<TagProps> = ({ text }) => {
-    return <div className="tag">{text}</div>;
-  };
+  // interface TagProps {
+  //   text: string;
+  // }
+  // const Tag: React.FC<TagProps> = ({ text }) => {
+  //   return <div className="tag">{text}</div>;
+  // };
   async function createCampaign() {
     try {
       console.log("create campaign");
@@ -72,14 +96,15 @@ function Header(props: Web3PageProps) {
         artistPubKey: props.pubKey,
         title: "Food Campaign",
         desc: "Fund to Food Campaign",
+        category: "Art",
+        main_location: "lahore",
+        date: "1700613645",
         imageUrl: "image url food",
         target: "5000",
         deadline: "1700613645",
         memo: "",
-        category: "Art",
-        date: "1700613645",
-        main_location: "lahore",
         txBuilderC: txBuilder,
+        // category: "Art",
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
       });
@@ -235,111 +260,176 @@ function Header(props: Web3PageProps) {
               />
             </div>
             <div>
-              <form>
-                <div className="All-label">
-                  <div className="Input-Text">
-                    <label>Creater Name</label>
-                    <input placeholder="Name" type="text" />
-                  </div>
-                  <div className="Input-Text">
-                    {" "}
-                    <label>Enter your name:</label>
-                    <input placeholder="0.00" type="text" />
-                  </div>
+              <div className="All-label">
+                <div className="Input-Text">
+                  <label>Creater Name</label>
+                  <input placeholder="Name" type="text" />
                 </div>
-                <div className="All-label">
-                  <div className="Input-Text">
-                    <label>Email</label>
-                    <input placeholder="Email" type="text" />
-                  </div>
-                  <div className="Input-Text">
-                    {" "}
-                    <label>Category</label>
-                    <input placeholder="Choose Category" type="text" />
-                  </div>
-                </div>
-                <div className="All-label">
-                  <div className="Input-Text">
-                    <label>Project Ttile</label>
-                    <input placeholder="Title" type="text" />
-                  </div>
-                </div>
-                <div className="All-label">
-                  <div className="Input-Text">
-                    <label>Address Account</label>
+                <div className="Input-Text">
+                  <label>Budget</label>
+                  <div style={{ display: "flex" }}>
                     <input
-                      placeholder="Wallet account used for login"
+                      placeholder="0.00"
                       type="text"
-                    />
-                  </div>
-                </div>
-                <div className="All-label">
-                  <div className="Input-Text">
-                    <label>Short Description</label>
-                    <input placeholder="Short Description" type="text" />
-                  </div>
-                  <div className="Input-Text">
-                    {" "}
-                    <label>Main Location</label>
-                    <input placeholder="Set Location" type="text" />
-                  </div>
-                </div>
-
-                <div
-                  className="Input-Text"
-                  style={{ marginTop: "3%", height: "40%" }}
-                >
-                  <label>Project Description</label>
-                  <input
-                    placeholder="A design system for enterprise-level products. Create an efficient and enjoyable work experience."
-                    type="text"
-                  />
-                </div>
-                <div className="All-label">
-                  <div className="Input-Text">
-                    <label>Temporary Location</label>
-                    <input placeholder="Set Location" type="text" />
-                  </div>
-                  <div className="Input-Text">
-                    {" "}
-                    <label>Main Location</label>
-                    <i style={{ position: "absolute", top: "3%" }}>
-                      <AiFillEnvironment />
-                    </i>
-                    <input
-                      placeholder="Set Location"
-                      type="text"
-                      style={{
-                        paddingRight: "30px", // Adjust the padding to accommodate the icon
-                        backgroundImage: 'url("../../")', // Replace with your icon image
-                        backgroundPosition: "right center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "20px 20px", // Adjust the size of the icon
+                      onChange={(e) => {
+                        formData.targ = e?.target?.value;
+                        setFormData({ ...formData });
                       }}
                     />
                   </div>
                 </div>
-                <div className="All-label-all">
-                  <div className="Input-Text-green">
-                    <input placeholder="Set Location" type="text" />
-                    <Tag text="green" />
-                    <Tag text="green" />
-                  </div>
+              </div>
+              <div className="All-label">
+                <div className="Input-Text">
+                  <label>Email</label>
+                  <input placeholder="Email" type="text" />
                 </div>
-              </form>
-              <div className="Create-Header">
-                <Create />
-                <Create />
-                <Create />
-                <Create />
-                <Create />
-                <Create />
+                <div className="Input-Text">
+                  <label>Category</label>
+                  <select
+                    onChange={(e) => {
+                      formData.category = e?.target?.value;
+                      setFormData({ ...formData });
+                    }}
+                  >
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                    {/* Add more options as needed */}
+                  </select>
+                </div>
+              </div>
+              <div className="All-label">
+                <div className="Input-Text">
+                  <label>Project Ttile</label>
+                  <input
+                    placeholder="Title"
+                    type="text"
+                    onChange={(e) => {
+                      formData.title = e?.target?.value;
+                      setFormData({ ...formData });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="All-label">
+                <div className="Input-Text">
+                  <label>Address Account</label>
+                  <input
+                    placeholder="Wallet account used for login"
+                    type="text"
+                    onChange={(e) => {
+                      formData.addressAccount = e?.target?.value;
+                      setFormData({ ...formData });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="All-label">
+                <div className="Input-Text">
+                  <label>Short Description</label>
+                  <input
+                    placeholder="Short Description"
+                    type="text"
+                    onChange={(e) => {
+                      formData.deadline = e?.target?.value;
+                      setFormData({ ...formData });
+                    }}
+                  />
+                </div>
+                <div className="Input-Text">
+                  {" "}
+                  <label>Main Location</label>
+                  <input
+                    placeholder="Set Location"
+                    type="text"
+                    onChange={(e) => {
+                      formData.mainLocation = e?.target?.value;
+                      setFormData({ ...formData });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="Input-Text" style={{ marginTop: "2%" }}>
+                <label>Project Description</label>
+                <textarea
+                  placeholder="A design system for enterprise-level products. Create an efficient and enjoyable work experience."
+                  style={{
+                    resize: "vertical", // Allow vertical resizing
+                    minHeight: "100px", // Set a minimum height
+                  }}
+                  onChange={(e) => {
+                    formData.projectDescription = e?.target?.value;
+                    setFormData({ ...formData });
+                  }}
+                />
+              </div>
+
+              <div className="All-label">
+                <div className="Input-Text">
+                  <label>Temporary Location</label>
+                  <input placeholder="Set Location" type="text" />
+                </div>
+                <div className="Input-Text">
+                  {" "}
+                  <label>Date</label>
+                  <i style={{ position: "absolute", top: "3%" }}></i>
+                  <input
+                    placeholder="Set Location"
+                    type="date"
+                    style={{
+                      paddingRight: "4%",
+                    }}
+                    onChange={(e) => {
+                      formData.date = e?.target?.value;
+                      setFormData({ ...formData });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="All-label-all">
+                <div className="Input-Text-green">
+                  <input placeholder="Set Location" type="text" />
+                </div>
+              </div>
+              <div className="App-image">
+                <input type="file" onChange={handleChange} />{" "}
+                <div>
+                  <h3>Click or drag file to this area to upload</h3>
+                  <p>
+                    Support for a single or bulk upload. Strictly prohibit from
+                    uploading company data or other band files
+                  </p>
+                </div>
+              </div>
+              <div className="image-file">
+                <img
+                  src={file}
+                  style={{ width: "20%", height: "20vh" }}
+                  alt="haia"
+                />
+              </div>
+              <div
+                style={{
+                  marginTop: "10%",
+                  marginBottom: "10%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div>
+                  <button className="app-button" onClick={createCampaign}>
+                    Post
+                  </button>
+                </div>
+                <div>
+                  <button className="app-button">save</button>
+                </div>
               </div>
             </div>
           </motion.div>
         </Modal>
       </div>
-      <button onClick={createCampaign}>hello</button>
     </div>
   );
 }
