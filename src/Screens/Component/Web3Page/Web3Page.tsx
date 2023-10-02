@@ -97,7 +97,6 @@ const Web3Page = (props: Web3PageProps) => {
         console.log(error);
       }
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   }
@@ -147,7 +146,6 @@ const Web3Page = (props: Web3PageProps) => {
         console.log(error);
       }
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   }
@@ -163,7 +161,6 @@ const Web3Page = (props: Web3PageProps) => {
 
       // console.log(data);
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   }
@@ -186,7 +183,6 @@ const Web3Page = (props: Web3PageProps) => {
 
       // console.log(token.options.contractId);
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   }

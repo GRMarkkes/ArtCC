@@ -77,7 +77,6 @@ const Card = (props: Web3PageProps) => {
 
       console.log(singleCampaign);
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   };

@@ -105,7 +105,6 @@ function Header(props: Web3PageProps) {
         console.log(error);
       }
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   }
