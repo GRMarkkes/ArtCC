@@ -40,7 +40,7 @@ export type Duration = bigint;
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+  "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,

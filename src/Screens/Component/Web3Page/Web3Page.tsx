@@ -18,7 +18,7 @@ const NATIVE_TOKEN = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+  "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -27,10 +27,10 @@ const crowdFund = new Crowdfund.Contract({
 });
 
 const contractIdToken =
-  "CBEBCROGH2E35N7CXZKCOPPMOBOYJKVUFLYAPMB76JUAALV5K2SVETPR";
+  "CCGDFYQ6HWOXAIOAP5YRJUE7KC5XUXEIN7PL4ZGL2G6JU6QUIAOJH62W";
 
 const token = new Token.Contract({
-  contractId: "CBEBCROGH2E35N7CXZKCOPPMOBOYJKVUFLYAPMB76JUAALV5K2SVETPR",
+  contractId: contractIdToken,
   networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
@@ -243,7 +243,7 @@ const Web3Page = (props: Web3PageProps) => {
             <h4>Total donation: {campaign.donations.toString()}</h4>
             <h5>Donators: [ {campaign.donators.toString()} ]</h5>
             <h5>Owner: {campaign.owner.toString()}</h5>
-            <h5>Cateogry</h5>
+            <h5>Cateogry: {campaign.category.toString()}</h5>
             <h5>
               ----------------------------------------------------------------------
             </h5>

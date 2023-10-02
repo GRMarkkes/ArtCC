@@ -35,7 +35,7 @@ function Header(props: Web3PageProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const contractIdCrowdFund =
-    "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+    "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
 
   function toggleMenu() {
     setShowMenu(!showMenu);
