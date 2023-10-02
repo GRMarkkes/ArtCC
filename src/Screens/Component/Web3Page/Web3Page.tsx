@@ -68,6 +68,9 @@ const Web3Page = (props: Web3PageProps) => {
         title: "Food Campaign",
         desc: "Fund to Food Campaign",
         imageUrl: "image url food",
+        category: "Art",
+        date: "1700613645",
+        main_location: "lahore",
         target: "5000",
         deadline: "1700613645",
         memo: "",
@@ -168,11 +171,27 @@ const Web3Page = (props: Web3PageProps) => {
   async function tokenDetail() {
     try {
       let tokenName = await token.name();
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
+        tokenName
+      );
       token.symbol().then(setTokenSymbol);
 
       let publicKey = new Address(props.pubKey);
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
+        props.pubKey
+      );
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
+        publicKey
+      );
 
-      let balance = await token.balance({ id: publicKey });
+      // let balance = await token.balance({ id: publicKey });
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
+        balance
+      );
 
       let formatted_balance = Number(balance) / 100000000;
 
