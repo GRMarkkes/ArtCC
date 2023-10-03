@@ -90,24 +90,25 @@ function Header(props: Web3PageProps) {
         server,
         props.networkDetails.networkPassphrase
       );
-
-      const preparedTransaction = await createNewCampaign({
+      const test = {
         contractID: contractIdCrowdFund,
         artistPubKey: props.pubKey,
-        title: "Food Campaign",
-        desc: "Fund to Food Campaign",
-        category: "Art",
-        main_location: "lahore",
-        date: "1700613645",
+        title: formData.title,
+        desc: formData.projectDescription,
+        category: formData.category,
+        main_location: formData.mainLocation,
+        date: formData.date,
         imageUrl: "image url food",
-        target: "5000",
+        target: formData.targ,
         deadline: "1700613645",
         memo: "",
         txBuilderC: txBuilder,
         // category: "Art",
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
-      });
+      };
+      console.log(test, "this is create campgain");
+      const preparedTransaction = await createNewCampaign(test);
 
       console.log("preparedTransaction", preparedTransaction);
 
