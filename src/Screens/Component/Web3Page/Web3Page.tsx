@@ -18,7 +18,7 @@ const NATIVE_TOKEN = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+  "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -27,10 +27,10 @@ const crowdFund = new Crowdfund.Contract({
 });
 
 const contractIdToken =
-  "CBEBCROGH2E35N7CXZKCOPPMOBOYJKVUFLYAPMB76JUAALV5K2SVETPR";
+  "CCGDFYQ6HWOXAIOAP5YRJUE7KC5XUXEIN7PL4ZGL2G6JU6QUIAOJH62W";
 
 const token = new Token.Contract({
-  contractId: "CBEBCROGH2E35N7CXZKCOPPMOBOYJKVUFLYAPMB76JUAALV5K2SVETPR",
+  contractId: contractIdToken,
   networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
@@ -41,6 +41,15 @@ interface Web3PageProps {
   pubKey: string;
 }
 
+const dataTransform = (data: string, key: string): string => {
+  try {
+    let dataObj = JSON.parse(data);
+
+    return dataObj[key] || "";
+  } catch (error) {
+    return data;
+  }
+};
 const Web3Page = (props: Web3PageProps) => {
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
 
@@ -67,11 +76,15 @@ const Web3Page = (props: Web3PageProps) => {
         artistPubKey: props.pubKey,
         title: "Food Campaign",
         desc: "Fund to Food Campaign",
+        category: "Art",
+        main_location: "lahore",
+        date: "1700613645",
         imageUrl: "image url food",
         target: "5000",
         deadline: "1700613645",
         memo: "",
         txBuilderC: txBuilder,
+        // category: "Art",
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
       });
@@ -93,11 +106,10 @@ const Web3Page = (props: Web3PageProps) => {
 
         console.log("result", result);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     } catch (error) {
-      alert(error);
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -143,11 +155,10 @@ const Web3Page = (props: Web3PageProps) => {
 
         console.log("result", result);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     } catch (error) {
-      alert(error);
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -162,19 +173,34 @@ const Web3Page = (props: Web3PageProps) => {
 
       // console.log(data);
     } catch (error) {
-      alert(error);
-      console.log(error);
+      // console.log(error);
     }
   }
 
   async function tokenDetail() {
     try {
       let tokenName = await token.name();
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
+      //   tokenName
+      // );
       token.symbol().then(setTokenSymbol);
 
       let publicKey = new Address(props.pubKey);
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
+      //   props.pubKey
+      // );
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
+      //   publicKey
+      // );
 
       let balance = await token.balance({ id: publicKey });
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
+      //   balance
+      // );
 
       let formatted_balance = Number(balance) / 100000000;
 
@@ -185,8 +211,7 @@ const Web3Page = (props: Web3PageProps) => {
 
       // console.log(token.options.contractId);
     } catch (error) {
-      alert(error);
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -242,6 +267,9 @@ const Web3Page = (props: Web3PageProps) => {
             <h4>Total donation: {campaign.donations.toString()}</h4>
             <h5>Donators: [ {campaign.donators.toString()} ]</h5>
             <h5>Owner: {campaign.owner.toString()}</h5>
+            <h5>Cateogry: {campaign.category.toString()}</h5>
+            <h5>Date: {dataTransform(campaign.date, "date")}</h5>
+            <h5>Creater Name: {dataTransform(campaign.date, "createrName")}</h5>
             <h5>
               ----------------------------------------------------------------------
             </h5>

@@ -43,17 +43,20 @@ export declare class Err<E extends Error_ = Error_> implements Result<any, E> {
 export declare const networks: {
     readonly futurenet: {
         readonly networkPassphrase: "Test SDF Future Network ; October 2022";
-        readonly contractId: "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+        readonly contractId: "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
     };
 };
 export interface Campaign {
     amount_collected: i128;
+    category: string;
+    date: string;
     deadline: u64;
     description: string;
     donations: Array<i128>;
     donators: Array<Address>;
     id: u32;
     image: string;
+    main_location: string;
     owner: Address;
     status: boolean;
     target: i128;
@@ -99,10 +102,13 @@ export declare class Contract {
          */
         secondsToWait?: number;
     }): Promise<R extends undefined ? void : R extends "simulated" ? SorobanClient.SorobanRpc.SimulateTransactionResponse : R extends "full" ? SorobanClient.SorobanRpc.SimulateTransactionResponse | SorobanClient.SorobanRpc.SendTransactionResponse | SorobanClient.SorobanRpc.GetTransactionResponse : void>;
-    createCampaign<R extends ResponseTypes = undefined>({ owner_addr, title_cmp, desc_cmp, image_cmp, target_cmp, deadline_cmp }: {
+    createCampaign<R extends ResponseTypes = undefined>({ owner_addr, title_cmp, desc_cmp, category_cmp, main_location_cmp, date_cmp, image_cmp, target_cmp, deadline_cmp }: {
         owner_addr: Address;
         title_cmp: string;
         desc_cmp: string;
+        category_cmp: string;
+        main_location_cmp: string;
+        date_cmp: string;
         image_cmp: string;
         target_cmp: i128;
         deadline_cmp: u64;

@@ -91,7 +91,7 @@ export const getTxBuilder = async (
   pubKey: string,
   fee: string,
   server: Server,
-  networkPassphrase: string,
+  networkPassphrase: string
 ) => {
   const source = await server.getAccount(pubKey);
   return new TransactionBuilder(source, {
@@ -104,7 +104,7 @@ export const getTxBuilder = async (
 //  Used in getTokenSymbol, getTokenName, and getTokenDecimals
 export const simulateTx = async <ArgType>(
   tx: Transaction<Memo<MemoType>, Operation[]>,
-  server: Server,
+  server: Server
 ): Promise<ArgType> => {
   const response = await server.simulateTransaction(tx);
 
@@ -120,7 +120,7 @@ export const simulateTx = async <ArgType>(
 export const submitTx = async (
   signedXDR: string,
   networkPassphrase: string,
-  server: Server,
+  server: Server
 ) => {
   const tx = TransactionBuilder.fromXDR(signedXDR, networkPassphrase);
 
@@ -148,7 +148,7 @@ export const submitTx = async (
     }
   }
   throw new Error(
-    `Unabled to submit transaction, status: ${sendResponse.status}`,
+    `Unabled to submit transaction, status: ${sendResponse.status}`
   );
 };
 
@@ -156,7 +156,7 @@ export const submitTx = async (
 export const getTokenSymbol = async (
   tokenId: string,
   txBuilder: TransactionBuilder,
-  server: Server,
+  server: Server
 ) => {
   const contract = new Contract(tokenId);
 
@@ -173,7 +173,7 @@ export const getTokenSymbol = async (
 export const getTokenName = async (
   tokenId: string,
   txBuilder: TransactionBuilder,
-  server: Server,
+  server: Server
 ) => {
   const contract = new Contract(tokenId);
   const tx = txBuilder
@@ -189,7 +189,7 @@ export const getTokenName = async (
 export const getTokenDecimals = async (
   tokenId: string,
   txBuilder: TransactionBuilder,
-  server: Server,
+  server: Server
 ) => {
   const contract = new Contract(tokenId);
   const tx = txBuilder
@@ -215,18 +215,24 @@ export const createNewCampaign = async ({
   txBuilderC,
   server,
   networkPassphrase,
+  category,
+  date,
+  main_location,
 }: {
-  contractID: string,
-  artistPubKey: string,
-  title: string,
-  desc: string,
-  imageUrl: string,
-  target: string,
-  deadline: string,
+  contractID: string;
+  artistPubKey: string;
+  title: string;
+  desc: string;
+  imageUrl: string;
+  target: string;
+  deadline: string;
   memo: string;
   txBuilderC: TransactionBuilder;
   server: Server;
   networkPassphrase: string;
+  category: string;
+  date: string;
+  main_location: string;
 }) => {
   const contract = new Contract(contractID);
 
@@ -239,11 +245,14 @@ export const createNewCampaign = async ({
             accountToScVal(artistPubKey),
             xdr.ScVal.scvString(title),
             xdr.ScVal.scvString(desc),
+            xdr.ScVal.scvString(category),
+            xdr.ScVal.scvString(main_location),
+            xdr.ScVal.scvString(date),
             xdr.ScVal.scvString(imageUrl),
             new ScInt(target).toI128(),
             new ScInt(deadline).toU64(),
-          ],
-        ),
+          ]
+        )
       )
       .setTimeout(TimeoutInfinite);
 
@@ -253,7 +262,7 @@ export const createNewCampaign = async ({
 
     const preparedTransaction = await server.prepareTransaction(
       tx.build(),
-      networkPassphrase,
+      networkPassphrase
     );
 
     return preparedTransaction.toXDR();
@@ -262,7 +271,6 @@ export const createNewCampaign = async ({
     return "error";
   }
 };
-
 
 export const donateToCampaignByID = async ({
   contractID,
@@ -275,11 +283,11 @@ export const donateToCampaignByID = async ({
   server,
   networkPassphrase,
 }: {
-  contractID: string,
-  id: number,
-  donorPubKey: string,
-  amount: string,
-  nativeToken: string,
+  contractID: string;
+  id: number;
+  donorPubKey: string;
+  amount: string;
+  nativeToken: string;
   memo: string;
   txBuilderC: TransactionBuilder;
   server: Server;
@@ -296,9 +304,9 @@ export const donateToCampaignByID = async ({
             xdr.ScVal.scvU32(id),
             accountToScVal(donorPubKey),
             new ScInt(amount).toI128(),
-            accountToScVal(nativeToken)
-          ],
-        ),
+            accountToScVal(nativeToken),
+          ]
+        )
       )
       .setTimeout(TimeoutInfinite);
 
@@ -308,7 +316,7 @@ export const donateToCampaignByID = async ({
 
     const preparedTransaction = await server.prepareTransaction(
       tx.build(),
-      networkPassphrase,
+      networkPassphrase
     );
 
     return preparedTransaction.toXDR();
@@ -324,7 +332,7 @@ export const getEstimatedFee = async (
   destinationPubKey: string,
   memo: string,
   txBuilder: TransactionBuilder,
-  server: Server,
+  server: Server
 ) => {
   const contract = new Contract(tokenId);
   const tx = txBuilder
@@ -334,8 +342,8 @@ export const getEstimatedFee = async (
         ...[
           accountToScVal(destinationPubKey), // to
           numberToI128(quantity), // quantity
-        ],
-      ),
+        ]
+      )
     )
     .setTimeout(TimeoutInfinite);
 

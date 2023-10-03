@@ -92,7 +92,7 @@ function parseError(message: string): Err | undefined {
 export const networks = {
     futurenet: {
         networkPassphrase: "Test SDF Future Network ; October 2022",
-        contractId: "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6",
+        contractId: "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O",
     }
 } as const
 
@@ -108,12 +108,15 @@ const Errors = {
 }
 export interface Campaign {
   amount_collected: i128;
+  category: string;
+  date: string;
   deadline: u64;
   description: string;
   donations: Array<i128>;
   donators: Array<Address>;
   id: u32;
   image: string;
+  main_location: string;
   owner: Address;
   status: boolean;
   target: i128;
@@ -128,10 +131,10 @@ export class Contract {
     constructor(public readonly options: ClassOptions) {
         this.spec = new ContractSpec([
             "AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAACAAAAAAAAAAWRGVhZGxpbmVTaG91bGRCZUZ1dHVyZQAAAAAAAQAAAAAAAAAQQ2FtcGFpZ25Ob3RFeGlzdAAAAAIAAAAAAAAAEUFtb3VudE11c3ROb25aZXJvAAAAAAAAAwAAAAAAAAANVGFyZ2V0UmVhY2hlZAAAAAAAAAQAAAAAAAAAF0Ftb3VudEV4Y2VlZFRhcmdldExpbWl0AAAAAAUAAAAAAAAAFENhbXBhaWduQWxyZWFkeUV4aXN0AAAABgAAAAAAAAAVSWRDYW1wYWlnbk11c3ROb25aZXJvAAAAAAAABwAAAAAAAAAUTG93QW1vdW50Rm9yU3BsaXR0ZXIAAAAI",
-        "AAAAAQAAAAAAAAAAAAAACENhbXBhaWduAAAACwAAAAAAAAAQYW1vdW50X2NvbGxlY3RlZAAAAAsAAAAAAAAACGRlYWRsaW5lAAAABgAAAAAAAAALZGVzY3JpcHRpb24AAAAAEAAAAAAAAAAJZG9uYXRpb25zAAAAAAAD6gAAAAsAAAAAAAAACGRvbmF0b3JzAAAD6gAAABMAAAAAAAAAAmlkAAAAAAAEAAAAAAAAAAVpbWFnZQAAAAAAABAAAAAAAAAABW93bmVyAAAAAAAAEwAAAAAAAAAGc3RhdHVzAAAAAAABAAAAAAAAAAZ0YXJnZXQAAAAAAAsAAAAAAAAABXRpdGxlAAAAAAAAEA==",
+        "AAAAAQAAAAAAAAAAAAAACENhbXBhaWduAAAADgAAAAAAAAAQYW1vdW50X2NvbGxlY3RlZAAAAAsAAAAAAAAACGNhdGVnb3J5AAAAEAAAAAAAAAAEZGF0ZQAAABAAAAAAAAAACGRlYWRsaW5lAAAABgAAAAAAAAALZGVzY3JpcHRpb24AAAAAEAAAAAAAAAAJZG9uYXRpb25zAAAAAAAD6gAAAAsAAAAAAAAACGRvbmF0b3JzAAAD6gAAABMAAAAAAAAAAmlkAAAAAAAEAAAAAAAAAAVpbWFnZQAAAAAAABAAAAAAAAAADW1haW5fbG9jYXRpb24AAAAAAAAQAAAAAAAAAAVvd25lcgAAAAAAABMAAAAAAAAABnN0YXR1cwAAAAAAAQAAAAAAAAAGdGFyZ2V0AAAAAAALAAAAAAAAAAV0aXRsZQAAAAAAABA=",
         "AAAAAgAAAAAAAAAAAAAAB0RhdGFLZXkAAAAABAAAAAAAAAAAAAAACkRldkFjY291bnQAAAAAAAAAAAAAAAAAEExhdW5jaHBhZEFjY291bnQAAAAAAAAAAAAAAAlBcnR5VG9rZW4AAAAAAAAAAAAAAAAAAApUb2tlbkFkbWluAAA=",
         "AAAAAAAAAAAAAAAKaW5pdGlhbGl6ZQAAAAAABAAAAAAAAAAHZGV2X2FjYwAAAAATAAAAAAAAAA1sYXVuY2hwYWRfYWNjAAAAAAAAEwAAAAAAAAAKYXJ0eV90b2tlbgAAAAAAEwAAAAAAAAALdG9rZW5fYWRtaW4AAAAAEwAAAAA=",
-        "AAAAAAAAAAAAAAAPY3JlYXRlX2NhbXBhaWduAAAAAAYAAAAAAAAACm93bmVyX2FkZHIAAAAAABMAAAAAAAAACXRpdGxlX2NtcAAAAAAAABAAAAAAAAAACGRlc2NfY21wAAAAEAAAAAAAAAAJaW1hZ2VfY21wAAAAAAAAEAAAAAAAAAAKdGFyZ2V0X2NtcAAAAAAACwAAAAAAAAAMZGVhZGxpbmVfY21wAAAABgAAAAEAAAPpAAAH0AAAAAhDYW1wYWlnbgAAAAM=",
+        "AAAAAAAAAAAAAAAPY3JlYXRlX2NhbXBhaWduAAAAAAkAAAAAAAAACm93bmVyX2FkZHIAAAAAABMAAAAAAAAACXRpdGxlX2NtcAAAAAAAABAAAAAAAAAACGRlc2NfY21wAAAAEAAAAAAAAAAMY2F0ZWdvcnlfY21wAAAAEAAAAAAAAAARbWFpbl9sb2NhdGlvbl9jbXAAAAAAAAAQAAAAAAAAAAhkYXRlX2NtcAAAABAAAAAAAAAACWltYWdlX2NtcAAAAAAAABAAAAAAAAAACnRhcmdldF9jbXAAAAAAAAsAAAAAAAAADGRlYWRsaW5lX2NtcAAAAAYAAAABAAAD6QAAB9AAAAAIQ2FtcGFpZ24AAAAD",
         "AAAAAAAAAAAAAAANZ2V0X2NhbXBhaWducwAAAAAAAAAAAAABAAAD6gAAB9AAAAAIQ2FtcGFpZ24=",
         "AAAAAAAAAAAAAAAMZ2V0X2NhbXBhaWduAAAAAQAAAAAAAAALY2FtcGFpZ25faWQAAAAABAAAAAEAAAfQAAAACENhbXBhaWdu",
         "AAAAAAAAAAAAAAASZG9uYXRlX3RvX2NhbXBhaWduAAAAAAAEAAAAAAAAAAJpZAAAAAAABAAAAAAAAAANZG9ub3JfYWRkcmVzcwAAAAAAABMAAAAAAAAABmFtb3VudAAAAAAACwAAAAAAAAAIdG9rZW5faWQAAAATAAAAAQAAA+kAAAPtAAAAAwAAAAsAAAALAAAACwAAAAM=",
@@ -170,7 +173,7 @@ export class Contract {
     }
 
 
-    async createCampaign<R extends ResponseTypes = undefined>({owner_addr, title_cmp, desc_cmp, image_cmp, target_cmp, deadline_cmp}: {owner_addr: Address, title_cmp: string, desc_cmp: string, image_cmp: string, target_cmp: i128, deadline_cmp: u64}, options: {
+    async createCampaign<R extends ResponseTypes = undefined>({owner_addr, title_cmp, desc_cmp, category_cmp, main_location_cmp, date_cmp, image_cmp, target_cmp, deadline_cmp}: {owner_addr: Address, title_cmp: string, desc_cmp: string, category_cmp: string, main_location_cmp: string, date_cmp: string, image_cmp: string, target_cmp: i128, deadline_cmp: u64}, options: {
         /**
          * The fee to pay for the transaction. Default: 100.
          */
@@ -191,7 +194,7 @@ export class Contract {
                     try {
             return await invoke({
             method: 'create_campaign',
-            args: this.spec.funcArgsToScVals("create_campaign", {owner_addr, title_cmp, desc_cmp, image_cmp, target_cmp, deadline_cmp}),
+            args: this.spec.funcArgsToScVals("create_campaign", {owner_addr, title_cmp, desc_cmp, category_cmp, main_location_cmp, date_cmp, image_cmp, target_cmp, deadline_cmp}),
             ...options,
             ...this.options,
             parseResultXdr: (xdr): Ok<Campaign> | Err<Error_> | undefined => {

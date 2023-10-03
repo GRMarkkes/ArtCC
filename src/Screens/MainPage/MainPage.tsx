@@ -15,11 +15,11 @@ import { NetworkDetails } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
 
 interface Web3PageProps {
-    networkDetails: NetworkDetails;
-    setPubKey: (pubKey: string) => void;
-    swkKit: StellarWalletsKit;
-    pubKey: string;
-  }
+  networkDetails: NetworkDetails;
+  setPubKey: (pubKey: string) => void;
+  swkKit: StellarWalletsKit;
+  pubKey: string;
+}
 
 function MainPage(props: Web3PageProps) {
   const navigate = useNavigate();

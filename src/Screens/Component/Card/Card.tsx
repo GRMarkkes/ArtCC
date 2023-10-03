@@ -52,7 +52,7 @@ export type Duration = bigint;
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-"CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
+  "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -62,23 +62,21 @@ const crowdFund = new Crowdfund.Contract({
 
 const Card = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Crowdfund.Campaign>();
-  useEffect(()=>{
-    if(props?.movieData){
-      getCampaingByID(props?.movieData)
+  useEffect(() => {
+    if (props?.movieData) {
+      getCampaingByID(props?.movieData);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[props])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props]);
 
-  const getCampaingByID = async(id: number) => {
+  const getCampaingByID = async (id: number) => {
     try {
-
-      let data = await crowdFund.getCampaign({campaign_id: id});
+      let data = await crowdFund.getCampaign({ campaign_id: id });
 
       setSingleCampaign(data);
 
       console.log(singleCampaign);
     } catch (error) {
-      alert(error);
       console.log(error);
     }
   };
@@ -89,8 +87,8 @@ const Card = (props: Web3PageProps) => {
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth >= 1220);
 
   const contractIdCrowdFund =
-  "CDYEIAFYOU7SUTV4JJCESIJDUYCQGNDMDK7LK5TOBZ7MKDGSVGI3ZDX6";
-  
+    "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
+
   const NATIVE_TOKEN =
     "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 
@@ -336,7 +334,10 @@ const Card = (props: Web3PageProps) => {
                   <p style={{ height: 5, color: "#45AFD9" }}>SEK</p>
                 </>
                 <button
-                  onClick={() => {if(singleCampaign?.id)donateToCampaign(singleCampaign?.id)}}
+                  onClick={() => {
+                    if (singleCampaign?.id)
+                      donateToCampaign(singleCampaign?.id);
+                  }}
                   style={{ border: "none", color: "#45AFD9" }}
                 >
                   Donate To Campaign
