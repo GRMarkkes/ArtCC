@@ -16,6 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Create from "../Create/Create";
+import Inbox from "../../../Asset/Inbox.png";
 
 import { motion } from "framer-motion";
 // import Create from "../Create/Create";
@@ -71,6 +72,8 @@ function Header(props: Web3PageProps) {
   const {
     register,
     handleSubmit,
+    reset,
+
     formState: { errors },
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
@@ -114,6 +117,7 @@ function Header(props: Web3PageProps) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    reset();
     // setIsHovered(false);
   };
   // interface TagProps {
@@ -191,7 +195,9 @@ function Header(props: Web3PageProps) {
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        props?.onPress(true);
+        closeModal();
+        props?.onPress && props?.onPress(true);
+
         console.log("result", result);
       } catch (error) {
         console.log(error);
@@ -555,19 +561,21 @@ function Header(props: Web3PageProps) {
                     <div className="modal-tags">
                       <Tag text="green" />
                       <Tag text="green" />
-                      <Tag text="green" />
                     </div>
                   </div>
                 </div>
                 <div className="App-image">
-                  <input type="file" onChange={handleChange} />
+                  <label htmlFor="file-input" className="image-input-field">
+                    <img src={Inbox} alt="inbox" />
+                  </label>
+                  <input id="file-input" type="file" onChange={handleChange} />
                   {/* {base64File && (
                     <div>
                       <p>File converted to base64:</p>
                       <pre style={{ color: "white" }}>{base64File}</pre>
                     </div>
                   )} */}
-                  <div>
+                  <div style={{ marginLeft: "5%" }}>
                     <h3>Click or drag file to this area to upload</h3>
                     <p>
                       Support for a single or bulk upload. Strictly prohibit
@@ -588,8 +596,10 @@ function Header(props: Web3PageProps) {
                     marginTop: "10%",
                     marginBottom: "10%",
                     display: "flex",
+                    flexWrap: "wrap",
                     justifyContent: "space-between",
                   }}
+                  className="button-modal"
                 >
                   <div>
                     <button className="app-button">
@@ -599,7 +609,7 @@ function Header(props: Web3PageProps) {
                     </button>
                   </div>
                   <div>
-                    <button className="app-button" type="submit">
+                    <button className="app-button other" type="submit">
                       <SlEnergy />
                       Post
                     </button>

@@ -166,9 +166,8 @@ line-height: 24px; /* 150% */
   display: flex;
   margin-right: 2%;
 }
-.App-image input{
-  padding-top: 5%;
-  padding-left: 2%;
+.App-image>input{
+  display: none;
 }
 .App-image h3{
   color: var(--character-primary-inverse, #FFF);
@@ -207,8 +206,10 @@ font-family: Montserrat;
 font-size: 18px;
 }
 
-
-
+.image-input-field img{
+    margin-top: 35%;
+    margin-left: 15%;
+}
 
 .header {
   display: flex;
@@ -273,6 +274,14 @@ font-size: 18px;
   border-bottom: 1px solid #01A19A;
 }
 
+.button-modal{
+  margin-top: 10%;
+  margin-bottom: 10%;
+  
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between ,
+}
 
 @media screen and (min-width: 920px){
   .menu-toggle{
@@ -305,10 +314,8 @@ font-size: 18px;
 @media screen and (max-width: 810px){
   .Header-Modal-Content {
       width: 80%;
-      left: 5%;
+      left: 10%;
       
-      
-
 
   }
   .All-label{
@@ -317,7 +324,23 @@ font-size: 18px;
       margin-right: 0%;
     }
     .App-image{
-      height: 23vh;
+      height: 29vh;
+          }
+          .button-modal{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          }
+          .app-button{
+            height: 7vh;
+          }
+          .other{
+            margin-top: 4%;
+          }
+          .image-file{
+            justify-content: center;
+            align-items: center;
           }
    
 }
