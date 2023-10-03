@@ -6,6 +6,7 @@
     "node": ">=18.x"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.1",
     "@material-ui/icons": "^4.11.3",
     "@mui/material": "^5.14.7",
     "@soroban-react/chains": "^6.1.1",
@@ -22,12 +23,12 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/react-modal": "^3.16.0",
+    "CrowdFund": "./CrowdFund",
     "axios": "^0.27.2",
     "babel-loader": "8.0.4",
     "bigint-conversion": "^2.4.1",
     "bignumber.js": "^9.1.0",
     "bootstrap": "^5.3.1",
-    "CrowdFund": "./CrowdFund",
     "css-loader": "^6.8.1",
     "eslint": "^8.48.0",
     "eslint-config-react-app": "^7.0.1",
@@ -35,6 +36,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
     "react-icons": "^4.10.1",
     "react-modal": "^3.16.1",
     "react-paginate": "^8.2.0",
@@ -52,7 +54,8 @@
     "token": "./Token",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
-    "webpack-dev-middleware": "^6.1.1"
+    "webpack-dev-middleware": "^6.1.1",
+    "zod": "^3.22.2"
   },
   "scripts": {
     "dev": "webpack-dev-server --hot  --config config/webpack.dev.js",

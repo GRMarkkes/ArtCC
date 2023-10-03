@@ -11,6 +11,10 @@ import { StellarWalletsKit } from "stellar-wallets-kit";
 import Modal from "react-modal";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
 import { motion } from "framer-motion";
 // import Create from "../Create/Create";
 // import { motion } from "framer-motion";
@@ -21,6 +25,32 @@ import {
   getTxBuilder,
   submitTx,
 } from "helper/soroban";
+const validationSchema = z.object({
+  createrName: z.string().min(1, { message: "Create Name is required" }),
+  title: z.string().min(1, { message: "Title is required" }),
+  email: z.string().min(1, { message: "Email is required" }),
+  addressAccount: z.string().min(1, { message: "Address Account is required" }),
+  shortDescription: z
+    .string()
+    .min(1, { message: "Short Description is required" }),
+  tempLocation: z
+    .string()
+    .min(1, { message: "Temporary Location is required" }),
+  desc: z.string().min(1, { message: "Description is required" }),
+  category: z.string().min(1, { message: "Category is required" }),
+  mainLocation: z.string().min(1, { message: "Main Location is required" }),
+  date: z.string().min(1, { message: "Date is required" }),
+  // imageUrl: z.string().min(1, { message: "Date is required" }),
+  target: z.string().refine(
+    (v) => {
+      let n = Number(v);
+      return !isNaN(n) && v?.length > 0;
+    },
+    { message: "Invalid number" }
+  ),
+  // deadline: z.string().min(1, { message: "Confirm Password is required" }),
+});
+type ValidationSchema = z.infer<typeof validationSchema>;
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
@@ -34,19 +64,15 @@ function Header(props: Web3PageProps) {
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [file, setFile] = useState<string>(""); // Change the type to 'string'
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    targ: "",
-    addressAccount: "",
-    mainLocation: "",
-    projectDescription: "",
-    deadline: "",
-    date: "",
-    memo: "",
-  });
 
-  console.log(formData, "drtdd");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(validationSchema),
+  });
+  console.log("🚀 ~ file: Header.tsx:57 ~ Header ~ errors:", errors);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const selectedFile = e.target.files?.[0];
@@ -78,10 +104,14 @@ function Header(props: Web3PageProps) {
   // const Tag: React.FC<TagProps> = ({ text }) => {
   //   return <div className="tag">{text}</div>;
   // };
-  async function createCampaign() {
+  const createCampaign: SubmitHandler<ValidationSchema> = async (values) => {
+    console.log(
+      "🚀 ~ file: Header.tsx:104 ~ constcreateCampaign:SubmitHandler<ValidationSchema>= ~ values:",
+      values
+    );
+
     try {
       console.log("create campaign");
-
       const server = getServer(props.networkDetails);
 
       const txBuilder = await getTxBuilder(
@@ -90,16 +120,23 @@ function Header(props: Web3PageProps) {
         server,
         props.networkDetails.networkPassphrase
       );
-      const test = {
+      const body = {
         contractID: contractIdCrowdFund,
         artistPubKey: props.pubKey,
-        title: formData.title,
-        desc: formData.projectDescription,
-        category: formData.category,
-        main_location: formData.mainLocation,
-        date: formData.date,
+        title: values.title,
+        desc: values.desc,
+        category: values.category,
+        main_location: values.mainLocation,
+        date: JSON.stringify({
+          date: values.date,
+          createrName: values.createrName,
+          addressAccount: values.addressAccount,
+          email: values.email,
+          shortDescription: values.shortDescription,
+          tempLocation: values.tempLocation,
+        }),
         imageUrl: "image url food",
-        target: formData.targ,
+        target: values.target.toString(),
         deadline: "1700613645",
         memo: "",
         txBuilderC: txBuilder,
@@ -107,8 +144,11 @@ function Header(props: Web3PageProps) {
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
       };
-      console.log(test, "this is create campgain");
-      const preparedTransaction = await createNewCampaign(test);
+      console.log(
+        "🚀 ~ file: Header.tsx:125 ~ constcreateCampaign:SubmitHandler<ValidationSchema>= ~ body:",
+        body
+      );
+      const preparedTransaction = await createNewCampaign(body);
 
       console.log("preparedTransaction", preparedTransaction);
 
@@ -135,7 +175,7 @@ function Header(props: Web3PageProps) {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div>
@@ -260,174 +300,165 @@ function Header(props: Web3PageProps) {
                 className="header-modal-close-icon"
               />
             </div>
-            <div>
-              <div className="All-label">
-                <div className="Input-Text">
-                  <label>Creater Name</label>
-                  <input placeholder="Name" type="text" />
-                </div>
-                <div className="Input-Text">
-                  <label>Budget</label>
-                  <div style={{ display: "flex" }}>
+            <form onSubmit={handleSubmit(createCampaign)}>
+              <div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Creater Name</label>
                     <input
-                      placeholder="0.00"
+                      placeholder="Name"
                       type="text"
-                      onChange={(e) => {
-                        formData.targ = e?.target?.value;
-                        setFormData({ ...formData });
-                      }}
+                      {...register("createrName")}
+                    />
+                  </div>
+                  <div className="Input-Text">
+                    <label>Budget</label>
+                    <div style={{ display: "flex" }}>
+                      <input
+                        placeholder="0.00"
+                        type="text"
+                        {...register("target")}
+                      />
+                      <span style={{ color: "white" }}>
+                        {errors.target?.message}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Email</label>
+                    <input
+                      placeholder="Email"
+                      {...register("email")}
+                      type="text"
+                    />
+                  </div>
+                  <div className="Input-Text">
+                    <label>Category</label>
+                    <select {...register("category")}>
+                      <option value="option1">Option 1</option>
+                      <option value="option2">Option 2</option>
+                      <option value="option3">Option 3</option>
+                      {/* Add more options as needed */}
+                    </select>
+                  </div>
+                </div>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Project Ttile</label>
+                    <input
+                      placeholder="Title"
+                      type="text"
+                      {...register("title")}
                     />
                   </div>
                 </div>
-              </div>
-              <div className="All-label">
-                <div className="Input-Text">
-                  <label>Email</label>
-                  <input placeholder="Email" type="text" />
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Address Account</label>
+                    <input
+                      placeholder="Wallet account used for login"
+                      type="text"
+                      {...register("addressAccount")}
+                    />
+                  </div>
                 </div>
-                <div className="Input-Text">
-                  <label>Category</label>
-                  <select
-                    onChange={(e) => {
-                      formData.category = e?.target?.value;
-                      setFormData({ ...formData });
-                    }}
-                  >
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                    {/* Add more options as needed */}
-                  </select>
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Short Description</label>
+                    <input
+                      placeholder="Short Description"
+                      {...register("shortDescription")}
+                      type="text"
+                    />
+                  </div>
+                  <div className="Input-Text">
+                    {" "}
+                    <label>Main Location</label>
+                    <input
+                      placeholder="Set Location"
+                      type="text"
+                      {...register("mainLocation")}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="All-label">
-                <div className="Input-Text">
-                  <label>Project Ttile</label>
-                  <input
-                    placeholder="Title"
-                    type="text"
-                    onChange={(e) => {
-                      formData.title = e?.target?.value;
-                      setFormData({ ...formData });
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="All-label">
-                <div className="Input-Text">
-                  <label>Address Account</label>
-                  <input
-                    placeholder="Wallet account used for login"
-                    type="text"
-                    onChange={(e) => {
-                      formData.addressAccount = e?.target?.value;
-                      setFormData({ ...formData });
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="All-label">
-                <div className="Input-Text">
-                  <label>Short Description</label>
-                  <input
-                    placeholder="Short Description"
-                    type="text"
-                    onChange={(e) => {
-                      formData.deadline = e?.target?.value;
-                      setFormData({ ...formData });
-                    }}
-                  />
-                </div>
-                <div className="Input-Text">
-                  {" "}
-                  <label>Main Location</label>
-                  <input
-                    placeholder="Set Location"
-                    type="text"
-                    onChange={(e) => {
-                      formData.mainLocation = e?.target?.value;
-                      setFormData({ ...formData });
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="Input-Text" style={{ marginTop: "2%" }}>
-                <label>Project Description</label>
-                <textarea
-                  placeholder="A design system for enterprise-level products. Create an efficient and enjoyable work experience."
-                  style={{
-                    resize: "vertical", // Allow vertical resizing
-                    minHeight: "100px", // Set a minimum height
-                  }}
-                  onChange={(e) => {
-                    formData.projectDescription = e?.target?.value;
-                    setFormData({ ...formData });
-                  }}
-                />
-              </div>
-
-              <div className="All-label">
-                <div className="Input-Text">
-                  <label>Temporary Location</label>
-                  <input placeholder="Set Location" type="text" />
-                </div>
-                <div className="Input-Text">
-                  {" "}
-                  <label>Date</label>
-                  <i style={{ position: "absolute", top: "3%" }}></i>
-                  <input
-                    placeholder="Set Location"
-                    type="date"
+                <div className="Input-Text" style={{ marginTop: "2%" }}>
+                  <label>Project Description</label>
+                  <textarea
+                    placeholder="A design system for enterprise-level products. Create an efficient and enjoyable work experience."
                     style={{
-                      paddingRight: "4%",
+                      resize: "vertical", // Allow vertical resizing
+                      minHeight: "100px", // Set a minimum height
                     }}
-                    onChange={(e) => {
-                      formData.date = e?.target?.value;
-                      setFormData({ ...formData });
-                    }}
+                    {...register("desc")}
                   />
                 </div>
-              </div>
-              <div className="All-label-all">
-                <div className="Input-Text-green">
-                  <input placeholder="Set Location" type="text" />
+
+                <div className="All-label">
+                  <div className="Input-Text">
+                    <label>Temporary Location</label>
+                    <input
+                      placeholder="Set Location"
+                      {...register("tempLocation")}
+                      type="text"
+                    />
+                  </div>
+                  <div className="Input-Text">
+                    {" "}
+                    <label>Date</label>
+                    <i style={{ position: "absolute", top: "3%" }}></i>
+                    <input
+                      placeholder="Set Location"
+                      type="date"
+                      style={{
+                        paddingRight: "4%",
+                      }}
+                      {...register("date")}
+                    />
+                  </div>
+                </div>
+                <div className="All-label-all">
+                  <div className="Input-Text-green">
+                    <input placeholder="Set Location" type="text" />
+                  </div>
+                </div>
+                <div className="App-image">
+                  <input type="file" onChange={handleChange} />{" "}
+                  <div>
+                    <h3>Click or drag file to this area to upload</h3>
+                    <p>
+                      Support for a single or bulk upload. Strictly prohibit
+                      from uploading company data or other band files
+                    </p>
+                  </div>
+                </div>
+                <div className="image-file">
+                  <img
+                    src={file}
+                    style={{ width: "20%", height: "20vh" }}
+                    alt="haia"
+                  />
+                </div>
+                <div
+                  style={{
+                    marginTop: "10%",
+                    marginBottom: "10%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>
+                    <button className="app-button" type="submit">
+                      Post
+                    </button>
+                  </div>
+                  <div>
+                    <button className="app-button">save</button>
+                  </div>
                 </div>
               </div>
-              <div className="App-image">
-                <input type="file" onChange={handleChange} />{" "}
-                <div>
-                  <h3>Click or drag file to this area to upload</h3>
-                  <p>
-                    Support for a single or bulk upload. Strictly prohibit from
-                    uploading company data or other band files
-                  </p>
-                </div>
-              </div>
-              <div className="image-file">
-                <img
-                  src={file}
-                  style={{ width: "20%", height: "20vh" }}
-                  alt="haia"
-                />
-              </div>
-              <div
-                style={{
-                  marginTop: "10%",
-                  marginBottom: "10%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>
-                  <button className="app-button" onClick={createCampaign}>
-                    Post
-                  </button>
-                </div>
-                <div>
-                  <button className="app-button">save</button>
-                </div>
-              </div>
-            </div>
+            </form>
           </motion.div>
         </Modal>
       </div>

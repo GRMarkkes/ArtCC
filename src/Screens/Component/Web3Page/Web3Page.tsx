@@ -41,6 +41,15 @@ interface Web3PageProps {
   pubKey: string;
 }
 
+const dataTransform = (data: string, key: string): string => {
+  try {
+    let dataObj = JSON.parse(data);
+
+    return dataObj[key] || "";
+  } catch (error) {
+    return data;
+  }
+};
 const Web3Page = (props: Web3PageProps) => {
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
 
@@ -259,6 +268,8 @@ const Web3Page = (props: Web3PageProps) => {
             <h5>Donators: [ {campaign.donators.toString()} ]</h5>
             <h5>Owner: {campaign.owner.toString()}</h5>
             <h5>Cateogry: {campaign.category.toString()}</h5>
+            <h5>Date: {dataTransform(campaign.date, "date")}</h5>
+            <h5>Creater Name: {dataTransform(campaign.date, "createrName")}</h5>
             <h5>
               ----------------------------------------------------------------------
             </h5>
