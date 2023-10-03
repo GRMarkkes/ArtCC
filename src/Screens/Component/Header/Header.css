@@ -1,3 +1,4 @@
+
 .Header-Modal-Content{
   height: 90vh; 
   overflow-y: auto;
@@ -44,10 +45,10 @@ line-height: 24px; /* 150% */
 }
 .header-modal-close-icon{
   position: absolute;
-  top: 5%;
+  top: 3%;
   right: 11%;
   color: #01A19A;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   z-index: 2;
 }
@@ -123,6 +124,15 @@ line-height: 24px; /* 150% */
   cursor: pointer;
   padding: 0 5px;
 }
+
+.image-file{
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-right: 2%;
+  justify-content: space-between;
+}
+
 
 .Input-Text-green{
   display: flex;
@@ -296,7 +306,7 @@ font-size: 18px;
   .Header-Modal-Content {
       width: 80%;
       left: 5%;
-     
+      
       
 
 
@@ -308,7 +318,8 @@ font-size: 18px;
     }
     .App-image{
       height: 23vh;
-    }
+          }
+   
 }
 
 

@@ -1,5 +1,5 @@
 // import React from "react";
-import ImageCreate from "../../../Asset/Rectangle 4.png";
+import ImageCreate from "../../../Asset/Rectangle 3.png";
 import "./Create.css";
 import deleteIcon from "../../../Asset/wrapper.png";
 const Create = () => {
