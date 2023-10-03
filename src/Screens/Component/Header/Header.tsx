@@ -99,11 +99,6 @@ function Header(props: Web3PageProps) {
     }
   };
 
-  <style>
-    @import
-    url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
-  </style>;
-
   const navigate = useNavigate();
   const contractIdCrowdFund =
     "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
@@ -325,7 +320,7 @@ function Header(props: Web3PageProps) {
             className="modal-header-opening"
           >
             <div className="ProjectInput">
-              <p>PROJECT INPUT</p>
+              <h4>PROJECT INPUT</h4>
               <AiOutlineCloseCircle
                 onClick={closeModal}
                 className="header-modal-close-icon"
@@ -348,7 +343,7 @@ function Header(props: Web3PageProps) {
                     </div>
                   </div>
                   <div className="Input-Text">
-                    <label>Budget</label>
+                    <label>Financing Goal</label>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <input
                         placeholder="0.00"
