@@ -542,7 +542,7 @@ const Container = styled.div`
   img {
     border-radius: 0.2rem;
     width: 100%;
-    height: 70%;
+    height: 60%;
   }
 
   .hover {
