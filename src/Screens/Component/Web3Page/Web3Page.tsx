@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Crowdfund from "CrowdFund";
 import * as Token from "token";
 import { BASE_FEE, Address } from "soroban-client";
@@ -161,11 +161,10 @@ const Web3Page = (props: Web3PageProps) => {
       // console.log(error);
     }
   }
-
-  async function getCampaings() {
+  const getCampaigns = useCallback(async () => {
     try {
-      // console.log("getCampaings");
-      // console.log("props.pubKey", props.pubKey);
+      console.log("getCampaigns");
+      console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
 
@@ -173,34 +172,35 @@ const Web3Page = (props: Web3PageProps) => {
 
       // console.log(data);
     } catch (error) {
-      // console.log(error);
+      // Handle errors here
+      console.error(error);
     }
-  }
+  }, [props.pubKey]);
 
-  async function tokenDetail() {
+  const tokenDetail = useCallback(async () => {
     try {
       let tokenName = await token.name();
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
-      //   tokenName
-      // );
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
+        tokenName
+      );
       token.symbol().then(setTokenSymbol);
 
       let publicKey = new Address(props.pubKey);
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
-      //   props.pubKey
-      // );
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
-      //   publicKey
-      // );
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
+        props.pubKey
+      );
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
+        publicKey
+      );
 
       let balance = await token.balance({ id: publicKey });
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
-      //   balance
-      // );
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
+        balance
+      );
 
       let formatted_balance = Number(balance) / 100000000;
 
@@ -213,12 +213,12 @@ const Web3Page = (props: Web3PageProps) => {
     } catch (error) {
       // console.log(error);
     }
-  }
+  }, [props.pubKey]);
 
   useEffect(() => {
-    getCampaings();
+    getCampaigns();
     tokenDetail();
-  });
+  }, [getCampaigns, tokenDetail]); // Use an array of dependencies here
 
   return (
     <div>

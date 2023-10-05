@@ -259,9 +259,24 @@ const Card = (props: Web3PageProps) => {
       }}
     >
       {isWideScreen ? (
-        <img src={cardImg} alt="card" />
+        <img
+          src={
+            singleCampaign?.image.includes("s.com")
+              ? singleCampaign?.image
+              : cardImg
+          }
+          alt="card"
+        />
       ) : (
-        <img src={cardImg} alt="card" onClick={openModal} />
+        <img
+          src={
+            singleCampaign?.image.includes("s.com")
+              ? singleCampaign?.image
+              : cardImg
+          }
+          alt="card"
+          onClick={openModal}
+        />
       )}
 
       {isHovered && (
@@ -284,7 +299,14 @@ const Card = (props: Web3PageProps) => {
           className="hover"
         >
           <div className="image-video-container">
-            <img src={cardImg} alt="card" />
+            <img
+              src={
+                singleCampaign?.image.includes("s.com")
+                  ? singleCampaign?.image
+                  : cardImg
+              }
+              alt="card"
+            />
             {/* <video src={video} autoPlay={true} loop muted /> */}
           </div>
           <div className="info-container flex column" style={{ color: "#fff" }}>
@@ -363,7 +385,15 @@ const Card = (props: Web3PageProps) => {
             <AiOutlineCloseCircle onClick={closeModal} className="close-icon" />
             <div className="modal-length">
               <div className="col-md-12">
-                <img src={cardImg} alt="movie" className="img-fluid" />
+                <img
+                  src={
+                    singleCampaign?.image.includes("s.com")
+                      ? singleCampaign?.image
+                      : cardImg
+                  }
+                  alt="card"
+                  className="img-fluid"
+                />
               </div>
               <div className="container bg-custom">
                 <div className="modal-main" style={{ marginLeft: "3%" }}>
@@ -512,7 +542,7 @@ const Container = styled.div`
   img {
     border-radius: 0.2rem;
     width: 100%;
-    height: 100%;
+    height: 70%;
   }
 
   .hover {
