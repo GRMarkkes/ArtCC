@@ -37,11 +37,10 @@ app.post("/upload", upload.single("image"), async (req, res) => {
   };
 
   try {
-    const data = await s3Client.send(new PutObjectCommand(params));
+    await s3Client.send(new PutObjectCommand(params));
     res.status(200).send({
-      message:
-        "Successfully uploaded object: " + params.Bucket + "/" + params.Key,
-      url: "Test",
+      message: "Successfully uploaded object",
+      url: `${process.env.CDN_ENDPOINT}/${params.Key}`,
     });
   } catch (err) {
     console.log("Error", err);
