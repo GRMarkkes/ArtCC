@@ -41,6 +41,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
     res.status(200).send({
       message:
         "Successfully uploaded object: " + params.Bucket + "/" + params.Key,
+      url: "Test",
     });
   } catch (err) {
     console.log("Error", err);
