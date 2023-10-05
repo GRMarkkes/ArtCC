@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Create from "../Create/Create";
 import Inbox from "../../../Asset/Inbox.png";
+import axios from "axios";
 
 import { motion } from "framer-motion";
 // import Create from "../Create/Create";
@@ -78,24 +79,25 @@ function Header(props: Web3PageProps) {
   } = useForm<ValidationSchema>({
     resolver: zodResolver(validationSchema),
   });
-  // console.log("🚀 ~ file: Header.tsx:57 ~ Header ~ errors:", errors);
 
-  const [base64File, setBase64File] = useState<string>("");
-  console.log(base64File);
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
+  const [baseImage, setBaseImage] = useState<any>();
+  const [displayImage, setDisplayImage] = useState<string>("");
+  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; // Get the selected file
 
-    if (selectedFile) {
+    if (file) {
+      setBaseImage(file);
+    }
+    if (file) {
       const reader = new FileReader();
 
-      reader.onload = (event) => {
-        if (event.target) {
-          const base64String = event.target.result as string;
-          setBase64File(base64String);
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        if (event.target && event.target.result) {
+          setDisplayImage(event.target.result as string);
         }
       };
 
-      reader.readAsDataURL(selectedFile);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -127,7 +129,27 @@ function Header(props: Web3PageProps) {
   const Tag: React.FC<TagProps> = ({ text }) => {
     return <div className="tag">{text}</div>;
   };
+
   const createCampaign: SubmitHandler<ValidationSchema> = async (values) => {
+    const bodyFormData = new FormData();
+    bodyFormData.append("image", baseImage);
+    console.log(bodyFormData, "body");
+    let imageUrl = "";
+    await axios({
+      method: "post",
+      url: "https://artcc-api-gmuh2.ondigitalocean.app/upload",
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function ({ data }) {
+        imageUrl = data.url;
+        console.log(data, "thisbshbs");
+      })
+      .catch(function (error) {
+        // Handle error
+        console.error(error, "this is the error");
+      });
+
     console.log(
       "🚀 ~ file: Header.tsx:104 ~ constcreateCampaign:SubmitHandler<ValidationSchema>= ~ values:",
       values
@@ -158,7 +180,7 @@ function Header(props: Web3PageProps) {
           shortDescription: values.shortDescription,
           tempLocation: values.tempLocation,
         }),
-        imageUrl: "hduhdud",
+        imageUrl,
         target: values.target.toString(),
         deadline: "1700613645",
         memo: "",
@@ -561,15 +583,18 @@ function Header(props: Web3PageProps) {
                 </div>
                 <div className="App-image">
                   <label htmlFor="file-input" className="image-input-field">
-                    <img src={Inbox} alt="inbox" />
+                    {baseImage ? (
+                      <img src={displayImage} alt="baseImage" />
+                    ) : (
+                      <img src={Inbox} alt="inbox" />
+                    )}
                   </label>
-                  <input id="file-input" type="file" onChange={handleChange} />
-                  {/* {base64File && (
-                    <div>
-                      <p>File converted to base64:</p>
-                      <pre style={{ color: "white" }}>{base64File}</pre>
-                    </div>
-                  )} */}
+                  <input
+                    id="file-input"
+                    type="file"
+                    onChange={handleFileInputChange}
+                  />
+
                   <div style={{ marginLeft: "5%" }}>
                     <h3>Click or drag file to this area to upload</h3>
                     <p>
