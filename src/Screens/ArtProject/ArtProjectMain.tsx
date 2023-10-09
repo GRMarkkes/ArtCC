@@ -7,7 +7,7 @@ import * as Crowdfund from "CrowdFund";
 import artimg from "../../Asset/Images/ArtProject_main.png";
 import "./ArtProjectMain.css";
 import ArtFooter from "../Component/ArtFooter";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NetworkDetails } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
 
@@ -52,26 +52,42 @@ const ArtProject = (props: Web3PageProps) => {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
 
-  async function getCampaings() {
+  // async function getCampaings() {
+  //   try {
+  //     setLoading(true);
+  //     let data = await crowdFund.getCampaigns();
+  //     setCampaigns(data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const getCampaigns = useCallback(async () => {
     try {
       setLoading(true);
+      console.log("getCampaigns");
+      console.log("props.pubKey", props.pubKey);
+
       let data = await crowdFund.getCampaigns();
+
       setCampaigns(data);
       setLoading(false);
+
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      // Handle errors here
+      console.error(error);
     }
-  }
+  }, [props.pubKey]);
 
   useEffect(() => {
-    if (props?.pubKey) {
-      getCampaings();
-    }
-  }, [props]);
+    getCampaigns();
+  }, [getCampaigns]);
 
   const getResult = (res: any) => {
     if (res === true) {
-      getCampaings();
+      getCampaigns();
     }
   };
 

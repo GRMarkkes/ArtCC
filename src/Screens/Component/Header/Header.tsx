@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import staller_header_logo from "../../../Asset/Images/main_logo.png";
@@ -29,6 +29,12 @@ import {
   getTxBuilder,
   submitTx,
 } from "helper/soroban";
+import {
+  WalletNetwork,
+  WalletType,
+  ISupportedWallet,
+} from "stellar-wallets-kit";
+import { FUTURENET_DETAILS } from "../../../helper/network";
 
 const validationSchema = z.object({
   createrName: z.string().min(1, { message: "Create Name is required" }),
@@ -65,7 +71,9 @@ interface Web3PageProps {
   value?: string;
   onPress?: (created: any) => void;
 }
+
 function Header(props: Web3PageProps) {
+  console.log(props, "this is props ");
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [file, setFile] = useState<string>(""); // Change the type to 'string'
@@ -82,6 +90,44 @@ function Header(props: Web3PageProps) {
 
   const [baseImage, setBaseImage] = useState<any>();
   const [displayImage, setDisplayImage] = useState<string>("");
+  const [selectedNetwork] = useState(FUTURENET_DETAILS);
+
+  const [activePubKey, setActivePubKey] = React.useState("");
+  const [connectWallet, setConnectWallet] = React.useState(true);
+  console.log(activePubKey);
+  const [SWKKit] = useState(
+    new StellarWalletsKit({
+      network: selectedNetwork.networkPassphrase as WalletNetwork,
+      selectedWallet: WalletType.FREIGHTER,
+    })
+  );
+  const connect = () => {
+    // See https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main for more options
+    SWKKit.openModal({
+      allowedWallets: [
+        WalletType.ALBEDO,
+        WalletType.FREIGHTER,
+        WalletType.XBULL,
+      ],
+      onWalletSelected: async (option: ISupportedWallet) => {
+        try {
+          // Set selected wallet,  network, and public key
+          SWKKit.setWallet(option.type);
+          const publicKey = await SWKKit.getPublicKey();
+
+          setActivePubKey(publicKey);
+          setConnectWallet(false);
+
+          console.log("publicKey", publicKey);
+
+          SWKKit.setNetwork(WalletNetwork.FUTURENET);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  };
+
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; // Get the selected file
 
@@ -289,7 +335,9 @@ function Header(props: Web3PageProps) {
               <Nav.Link
                 style={{ color: "#01A19A", marginTop: "3%" }}
                 onClick={() => {
-                  navigate("/MainApp");
+                  if (connectWallet) {
+                    connect();
+                  }
                 }}
               >
                 Connect Wallet
