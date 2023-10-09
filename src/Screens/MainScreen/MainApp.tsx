@@ -5,12 +5,13 @@ import { StellarWalletsKit } from "stellar-wallets-kit";
 // import Footer from "../Component/Footer/Footer";
 // import Wallet from '../WalletConnect/walletConnection'
 interface Web3PageProps {
-    networkDetails: NetworkDetails;
-    setPubKey: (pubKey: string) => void;
-    swkKit: StellarWalletsKit;
-    pubKey: string;
-  }
-  
+  networkDetails: NetworkDetails;
+  setPubKey: (pubKey: string) => void;
+  swkKit: StellarWalletsKit;
+  pubKey: string;
+  setConnectWallet: (connectWallet: boolean) => void;
+}
+
 function MainApp(props: Web3PageProps) {
   return (
     <>
@@ -19,6 +20,7 @@ function MainApp(props: Web3PageProps) {
         setPubKey={props.setPubKey}
         swkKit={props.swkKit}
         pubKey={props.pubKey}
+        setConnectWallet={props.setConnectWallet}
       />
       {/* <Wallet/>
             <Footer /> */}

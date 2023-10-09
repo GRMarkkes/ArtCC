@@ -8,12 +8,12 @@ import Web3Page from "../Component/Web3Page/Web3Page";
 // import Footer from "../Component/Footer/Footer";
 // import marketplacebackground_image from '../../Asset/Images/MarketPlace_main.png'
 
-
 interface MarketplaceMainProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
+  setConnectWallet: (connectWallet: boolean) => void;
 }
 
 const MarketplaceMain = (props: MarketplaceMainProps) => {
@@ -24,8 +24,9 @@ const MarketplaceMain = (props: MarketplaceMainProps) => {
         setPubKey={props.setPubKey}
         swkKit={props.swkKit}
         pubKey={props.pubKey}
+        setConnectWallet={props.setConnectWallet}
       />
-      
+
       <div style={{ marginTop: "20%", marginLeft: "20%" }}>
         <Web3Page
           networkDetails={props.networkDetails}

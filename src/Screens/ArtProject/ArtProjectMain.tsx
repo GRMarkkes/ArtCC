@@ -22,6 +22,7 @@ interface Web3PageProps {
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
+  setConnectWallet: (connectWallet: boolean) => void;
 }
 
 export type u32 = number;
@@ -99,6 +100,7 @@ const ArtProject = (props: Web3PageProps) => {
         swkKit={props.swkKit}
         pubKey={props.pubKey}
         onPress={getResult}
+        setConnectWallet={props.setConnectWallet}
       />
       <img className="img-fluid" src={artimg} alt="art" />
       <Container>

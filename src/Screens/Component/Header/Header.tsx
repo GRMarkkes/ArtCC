@@ -29,12 +29,6 @@ import {
   getTxBuilder,
   submitTx,
 } from "helper/soroban";
-import {
-  WalletNetwork,
-  WalletType,
-  ISupportedWallet,
-} from "stellar-wallets-kit";
-import { FUTURENET_DETAILS } from "../../../helper/network";
 
 const validationSchema = z.object({
   createrName: z.string().min(1, { message: "Create Name is required" }),
@@ -70,10 +64,10 @@ interface Web3PageProps {
   pubKey: string;
   value?: string;
   onPress?: (created: any) => void;
+  setConnectWallet: (connectWallet: boolean) => void;
 }
 
 function Header(props: Web3PageProps) {
-  console.log(props, "this is props ");
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [file, setFile] = useState<string>(""); // Change the type to 'string'
@@ -90,43 +84,7 @@ function Header(props: Web3PageProps) {
 
   const [baseImage, setBaseImage] = useState<any>();
   const [displayImage, setDisplayImage] = useState<string>("");
-  const [selectedNetwork] = useState(FUTURENET_DETAILS);
-
-  const [activePubKey, setActivePubKey] = React.useState("");
-  const [connectWallet, setConnectWallet] = React.useState(true);
-  console.log(activePubKey);
-  const [SWKKit] = useState(
-    new StellarWalletsKit({
-      network: selectedNetwork.networkPassphrase as WalletNetwork,
-      selectedWallet: WalletType.FREIGHTER,
-    })
-  );
-  const connect = () => {
-    // See https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main for more options
-    SWKKit.openModal({
-      allowedWallets: [
-        WalletType.ALBEDO,
-        WalletType.FREIGHTER,
-        WalletType.XBULL,
-      ],
-      onWalletSelected: async (option: ISupportedWallet) => {
-        try {
-          // Set selected wallet,  network, and public key
-          SWKKit.setWallet(option.type);
-          const publicKey = await SWKKit.getPublicKey();
-
-          setActivePubKey(publicKey);
-          setConnectWallet(false);
-
-          console.log("publicKey", publicKey);
-
-          SWKKit.setNetwork(WalletNetwork.FUTURENET);
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    });
-  };
+  const { setConnectWallet, networkDetails, pubKey, swkKit } = props;
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; // Get the selected file
@@ -203,17 +161,17 @@ function Header(props: Web3PageProps) {
 
     try {
       console.log("create campaign");
-      const server = getServer(props.networkDetails);
+      const server = getServer(networkDetails);
 
       const txBuilder = await getTxBuilder(
-        props.pubKey,
+        pubKey,
         BASE_FEE,
         server,
-        props.networkDetails.networkPassphrase
+        networkDetails.networkPassphrase
       );
       const body = {
         contractID: contractIdCrowdFund,
-        artistPubKey: props.pubKey,
+        artistPubKey: pubKey,
         title: values.title,
         desc: values.desc,
         category: values.category,
@@ -233,7 +191,7 @@ function Header(props: Web3PageProps) {
         txBuilderC: txBuilder,
         // category: "Art",
         server: server,
-        networkPassphrase: props.networkDetails.networkPassphrase,
+        networkPassphrase: networkDetails.networkPassphrase,
       };
       console.log(
         "🚀 ~ file: Header.tsx:125 ~ constcreateCampaign:SubmitHandler<ValidationSchema>= ~ body:",
@@ -244,15 +202,11 @@ function Header(props: Web3PageProps) {
       console.log("preparedTransaction", preparedTransaction);
 
       try {
-        const signedTx = await signTx(
-          preparedTransaction,
-          props.pubKey,
-          props.swkKit
-        );
+        const signedTx = await signTx(preparedTransaction, pubKey, swkKit);
 
         const result = await submitTx(
           signedTx,
-          props.networkDetails.networkPassphrase,
+          networkDetails.networkPassphrase,
           server
         );
 
@@ -335,9 +289,7 @@ function Header(props: Web3PageProps) {
               <Nav.Link
                 style={{ color: "#01A19A", marginTop: "3%" }}
                 onClick={() => {
-                  if (connectWallet) {
-                    connect();
-                  }
+                  setConnectWallet(true);
                 }}
               >
                 Connect Wallet
