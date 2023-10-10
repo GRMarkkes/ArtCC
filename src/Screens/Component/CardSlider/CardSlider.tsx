@@ -30,7 +30,7 @@ interface Web3PageProps {
   onPress?: (created: any) => void;
 }
 
-const CardSlider = React.memo(function(props: Web3PageProps, { title }) {
+const CardSlider = React.memo(function (props: Web3PageProps, { title }) {
   const [data, setData] = useState<Crowdfund.Campaign[]>([]);
 
   useEffect(() => {
@@ -66,8 +66,9 @@ const CardSlider = React.memo(function(props: Web3PageProps, { title }) {
 
     // const distance = slideWidth * numVisibleCards;
     if (listRef.current) {
-      listRef.current.style.transform = `translateX(-${slideWidth *
-        newPosition}px)`;
+      listRef.current.style.transform = `translateX(-${
+        slideWidth * newPosition
+      }px)`;
     }
     setSliderPosition(newPosition);
   };

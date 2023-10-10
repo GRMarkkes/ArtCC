@@ -17,6 +17,7 @@ import "./Card.css";
 import Modal from "react-modal";
 import { motion } from "framer-motion";
 import cardImg from "../../../Asset/Images/Card_Image.png";
+
 import {
   getServer,
   submitTx,
@@ -62,12 +63,13 @@ const crowdFund = new Crowdfund.Contract({
 
 const Card = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Crowdfund.Campaign>();
+  let movieData = props?.movieData;
   useEffect(() => {
-    if (props?.movieData) {
-      getCampaingByID(props?.movieData);
+    if (movieData) {
+      getCampaingByID(movieData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
+  }, [movieData]);
 
   const getCampaingByID = async (id: number) => {
     try {
@@ -230,7 +232,6 @@ const Card = (props: Web3PageProps) => {
       document.body.classList.remove("disable-pointer-events");
     }
   }, [isModalOpen]);
-  console.log(isHovered);
   return (
     <Container
       onMouseEnter={() => {
@@ -307,7 +308,6 @@ const Card = (props: Web3PageProps) => {
               }
               alt="card"
             />
-            {/* <video src={video} autoPlay={true} loop muted /> */}
           </div>
           <div className="info-container flex column" style={{ color: "#fff" }}>
             <h3

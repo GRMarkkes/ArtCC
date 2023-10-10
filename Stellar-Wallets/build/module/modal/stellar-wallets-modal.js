@@ -16,7 +16,7 @@ let StellarWalletsModal = class StellarWalletsModal extends LitElement {
         this.modalTitle = 'Connect a Wallet';
         this.notAvailableText = 'Not available';
         this.allowedWallets = Object.values(WalletType);
-        this.modalDialogStyles = { zIndex: 990 };
+        this.modalDialogStyles = { zIndex: 9999 };
         this.availableWallets = [];
     }
     static { this.styles = [
