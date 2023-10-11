@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, DragEvent } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import staller_header_logo from "../../../Asset/Images/main_logo.png";
@@ -21,6 +21,7 @@ import Inbox from "../../../Asset/Inbox.png";
 import axios from "axios";
 import Avitar from "../../../Asset/Avatar.png";
 import { motion } from "framer-motion";
+
 // import Create from "../Create/Create";
 // import { motion } from "framer-motion";
 import {
@@ -84,7 +85,7 @@ function Header(props: Web3PageProps) {
   });
 
   const [baseImage, setBaseImage] = useState<any>();
-  const [displayImage, setDisplayImage] = useState<string>("");
+  const [displayImage, setDisplayImage] = useState<string>("false");
 
   const { setConnectWallet, networkDetails, pubKey, swkKit } = props;
 
@@ -99,6 +100,29 @@ function Header(props: Web3PageProps) {
       const reader = new FileReader();
 
       reader.onload = (event: ProgressEvent<FileReader>) => {
+        if (event.target && event.target.result) {
+          setDisplayImage(event.target.result as string);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+
+    const file = e.dataTransfer.files[0]; // Get the dropped file
+
+    if (file) {
+      setBaseImage(file);
+
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
         }
@@ -222,9 +246,13 @@ function Header(props: Web3PageProps) {
 
         console.log("result", result);
       } catch (error) {
+        closeModal();
+        setLoading(false);
         console.log(error);
       }
     } catch (error) {
+      closeModal();
+      setLoading(false);
       console.log(error);
     }
   };
@@ -743,7 +771,11 @@ function Header(props: Web3PageProps) {
                     </div>
                   </div>
                 </div>
-                <div className="App-image">
+                <div
+                  className="App-image"
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                >
                   <label htmlFor="file-input" className="image-input-field">
                     {baseImage ? (
                       <img src={displayImage} alt="baseImage" />
@@ -755,13 +787,14 @@ function Header(props: Web3PageProps) {
                     id="file-input"
                     type="file"
                     onChange={handleFileInputChange}
+                    style={{ display: "none" }}
                   />
 
                   <div style={{ marginLeft: "5%" }}>
                     <h3>Click or drag file to this area to upload</h3>
                     <p>
                       Support for a single or bulk upload. Strictly prohibit
-                      from uploading company data or other band files
+                      from uploading company data or other banned files.
                     </p>
                   </div>
                 </div>
