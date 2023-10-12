@@ -1,3 +1,7 @@
+.custom-navbar {
+  width: 100%;
+
+}
 
 .Header-Modal-Content{
   height: 90vh; 
@@ -102,8 +106,10 @@ line-height: 24px; /* 150% */
 .Input-Text select{
   background: var(--neutral-11, #1F1F1F);
   color: var(--neutral-7, #8C8C8C);
-  margin-top: 3%;
-  height: 35px;
+  margin-top: 2%;
+  height: 30px;
+  border: 1px solid var(--neutral-5, #D9D9D9);
+  width: 100%;
 
 }
 /* Style the placeholder text */

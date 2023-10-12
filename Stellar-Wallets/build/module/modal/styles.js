@@ -2,7 +2,7 @@ import { css } from 'lit';
 export const modalDialogStyles = css `
   .dialog-modal {
     position: fixed;
-    z-index: 99;
+    z-index: 9999;
     font-family: 'Open Sans', arial, sans-serif;
     margin: 0 auto;
     padding: 1rem;

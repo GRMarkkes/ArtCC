@@ -7,7 +7,7 @@ import * as Crowdfund from "CrowdFund";
 import artimg from "../../Asset/Images/ArtProject_main.png";
 import "./ArtProjectMain.css";
 import ArtFooter from "../Component/ArtFooter";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NetworkDetails } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
 
@@ -22,6 +22,7 @@ interface Web3PageProps {
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
+  setConnectWallet: (connectWallet: boolean) => void;
 }
 
 export type u32 = number;
@@ -51,27 +52,59 @@ const crowdFund = new Crowdfund.Contract({
 const ArtProject = (props: Web3PageProps) => {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
+  const [categoriesCampgains, setCategoriesCampgains] = useState<any>([]);
 
-  async function getCampaings() {
+  const fetchData = useCallback(() => {
+    const uniqueCategories = [
+      ...new Set(campaigns.map((campaign) => campaign.category)),
+    ];
+    const allCampgainGroup: any = [];
+    uniqueCategories.forEach((category) => {
+      const matchingCampaigns = campaigns.filter(
+        (item) => item.category === category
+      );
+
+      if (matchingCampaigns.length > 0) {
+        allCampgainGroup.push({
+          category: category,
+          data: matchingCampaigns,
+        });
+      }
+    });
+    console.log(allCampgainGroup, "allCampgainGroup");
+    setCategoriesCampgains(allCampgainGroup);
+  }, [campaigns]);
+
+  console.log(categoriesCampgains, "categoriesCampgains");
+  const getCampaigns = useCallback(async () => {
     try {
       setLoading(true);
+      console.log("getCampaigns");
+      console.log("props.pubKey", props.pubKey);
+
       let data = await crowdFund.getCampaigns();
+
       setCampaigns(data);
       setLoading(false);
+
+      // console.log(data);
     } catch (error) {
-      console.log(error);
+      // Handle errors here
+      console.error(error);
     }
-  }
+  }, [props.pubKey]);
 
   useEffect(() => {
-    if (props?.pubKey) {
-      getCampaings();
-    }
-  }, [props]);
+    getCampaigns();
+  }, [getCampaigns]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const getResult = (res: any) => {
     if (res === true) {
-      getCampaings();
+      getCampaigns();
     }
   };
 
@@ -83,8 +116,14 @@ const ArtProject = (props: Web3PageProps) => {
         swkKit={props.swkKit}
         pubKey={props.pubKey}
         onPress={getResult}
+        setConnectWallet={props.setConnectWallet}
       />
-      <img className="img-fluid" src={artimg} alt="art" />
+      <img
+        className="img-fluid"
+        src={artimg}
+        alt="art"
+        style={{ height: "90vh", width: "100%" }}
+      />
       <Container>
         {/* <Navbar isScrolled={isScrolled} /> */}
         <div className="hero">
@@ -113,6 +152,7 @@ const ArtProject = (props: Web3PageProps) => {
             </div> */}
           </div>
         </div>
+
         {loading ? (
           <div className="d-flex justify-content-center">
             <div className="spinner-border" role="status">
@@ -125,8 +165,9 @@ const ArtProject = (props: Web3PageProps) => {
             setPubKey={props.setPubKey}
             swkKit={props.swkKit}
             pubKey={props.pubKey}
-            campaigns={campaigns}
+            // campaigns={campaigns}
             onPress={getResult}
+            categoriesData={categoriesCampgains}
           />
         )}
       </Container>
@@ -137,7 +178,7 @@ const ArtProject = (props: Web3PageProps) => {
 };
 
 const Container = styled.div`
-  background-color: black;
+  background: var(--neutral-10, #262626);
 
   .hero {
     position: relative;

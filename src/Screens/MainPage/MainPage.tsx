@@ -19,6 +19,7 @@ interface Web3PageProps {
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
+  setConnectWallet: (connectWallet: boolean) => void;
 }
 
 function MainPage(props: Web3PageProps) {
@@ -56,6 +57,7 @@ function MainPage(props: Web3PageProps) {
         setPubKey={props.setPubKey}
         swkKit={props.swkKit}
         pubKey={props.pubKey}
+        setConnectWallet={props.setConnectWallet}
       />
       <div className="position-relative">
         <img

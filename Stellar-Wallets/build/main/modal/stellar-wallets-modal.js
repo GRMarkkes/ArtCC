@@ -16,7 +16,7 @@ let StellarWalletsModal = class StellarWalletsModal extends LitElement {
         this.modalTitle = 'Connect a Wallet';
         this.notAvailableText = 'Not available';
         this.allowedWallets = Object.values(WalletType);
-        this.modalDialogStyles = { zIndex: 990 };
+        this.modalDialogStyles = { zIndex: 9999 };
         this.availableWallets = [];
     }
     connectedCallback() {
@@ -83,7 +83,7 @@ let StellarWalletsModal = class StellarWalletsModal extends LitElement {
 
       </dialog>
 
-      <div style='position: fixed; z-index: 950'
+      <div style='position: fixed; z-index: 9999'
            class='backdrop'
            @click=${() => this.closeModal()}>
       </div>
