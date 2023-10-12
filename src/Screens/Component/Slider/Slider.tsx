@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CardSlider from "../CardSlider/CardSlider";
 import { NetworkDetails } from "helper/network";
@@ -18,44 +18,36 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
+interface CategoryData {
+  category: string;
+  data: Crowdfund.Campaign[];
+}
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
-  campaigns: Crowdfund.Campaign[];
+  // campaigns: Crowdfund.Campaign[];
+  categoriesData: CategoryData[];
   onPress?: (created: any) => void;
 }
 
 const Slider = (props: Web3PageProps) => {
-  const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
-
-  useEffect(() => {
-    if (props?.campaigns) {
-      setCampaigns(props?.campaigns);
-    }
-  }, [props]);
-  // const getMoviesFromRange = (from: number, to: number) => {
-  //   return movies.slice(from, to);
-  // };
-
   return (
     <Container>
-      <CardSlider
-        networkDetails={props.networkDetails}
-        setPubKey={props.setPubKey}
-        swkKit={props.swkKit}
-        pubKey={props.pubKey}
-        data={campaigns}
-        title="Trending Now"
-        onPress={props.onPress}
-      />
-      {/* <CardSlider data={getMoviesFromRange(10, 30)} title="New Releases" />
-      <CardSlider data={getMoviesFromRange(10, 30)} title="Blockbuster Movies" />
-      <CardSlider data={getMoviesFromRange(10, 30)} title="Popular on Netflix" />
-      <CardSlider data={getMoviesFromRange(10, 30)} title="Action Movies" />
-      <CardSlider data={getMoviesFromRange(10, 30)} title="Epics" /> */}
+      {props.categoriesData.map((categoryItem) => (
+        <CardSlider
+          key={categoryItem.category}
+          networkDetails={props.networkDetails}
+          setPubKey={props.setPubKey}
+          swkKit={props.swkKit}
+          pubKey={props.pubKey}
+          data={categoryItem.data}
+          title={categoryItem.category}
+          onPress={props.onPress}
+        />
+      ))}
     </Container>
   );
 };

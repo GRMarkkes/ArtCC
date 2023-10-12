@@ -266,7 +266,7 @@ function Header(props: Web3PageProps) {
             expand="lg"
             fixed="top"
             variant="dark"
-            style={{ zIndex: "1" }}
+            style={{ zIndex: "980" }}
           >
             <Container>
               <Navbar.Brand as={Link} to="/">
@@ -292,7 +292,7 @@ function Header(props: Web3PageProps) {
                   <Nav.Link
                     style={{ color: "white" }}
                     onClick={() => {
-                      navigate("/marketplace");
+                      navigate("/");
                     }}
                   >
                     PORTFOLIO
