@@ -173,7 +173,7 @@
 @media screen and (max-width: 768px) {
   .modal-content {
     /* max-width: 90%; */
-    width: 90%;
+    width: 100%;
   }
   .modal-length{
     width:90%;
@@ -337,6 +337,14 @@
   margin-top: 3%;
 }
 @media (max-width: 768px) {
+  .list-donation{
+    max-width: 200px;
+    word-wrap: break-word;
+  }
+  .ownercampgain{
+    max-width: 200px;
+    word-wrap: break-word;
+  }
   .modal-rating-location  {
     display: flex;
     flex-direction: column;

@@ -430,14 +430,26 @@ const Card = (props: Web3PageProps) => {
                     <p className="modal-paragraph">Donators:</p>
                     <ul>
                       {singleCampaign?.donators.map((donator, index) => (
-                        <li key={index} style={{ color: "white" }}>
+                        <li
+                          key={index}
+                          style={{
+                            color: "white",
+                          }}
+                          className="list-donation"
+                        >
                           {donator.toString()}
                         </li>
                       ))}
                     </ul>
                   </div>
+
                   <div>
-                    <p className="modal-paragraph ">
+                    <p
+                      className="modal-paragraph ownercampgain"
+                      style={{
+                        color: "white",
+                      }}
+                    >
                       Owner: {singleCampaign?.owner.toString()}
                     </p>
                   </div>

@@ -49,7 +49,7 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
     const slideWidth = 240;
     const numVisibleCards = isMobileView ? 1 : 5;
     const totalSlides = data.length;
-    var newPosition = sliderPosition; // Initialize with a default value
+    var newPosition = sliderPosition;
 
     if (direction === "left") {
       newPosition -= numVisibleCards;
@@ -64,7 +64,6 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
       setShowLeftArrow(true);
     }
 
-    // const distance = slideWidth * numVisibleCards;
     if (listRef.current) {
       listRef.current.style.transform = `translateX(-${
         slideWidth * newPosition
