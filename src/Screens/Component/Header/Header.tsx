@@ -292,7 +292,7 @@ function Header(props: Web3PageProps) {
                   <Nav.Link
                     style={{ color: "white" }}
                     onClick={() => {
-                      navigate("/");
+                      navigate("/Portfolio");
                     }}
                   >
                     PORTFOLIO

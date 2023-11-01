@@ -393,6 +393,7 @@ const Card = (props: Web3PageProps) => {
                   }
                   alt="card"
                   className="img-fluid"
+                  style={{ width: "100%" }}
                 />
               </div>
               <div className="container bg-custom">
