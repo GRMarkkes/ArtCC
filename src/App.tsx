@@ -11,6 +11,7 @@ import MainPage from "./Screens/MainPage/MainPage";
 // import Balanace from "./pages/balance";
 // import AllCampaigns from "./pages/allcampaigns";
 // ISupportedWallet
+import Portfolio from "Screens/Portfolio/Portfolio";
 
 import { useConnect } from "hooks/useConnect";
 
@@ -62,6 +63,18 @@ function App(): JSX.Element {
           path="/ArtProject"
           element={
             <ArtProject
+              networkDetails={networkDetails}
+              setPubKey={setPubKey}
+              swkKit={swkKit}
+              pubKey={pubKey}
+              setConnectWallet={setConnectWallet}
+            />
+          }
+        />
+        <Route
+          path="/Portfolio"
+          element={
+            <Portfolio
               networkDetails={networkDetails}
               setPubKey={setPubKey}
               swkKit={swkKit}
