@@ -10,7 +10,7 @@
     border-radius: 0.3rem;
    
     background-color: #181818;
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    /* transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; */
 }
 .card-off-button{
     text-decoration: none;
