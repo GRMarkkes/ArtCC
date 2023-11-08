@@ -42,6 +42,7 @@ import {
 } from "reactstrap";
 import { Box, Rating, Typography } from "@mui/material";
 import { CiLocationOn } from "react-icons/ci";
+import { Link } from "react-router-dom";
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
@@ -113,6 +114,8 @@ const CardArtProject = (props: Web3PageProps) => {
   const handleGetEmailClick = () => {
     setShowFeedBack(true);
     setShowDiscount(false);
+   
+    
   };
   const contractIdCrowdFund =
     "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
@@ -395,8 +398,12 @@ const CardArtProject = (props: Web3PageProps) => {
             marketplace again soon.
           </Typography>
           <div className="button-pervious">
-            <button className="button-portfolio"> Go to Your Portfolio</button>
-            <button className="button-portfolio">Go to Marketplace</button>
+            <Link to="/">
+            <button className="button-portfolio"> Go&nbsp;to&nbsp;Your&nbsp;Portfolio</button>
+            </Link>
+            <Link to="/">
+            <button className="button-portfolio">Go&nbsp;to&nbsp;Marketplace</button>
+            </Link>
           </div>
         </div>
       </Box>
@@ -934,13 +941,13 @@ const CardArtProject = (props: Web3PageProps) => {
                   </div>
                   {showDiscount && (
                     <div>
-                      <Box sx={{ marginTop: "3%" }}>
+                      <Box sx={{ marginTop: "3%", marginBottom:'3%' }}>
                         <Dicount />
                       </Box>
                     </div>
                   )}
                   {showFeedBack && (
-                    <Box sx={{ marginTop: "3%" }}>
+                    <Box sx={{ marginTop: "3%" ,marginBottom:'3%'}}>
                       <ThankYou />
                     </Box>
                   )}
