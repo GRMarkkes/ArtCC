@@ -21,6 +21,7 @@ import Inbox from "../../../Asset/Inbox.png";
 import axios from "axios";
 import Avitar from "../../../Asset/Avatar.png";
 import { motion } from "framer-motion";
+// import Cookies from 'universal-cookie';
 
 // import Create from "../Create/Create";
 // import { motion } from "framer-motion";
@@ -95,6 +96,10 @@ function Header(props: Web3PageProps) {
   const [displayImage, setDisplayImage] = useState<string>("false");
 
   const { setConnectWallet, networkDetails, pubKey, swkKit } = props;
+//   const cookies = new Cookies();
+//    cookies.set('myCat', pubKey);
+
+// console.log(cookies.get('myCat'),"hsuhsuu");
   localStorage.setItem("pubKey", pubKey);
   const getPubKeyOne = localStorage.getItem("pubKey");
 
@@ -143,7 +148,7 @@ function Header(props: Web3PageProps) {
 
   const navigate = useNavigate();
   const contractIdCrowdFund =
-    "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
+    "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
 
   function toggleMenu() {
     setShowMenu(!showMenu);
@@ -483,7 +488,7 @@ function Header(props: Web3PageProps) {
                     </Nav.Link>
                   </Nav>
                 </Nav>
-                <Nav style={{ marginLeft: "4%", marginTop: "1.3%" }}>
+                <Nav style={{ marginLeft: "4%" ,marginTop:'5px' }}>
                   <Nav.Link
                     style={{ color: "white", fontSize: "12px" }}
                     onClick={openModal}
@@ -498,7 +503,7 @@ function Header(props: Web3PageProps) {
                   >
                     NEW&nbsp;MARKETPLACE
                   </Nav.Link>
-                  <Nav.Link>
+                  <Nav.Link style={{marginTop:'-2%'}}>
                     <img src={Search_icon} alt="Search" />
                   </Nav.Link>
                 </Nav>
@@ -589,9 +594,9 @@ function Header(props: Web3PageProps) {
                       <input
                         placeholder="0.00"
                         type="text"
-                        value={inputValue}
+                        {...register("target")}
                         onChange={handleInputChange}
-                      
+                    
                       />
                       <div
                         style={{
@@ -610,7 +615,7 @@ function Header(props: Web3PageProps) {
                             lineHeight: "22px",
                           }}
                         >
-                          {inputValue * 10} ARTcredits
+                          {inputValue * 10}ARTcredits
                         </p>
                       </div>
                     </div>
@@ -781,6 +786,7 @@ function Header(props: Web3PageProps) {
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <input
                         placeholder="Set Location"
+                      
                         type="date"
                         style={{
                           paddingRight: "4%",

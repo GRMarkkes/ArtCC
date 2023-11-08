@@ -5,6 +5,7 @@ import { FaStar } from "react-icons/fa";
 import { MdOutlineReportProblem } from "react-icons/md";
 import decimg from "../../../Asset/ModalImg.png";
 import * as Crowdfund from "CrowdFund";
+import '../CardMarketPlace/CardMarketPlace.css'
 
 import {
   AiOutlineCloseCircle,
@@ -21,6 +22,7 @@ import Modal from "react-modal";
 import { motion } from "framer-motion";
 import cardImg from "../../../Asset/Images/Card_Image.png";
 import wrapperswap from "../../../Asset/wrapper 2.png";
+import graphimage from "../../../Asset/Graphic.png"
 
 import {
   getServer,
@@ -67,7 +69,7 @@ export type Duration = bigint;
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
+  "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -113,7 +115,7 @@ const CardArtProject = (props: Web3PageProps) => {
     setShowDiscount(false);
   };
   const contractIdCrowdFund =
-    "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
+    "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
 
   const NATIVE_TOKEN =
     "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
@@ -204,6 +206,7 @@ const CardArtProject = (props: Web3PageProps) => {
     setIsModalOpen(false);
     // setIsHovered(false);
   };
+  
   interface TagProps {
     text: string;
   }
@@ -312,7 +315,7 @@ const CardArtProject = (props: Web3PageProps) => {
               </button>
             </Box>
           </Box>
-          <div className="Preview">
+          <div className="Preview" style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center'}}>
             <Typography
               sx={{
                 color: "var(--character-primary-inverse, #FFF)",
@@ -321,6 +324,7 @@ const CardArtProject = (props: Web3PageProps) => {
               }}
             >
               Your Portfolio Preview
+              <img src={graphimage} alt="graph"/>
             </Typography>
           </div>
         </div>
@@ -452,8 +456,8 @@ const CardArtProject = (props: Web3PageProps) => {
           onClick={openModal}
         />
       )}
-
-      {isHovered && (
+      
+      {!isCardModalOpen && isHovered &&  (
         <motion.div
           initial={{
             opacity: 0,
@@ -526,7 +530,7 @@ const CardArtProject = (props: Web3PageProps) => {
               style={{ marginTop: "-5%", fontWeight: "400", fontSize: "12px" }}
             >
               <MdOutlineLocationOn style={{ marginTop: "-1%" }} />
-              <p>Bemowo, Warsaw, Poland</p>
+              <p>{singleCampaign?.main_location}</p>
             </div>
             <div
               style={{
@@ -581,12 +585,12 @@ const CardArtProject = (props: Web3PageProps) => {
           </div>
         </motion.div>
       )}
+     
       <Modal
         isOpen={isCardModalOpen}
         onRequestClose={closeCardModal}
         className="modal-content-card"
         overlayClassName="modal-overlay-card"
-    
 
       >
         <motion.div
@@ -703,7 +707,7 @@ const CardArtProject = (props: Web3PageProps) => {
                     <CiLocationOn
                       style={{ marginTop: "-1%", fontSize: "18px" }}
                     />{" "}
-                    Bemowo, Warsaw, Poland
+                    {singleCampaign?.main_location}
                   </CardText>
                   <CardText
                     style={{
