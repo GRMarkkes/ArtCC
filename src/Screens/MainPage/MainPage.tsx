@@ -70,7 +70,7 @@ function MainPage(props: Web3PageProps) {
           {isWideScreen ? (
             <div
               className="position-absolute top-50 start-0 translate-middle-y d-flex align-items-center text-white"
-              style={{ zIndex: 1, paddingLeft: 20 }}
+              style={{ zIndex: 1, paddingLeft: 50 }}
               onClick={() => {
                 navigate("/ArtProject");
               }}
@@ -136,7 +136,7 @@ function MainPage(props: Web3PageProps) {
           {isWideScreen ? (
             <div
               className="position-absolute top-50 end-0 translate-middle-y d-flex align-items-center text-white"
-              style={{ zIndex: 1, paddingRight: 40 }}
+              style={{ zIndex: 1, paddingRight: 60 }}
             >
               <h2 style={{ fontSize: 24 }}>Market</h2>
               <h1>
@@ -174,14 +174,14 @@ function MainPage(props: Web3PageProps) {
 
             <div style={{ textAlign: "center" }}>
               <p style={{ fontSize: 13, fontWeight: 400, margin: 0 }}>
-                Logins last 24h
+                Views last 24h
               </p>
               <p style={{ fontSize: 36, fontWeight: 500 }}>6,456</p>
             </div>
             <div className="border-white border-1 h-50 border-end "></div>
             <div style={{ textAlign: "center" }}>
               <p style={{ fontSize: 13, fontWeight: 400, margin: 0 }}>
-                Projects
+               Art Projects
               </p>
               <p style={{ fontSize: 36, fontWeight: 500 }}>124,656,456</p>
             </div>

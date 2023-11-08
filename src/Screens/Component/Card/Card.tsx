@@ -5,18 +5,22 @@ import { FaStar } from "react-icons/fa";
 import { MdOutlineReportProblem } from "react-icons/md";
 import decimg from "../../../Asset/ModalImg.png";
 import * as Crowdfund from "CrowdFund";
+
 import {
   AiOutlineCloseCircle,
   AiOutlineCalendar,
   AiFillStar,
+  AiOutlineInfoCircle,
+  AiOutlineAreaChart,
 } from "react-icons/ai";
-import { BiChevronDown } from "react-icons/bi";
+// import { BiChevronDown } from "react-icons/bi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../NewCard/NewCard.css";
 import "./Card.css";
 import Modal from "react-modal";
 import { motion } from "framer-motion";
 import cardImg from "../../../Asset/Images/Card_Image.png";
+import wrapperswap from "../../../Asset/wrapper 2.png";
 
 import {
   getServer,
@@ -26,6 +30,16 @@ import {
 } from "../../../helper/soroban";
 import { NetworkDetails, signTx } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
+import {
+  CardBody,
+  CardSubtitle,
+  CardText,
+  CardTitle,
+  Progress,
+  Card,
+} from "reactstrap";
+import { Box, Rating, Typography } from "@mui/material";
+import { CiLocationOn } from "react-icons/ci";
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
@@ -61,7 +75,7 @@ const crowdFund = new Crowdfund.Contract({
   rpcUrl: networkUrl,
 });
 
-const Card = (props: Web3PageProps) => {
+const CardArtProject = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Crowdfund.Campaign>();
   let movieData = props?.movieData;
   useEffect(() => {
@@ -85,9 +99,19 @@ const Card = (props: Web3PageProps) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
 
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth >= 1220);
-
+  const isModalScreen = window.innerHeight <= 768;
+  const [showDiscount, setShowDiscount] = useState(false);
+  const [showFeedBack, setShowFeedBack] = useState(false);
+  const handleGetDiscountClick = () => {
+    setShowDiscount(true);
+  };
+  const handleGetEmailClick = () => {
+    setShowFeedBack(true);
+    setShowDiscount(false);
+  };
   const contractIdCrowdFund =
     "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
 
@@ -148,6 +172,7 @@ const Card = (props: Web3PageProps) => {
       console.log(error);
     }
   }
+  console.log(donateToCampaign);
 
   useEffect(() => {
     const handleResize = () => {
@@ -160,9 +185,19 @@ const Card = (props: Web3PageProps) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  const openCardModal = () => {
+    setIsHovered(false);
+    setIsModalOpen(false);
+    setIsCardModalOpen(true);
+    setIsHovered(false);
+  };
+  const closeCardModal = () => {
+    setIsCardModalOpen(false);
+  };
   const openModal = () => {
     setIsHovered(false);
     setIsModalOpen(true);
+    setIsCardModalOpen(false);
   };
 
   const closeModal = () => {
@@ -192,6 +227,7 @@ const Card = (props: Web3PageProps) => {
 
     return stars;
   };
+
   const Review = () => {
     return (
       <div className="review-box" style={{ marginTop: "2%" }}>
@@ -225,6 +261,143 @@ const Card = (props: Web3PageProps) => {
     );
   };
 
+  const Dicount = () => {
+    return (
+      <Box
+        sx={{
+          background:
+            "var(--gradient, linear-gradient(90deg, #312783 0%, #00A19A 100%))",
+          width: "100%",
+          paddingBottom: "5%",
+          paddingTop: "5%",
+          paddingLeft: "10%",
+        }}
+      >
+        <div className="Disocunt-Review"  style={{paddingTop:'15%', paddingBottom:'15%'}}>
+          <Box
+            sx={{
+              width: isModalScreen ? "90%" : "45%",
+
+            }}
+          >      
+            <Box sx={{ marginTop: "3%" }}>
+              <Typography
+                sx={{
+                  color: "var(--character-primary-inverse, #FFF)",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                }}
+              >
+                Your Support 
+              </Typography>
+              <input
+                placeholder="0.00"
+                type="text"
+                style={{
+                  marginTop: "3%",
+                  background:
+                    "var(--gradient, linear-gradient(90deg, #312783 0%, #00A19A 100%))",
+                  width: "100%",
+                  border: "1px solid var(--neutral-5, #D9D9D9)",
+                  color: "var(--character-primary-inverse, #FFF)",
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  height: "4vh",
+                  paddingLeft: "5%",
+                }}
+              />
+              <Typography style={{textAlign:'end', color:'#FFFFFF'}}>0.00 <span>ARTcredits</span></Typography>
+              <button className="discountNow"  onClick={handleGetEmailClick}>
+                Support Now
+              </button>
+            </Box>
+          </Box>
+          <div className="Preview">
+            <Typography
+              sx={{
+                color: "var(--character-primary-inverse, #FFF)",
+                fontFamily: "Montserrat",
+                fontSize: "15px",
+              }}
+            >
+              Your Portfolio Preview
+            </Typography>
+          </div>
+        </div>
+      </Box>
+    );
+  };
+  const ThankYou = () => {
+    return (
+      <Box
+        sx={{
+          background:
+            "var(--gradient, linear-gradient(90deg, #312783 0%, #00A19A 100%))",
+          width: "100%",
+          paddingBottom: "5%",
+          paddingTop: "5%",
+          paddingLeft: "10%",
+        }}
+      >
+        <div className="Download-Review">
+          <Typography
+            sx={{
+              color: "var(--character-primary-inverse, #FFF)",
+              fontWeight: 700,
+              fontSize: "17px",
+              textAlign: "center",
+            }}
+          >
+            THANK YOU!
+          </Typography>
+          <Typography
+            sx={{
+              color: "var(--character-primary-inverse, #FFF)",
+              fontWeight: 400,
+              fontSize: "14px",
+              marginTop: "5%",
+              fontFamily: "Montserrat",
+              textAlign: "center",
+            }}
+          >
+            Thank you for choosing to redeem your ART credits for a discount in
+            the marketplace!
+          </Typography>
+          <Typography
+            sx={{
+              color: "var(--character-primary-inverse, #FFF)",
+              fontWeight: 400,
+              fontSize: "14px",
+              marginTop: "3%",
+              fontFamily: "Montserrat",
+              textAlign: "center",
+            }}
+          >
+            Your discount was sent to your email: XXXXXXXX@XXXX.xcc
+          </Typography>
+          <Typography
+            sx={{
+              color: "var(--character-primary-inverse, #FFF)",
+              fontWeight: 400,
+              fontSize: "14px",
+              marginTop: "3%",
+              fontFamily: "Montserrat",
+              textAlign: "center",
+            }}
+          >
+            Please be sure to follow the instructions provided in the discount
+            description to redeem your discount and enjoy your reward. We
+            appreciate your support and look forward to seeing you in the
+            marketplace again soon.
+          </Typography>
+          <div className="button-pervious">
+            <button className="button-portfolio"> Go to Your Portfolio</button>
+            <button className="button-portfolio">Go to Marketplace</button>
+          </div>
+        </div>
+      </Box>
+    );
+  };
   useEffect(() => {
     if (isModalOpen) {
       document.body.classList.add("disable-pointer-events");
@@ -288,6 +461,7 @@ const Card = (props: Web3PageProps) => {
             translateY: isHovered ? "-50%" : 0, // Adjust the initial translateY value
             translateX: isHovered ? "-50%" : 0, // Adjust the initial translateX value
             transformOrigin: "center center",
+           
           }}
           animate={{
             opacity: 1,
@@ -298,8 +472,9 @@ const Card = (props: Web3PageProps) => {
           }}
           transition={{ duration: 0.1, delay: 0, ease: "easeOut" }}
           className="hover"
+          onClick={openCardModal}
         >
-          <div className="image-video-container">
+          <div className="image-video-container" >
             <img
               src={
                 singleCampaign?.image.includes("s.com")
@@ -309,7 +484,10 @@ const Card = (props: Web3PageProps) => {
               alt="card"
             />
           </div>
-          <div className="info-container flex column" style={{ color: "#fff" }}>
+          <div
+            className="info-container flex column"
+            style={{ color: "#FFFFFF" }}
+          >
             <h3
               style={{ fontSize: "15px", fontWeight: "700" }}
               className="name"
@@ -321,15 +499,17 @@ const Card = (props: Web3PageProps) => {
               <div className="controls flex">
                 <p
                   style={{
-                    color: "#2196CC",
+                    color: "#8C8C8C",
                     marginTop: "-4px",
-                    marginLeft: "-3px",
+                    fontWeight: "500",
+                    fontSize: "13px",
+                    lineHeight: "22px",
                   }}
                 >
                   {singleCampaign?.description}
                 </p>
               </div>
-              <div
+              {/* <div
                 className="info"
                 style={{
                   color: "#2196CC",
@@ -339,36 +519,257 @@ const Card = (props: Web3PageProps) => {
                 onClick={openModal}
               >
                 <BiChevronDown title="More Info" />
-              </div>
+              </div> */}
+            </div>
+            <div
+              className="modal-location"
+              style={{ marginTop: "-5%", fontWeight: "400", fontSize: "12px" }}
+            >
+              <MdOutlineLocationOn style={{ marginTop: "-1%" }} />
+              <p>Bemowo, Warsaw, Poland</p>
             </div>
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                marginTop: "-8px",
+                marginTop: "-7%",
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <>
-                  <p style={{ height: 5, paddingRight: 5, color: "#45AFD9" }}>
-                    Deadline
+                  <p
+                    style={{
+                      height: 5,
+                      paddingRight: 5,
+                      color: "#45AFD9",
+                      fontWeight: 400,
+                      fontSize: "13px",
+                    }}
+                  >
+                    Kr. 4.799 &nbsp; SEK
                   </p>
-                  <p style={{ height: 5, color: "#45AFD9" }}>SEK</p>
+                  {/* <p style={{ height: 5, color: "#45AFD9" }}>SEK</p> */}
                 </>
-                <button
+                <>
+                  <p
+                    style={{
+                      height: 5,
+                      paddingRight: 5,
+                      color: "#FFFFFF",
+                      fontWeight: 400,
+                      fontSize: "13px",
+                    }}
+                  >
+                    100&nbsp; Supporters
+                  </p>
+                  {/* <p style={{ height: 5, color: "#45AFD9" }}>SEK</p> */}
+                </>
+                {/* <button
                   onClick={() => {
                     if (singleCampaign?.id)
                       donateToCampaign(singleCampaign?.id);
                   }}
                   style={{ border: "none", color: "#45AFD9" }}
-                >
-                  Donate To Campaign
-                </button>
+                ></button> */}
               </div>
             </div>
+            <Progress
+              color="primary"
+              value={22}
+              style={{ height: "5px", marginTop: "-2%" }}
+            />
           </div>
         </motion.div>
       )}
+      <Modal
+        isOpen={isCardModalOpen}
+        onRequestClose={closeCardModal}
+        className="modal-content-card"
+        overlayClassName="modal-overlay-card"
+    
+
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, translateY: -100 }}
+          animate={{ opacity: 1, scale: 1, translateY: 0 }}
+          transition={{ duration: 0.5 }}
+          className="modal-header"
+        >
+          <div>
+            <AiOutlineCloseCircle
+              onClick={closeCardModal}
+              className="close-icon"
+            />
+            <Card
+              style={{
+                borderRadius: "0px",
+              }}
+            >
+              <img
+                style={{ height: "162px" }}
+                alt="Sample"
+                src={
+                  singleCampaign?.image.includes("s.com")
+                    ? singleCampaign?.image
+                    : cardImg
+                }
+              />
+              <CardBody color="white" style={{ background: "#1F1F1F" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <div>
+                    <CardTitle
+                      tag="p"
+                      style={{
+                        fontWeight: "700",
+                        fontSize: "16px",
+                        color: "#FFFFFF",
+                        fontFamily: "Roboto",
+                      }}
+                    >
+                      {singleCampaign?.title}
+                    </CardTitle>
+                    <CardSubtitle
+                      color="white"
+                      tag="p"
+                      style={{
+                        fontWeight: "400",
+                        fontSize: "13px",
+                        fontFamily: "Montserrat",
+                        color: "white",
+                      }}
+                    >
+                      Creator: Goncalo Marques, John Simms
+                    </CardSubtitle>
+                  </div>
+                </Box>
+                <div className="modal-tags" style={{ marginTop: "3%" }}>
+                  <Tag text="green" />
+                  <Tag text="green" />
+                  <Tag text="green" />
+                </div>
+                <CardText
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: "13px",
+                    fontWeight: "400",
+                    fontFamily: "Montserrat",
+                    marginTop: "2%",
+                  }}
+                >
+                  {singleCampaign?.description}
+                </CardText>
+                <Box sx={{ display: "flex" }}>
+                  <CardText
+                    style={{
+                      color: "#FAAD14",
+                      fontWeight: "400",
+                      fontSize: "12px",
+                      fontFamily: "Montserrat",
+                    }}
+                  >
+                    <Rating
+                      name="read-only"
+                      value={5}
+                      readOnly
+                      style={{ fontSize: "18px" }}
+                    />
+                  </CardText>
+                  <CardText
+                    style={{
+                      color: "white",
+                      fontWeight: "400",
+                      fontSize: "12px",
+                      fontFamily: "Montserrat",
+                    }}
+                  >
+                    &nbsp; &nbsp; &nbsp; 234567 Ratings
+                  </CardText>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "1%",
+                  }}
+                >
+                  <CardText
+                    style={{
+                      color: "var(--secondary-5, #2196CC)",
+                      fontSize: "10px",
+                      fontWeight: "400",
+                      fontFamily: "Montserrat",
+                    }}
+                  >
+                    <CiLocationOn
+                      style={{ marginTop: "-1%", fontSize: "18px" }}
+                    />{" "}
+                    Bemowo, Warsaw, Poland
+                  </CardText>
+                  <CardText
+                    style={{
+                      color: "var(--secondary-5, #2196CC)",
+                      fontSize: "10px",
+                      fontWeight: "400",
+                      fontFamily: "Montserrat",
+                    }}
+                  >
+                    <AiOutlineCalendar
+                      style={{ marginTop: "-1%", fontSize: "18px" }}
+                    />{" "}
+                    Jan 2023
+                  </CardText>
+                </Box>
+                <CardText
+                  style={{
+                    color: "#FFFFFF",
+                    fontSize: "13px",
+                    fontWeight: 400,
+                    fontFamily: "Montserrat",
+                    textAlign: "center",
+                    marginTop: "4%",
+                  }}
+                >
+                  <span style={{ color: "#BFBFBF" }}>Example:</span> &nbsp; 10
+                  UDC{" "}
+                  <img
+                    src={wrapperswap}
+                    alt="swap"
+                    style={{ height: "17px" }}
+                  />{" "}
+                  100 ARTcredits
+                  <br />
+                  <span style={{ color: "#BFBFBF" }}>
+                    Support with minimum of 1 USDC and get ART credits
+                  </span>
+                </CardText>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: "5%",
+                  }}
+                >
+                  <button
+                    style={{
+                      background: "#52C41A",
+                      color: "white",
+                      border: "none",
+                      paddingTop: "2%",
+                      paddingBottom: "2%",
+                      paddingLeft: "5%",
+                      paddingRight: "5%",
+                    }}
+                    onClick={openModal}
+                  >
+                    <AiOutlineInfoCircle style={{ marginTop: "-1%" }} />
+                    &nbsp; &nbsp; More about the project
+                  </button>
+                </div>
+              </CardBody>
+            </Card>
+          </div>
+        </motion.div>
+      </Modal>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -393,7 +794,7 @@ const Card = (props: Web3PageProps) => {
                   }
                   alt="card"
                   className="img-fluid"
-                  style={{ width: "100%" }}
+                  style={{ width: "100%", background: "#6c757d" }}
                 />
               </div>
               <div className="container bg-custom">
@@ -476,6 +877,69 @@ const Card = (props: Web3PageProps) => {
                       </div>
                     </div>
                   </div>
+                  <div className="modal-support-project">
+                    <CardText
+                      style={{
+                        color: "#FFFFFF",
+                        fontSize: "13px",
+                        fontWeight: 400,
+                        fontFamily: "Montserrat",
+                        textAlign: "center",
+                        marginTop: "4%",
+
+                      }}
+                    >
+                      <span style={{ color: "#BFBFBF" }}>Example:</span> &nbsp;
+                      10 UDC{" "}
+                      <img
+                        src={wrapperswap}
+                        alt="swap"
+                        style={{ height: "17px" }}
+                      />{" "}
+                      100 ARTcredits
+                      <br />
+                      <span style={{ color: "#BFBFBF" }}>
+                        Support with minimum of 1 USDC and get ART credits
+                      </span>
+                    </CardText>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginBottom: "5%",
+                      }}
+                    >
+                      <button
+                        style={{
+                          background: "#52C41A",
+                          color: "white",
+                          border: "none",
+                          paddingTop: "2%",
+                          paddingBottom: "2%",
+                          paddingLeft: "2%",
+                          paddingRight: "2%",
+                          fontSize:'15px'
+                        }}
+                        onClick={handleGetDiscountClick}
+                       
+                      >
+                        <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
+                        &nbsp; &nbsp; Support This Project
+                      </button>
+                    </div>
+                  </div>
+                  {showDiscount && (
+                    <div>
+                      <Box sx={{ marginTop: "3%" }}>
+                        <Dicount />
+                      </Box>
+                    </div>
+                  )}
+                  {showFeedBack && (
+                    <Box sx={{ marginTop: "3%" }}>
+                      <ThankYou />
+                    </Box>
+                  )}
 
                   <div>
                     <p className="modal-description">
@@ -544,7 +1008,7 @@ const Card = (props: Web3PageProps) => {
   );
 };
 
-export default Card;
+export default CardArtProject;
 const Container = styled.div`
   max-width: 222px;
   width: 222px;

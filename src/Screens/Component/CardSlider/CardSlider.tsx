@@ -6,6 +6,8 @@ import * as Crowdfund from "CrowdFund";
 import { motion } from "framer-motion";
 import { NetworkDetails } from "helper/network";
 import { StellarWalletsKit } from "stellar-wallets-kit";
+import "./CardSlider.css";
+
 
 export type u32 = number;
 export type i32 = number;
@@ -32,6 +34,7 @@ interface Web3PageProps {
 
 const CardSlider = React.memo(function (props: Web3PageProps) {
   const [data, setData] = useState<Crowdfund.Campaign[]>([]);
+  const isWideScreen = window.innerWidth >= 1220;
 
   useEffect(() => {
     if (props.data) {
@@ -46,29 +49,40 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
   const [showLeftArrow, setShowLeftArrow] = useState(false);
 
   const handleDirection = (direction: "left" | "right") => {
+  
     const slideWidth = 240;
     const numVisibleCards = isMobileView ? 1 : 5;
     const totalSlides = data.length;
-    var newPosition = sliderPosition;
+    let newPosition = sliderPosition;
+
+    if (data.length <= 5 && isWideScreen) {
+      // If there are 5 or fewer cards, don't slide.
+      return;
+    }
 
     if (direction === "left") {
       newPosition -= numVisibleCards;
       if (newPosition < 0) {
-        newPosition = totalSlides - Math.abs(newPosition % totalSlides);
+        newPosition = totalSlides - 1;
       }
     } else if (direction === "right") {
       newPosition += numVisibleCards;
       if (newPosition >= totalSlides) {
-        newPosition %= totalSlides;
+        newPosition = 0; // Reset to the beginning
+
       }
       setShowLeftArrow(true);
     }
-
+  
     if (listRef.current) {
+      console.log("Adding left-to-right-transition class");
       listRef.current.style.transform = `translateX(-${
         slideWidth * newPosition
       }px)`;
+      // listRef.current.classList.add("left-to-right-transition");
+        listRef.current.classList.remove('right-to-left-transition');
     }
+
     setSliderPosition(newPosition);
   };
 
@@ -120,7 +134,7 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
           </div>
         )}
         <motion.div
-          className="slider flex"
+          className="slider left-to-right-transition flex"
           ref={listRef}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
@@ -133,7 +147,7 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
               animate={{
                 opacity: 1,
                 x: 0,
-                transition: { duration: 0.5, delay: index * 0.1 },
+                // transition: { duration: 0.5, delay: index * 0.1 },
               }}
             >
               <Card
@@ -172,13 +186,28 @@ const Container = styled.div`
     h1 {
       margin-left: 50px;
       color: #fff;
-      margin-top: -30px;
+      margin-top: -25px;
   
     }
     .wrapper {
       
       z-index: 2;
       
+      .left-to-right-transition {
+        -webkit-transition: transform 0.5s ease;
+        -moz-transition: transform 0.5s ease;
+        -ms-transition: transform 0.5s ease;
+        transition: transform 0.5s ease;
+        transform-origin: left;
+    }
+    
+      
+    .right-to-left-transition {
+        transform-origin: right;
+        transform: translateX(100%);
+        transition: transform 0.5s ease;
+    }
+    
       .slider {
         scroll-behavior: smooth;
         background-color: transparent;
