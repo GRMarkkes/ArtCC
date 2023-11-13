@@ -64,14 +64,16 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
       newPosition -= numVisibleCards;
       if (newPosition < 0) {
         newPosition = totalSlides - 1;
+        
       }
     } else if (direction === "right") {
       newPosition += numVisibleCards;
       if (newPosition >= totalSlides) {
-        newPosition = 0; // Reset to the beginning
+        newPosition = 0; // Reset to the beginning' 
 
       }
       setShowLeftArrow(true);
+      
     }
   
     if (listRef.current) {
@@ -133,12 +135,14 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
             <AiOutlineLeft onClick={() => handleDirection("left")} />
           </div>
         )}
+        
         <motion.div
           className="slider left-to-right-transition flex"
           ref={listRef}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
+
           {data?.map((movie, index) => (
             <motion.div
               key={movie.id}
@@ -206,6 +210,7 @@ const Container = styled.div`
         transform-origin: right;
         transform: translateX(100%);
         transition: transform 0.5s ease;
+        
     }
     
       .slider {

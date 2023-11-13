@@ -108,6 +108,12 @@ const CardArtProject = (props: Web3PageProps) => {
   const isModalScreen = window.innerHeight <= 768;
   const [showDiscount, setShowDiscount] = useState(false);
   const [showFeedBack, setShowFeedBack] = useState(false);
+  const [donationAmount, setDonationAmount] = useState('');
+
+  // ... (other parts of your component)
+  const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setDonationAmount(event.target.value);
+  };
   const handleGetDiscountClick = () => {
     setShowDiscount(true);
   };
@@ -122,6 +128,7 @@ const CardArtProject = (props: Web3PageProps) => {
 
   const NATIVE_TOKEN =
     "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
+
 
   async function donateToCampaign(id: u32) {
     try {
@@ -140,7 +147,7 @@ const CardArtProject = (props: Web3PageProps) => {
         contractID: contractIdCrowdFund,
         id: id, // Campaign id
         donorPubKey: props.pubKey, // Donor public key
-        amount: "150", // amount to donate
+        amount: donationAmount, // amount to donate
         nativeToken: NATIVE_TOKEN, // XLM Native Addresss
         memo: "",
         txBuilderC: txBuilder,
@@ -233,6 +240,13 @@ const CardArtProject = (props: Web3PageProps) => {
 
     return stars;
   };
+  const handleButtonClick = (campaignId: any) => {
+    if (campaignId) {
+      donateToCampaign(campaignId);
+      handleGetEmailClick(); // Call handleGetEmailClick after donateToCampaign
+    }
+  };
+  
 
   const Review = () => {
     return (
@@ -267,6 +281,7 @@ const CardArtProject = (props: Web3PageProps) => {
     );
   };
 
+
   const Dicount = () => {
     return (
       <Box
@@ -298,6 +313,8 @@ const CardArtProject = (props: Web3PageProps) => {
               </Typography>
               <input
                 placeholder="0.00"
+                value={donationAmount}
+                onChange={handleInputChange}
                 type="text"
                 style={{
                   marginTop: "3%",
@@ -312,8 +329,8 @@ const CardArtProject = (props: Web3PageProps) => {
                   paddingLeft: "5%",
                 }}
               />
-              <Typography style={{textAlign:'end', color:'#FFFFFF'}}>0.00 <span>ARTcredits</span></Typography>
-              <button className="discountNow"  onClick={handleGetEmailClick}>
+              <Typography style={{textAlign:'end', color:'#FFFFFF'}}>{donationAmount}0 <span>ARTcredits</span></Typography>
+              <button className="discountNow"  onClick={() => handleButtonClick(singleCampaign?.id)}>
                 Support Now
               </button>
             </Box>

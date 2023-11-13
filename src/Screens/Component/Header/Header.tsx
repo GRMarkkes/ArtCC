@@ -20,6 +20,7 @@ import Create from "../Create/Create";
 import Inbox from "../../../Asset/Inbox.png";
 import axios from "axios";
 import Avitar from "../../../Asset/Avatar.png";
+import ImageCreate from "../../../Asset/Rectangle 3.png";
 import { motion } from "framer-motion";
 // import Cookies from 'universal-cookie';
 
@@ -71,6 +72,11 @@ interface Web3PageProps {
 }
 
 function Header(props: Web3PageProps) {
+  const [CreateList, setCreateList] = useState([
+    ImageCreate,
+    ImageCreate,
+    ImageCreate,
+  ]);
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -79,7 +85,7 @@ function Header(props: Web3PageProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(e.target.value);
     setInputValue(newValue);
-  }
+  };
 
   // const [file, setFile] = useState<string>(""); // Change the type to 'string'
 
@@ -96,10 +102,10 @@ function Header(props: Web3PageProps) {
   const [displayImage, setDisplayImage] = useState<string>("false");
 
   const { setConnectWallet, networkDetails, pubKey, swkKit } = props;
-//   const cookies = new Cookies();
-//    cookies.set('myCat', pubKey);
+  //   const cookies = new Cookies();
+  //    cookies.set('myCat', pubKey);
 
-// console.log(cookies.get('myCat'),"hsuhsuu");
+  // console.log(cookies.get('myCat'),"hsuhsuu");
   localStorage.setItem("pubKey", pubKey);
   const getPubKeyOne = localStorage.getItem("pubKey");
 
@@ -116,6 +122,8 @@ function Header(props: Web3PageProps) {
       reader.onload = (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
+          let array: any = [event.target.result, ...CreateList];
+          setCreateList([...array]);
         }
       };
 
@@ -135,10 +143,11 @@ function Header(props: Web3PageProps) {
       setBaseImage(file);
 
       const reader = new FileReader();
-
       reader.onload = (event) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
+          let array: any = [event.target.result, ...CreateList];
+          setCreateList([...array]);
         }
       };
 
@@ -269,6 +278,12 @@ function Header(props: Web3PageProps) {
       setLoading(false);
       console.log(error);
     }
+  };
+  const handleDelete = (index: number) => {
+    // Create a new array excluding the item to be deleted
+    const updatedList = [...CreateList];
+    updatedList.splice(index, 1);
+    setCreateList(updatedList);
   };
 
   return (
@@ -488,7 +503,7 @@ function Header(props: Web3PageProps) {
                     </Nav.Link>
                   </Nav>
                 </Nav>
-                <Nav style={{ marginLeft: "4%" ,marginTop:'5px' }}>
+                <Nav style={{ marginLeft: "4%", marginTop: "5px" }}>
                   <Nav.Link
                     style={{ color: "white", fontSize: "12px" }}
                     onClick={openModal}
@@ -503,7 +518,7 @@ function Header(props: Web3PageProps) {
                   >
                     NEW&nbsp;MARKETPLACE
                   </Nav.Link>
-                  <Nav.Link style={{marginTop:'-2%'}}>
+                  <Nav.Link style={{ marginTop: "-2%" }}>
                     <img src={Search_icon} alt="Search" />
                   </Nav.Link>
                 </Nav>
@@ -596,7 +611,6 @@ function Header(props: Web3PageProps) {
                         type="text"
                         {...register("target")}
                         onChange={handleInputChange}
-                    
                       />
                       <div
                         style={{
@@ -786,7 +800,6 @@ function Header(props: Web3PageProps) {
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <input
                         placeholder="Set Location"
-                      
                         type="date"
                         style={{
                           paddingRight: "4%",
@@ -836,12 +849,13 @@ function Header(props: Web3PageProps) {
                   </div>
                 </div>
                 <div className="image-file">
-                  <Create />
-                  <Create />
-                  <Create />
-                  <Create />
-                  <Create />
-                  <Create />
+                  {CreateList?.map((images, index) => (
+                    <Create
+                      key={index}
+                      ImageCreate={images}
+                      onDelete={() => handleDelete(index)}
+                    />
+                  ))}
                 </div>
                 <div
                   style={{
