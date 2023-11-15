@@ -1,0 +1,253 @@
+.hover {
+    opacity: 1;
+    z-index: 990;
+ 
+    width: 360px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 0.3rem;
+   
+    background-color: #181818;
+    /* transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; */
+}
+.card-off-button{
+    text-decoration: none;
+    border-radius: 2px;
+background: var(--red-6, #F5222D);
+color: var(--polar-green-1, #F6FFED);
+ border: none;
+ width: 9vh;
+  height: auto;
+  text-align: center;
+  font-size: 18px;
+
+}
+.swap-button{
+    display: flex;
+    margin-left: 4%;
+    width: 40%;
+    margin-top: 1.5%;
+   
+}
+.swap-button img{
+    width: 18px;
+height: 18px;
+}
+  
+.card-more-button{
+    text-decoration: none;
+    border-radius: 2px;
+    border: 1px solid var(--primary-6, #01A19A);
+background: var(--primary-6, #01A19A);
+    width: 12vh;
+    height: auto;
+    color: var(--character-primary-inverse, #FFF);
+    text-align: center;
+    align-items: center;
+/* Body/regular */
+    font-family: Montserrat;
+    font-size: 17px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+margin-top: 2%;
+}
+.Marketplace-title-modal{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 4%;
+}
+.card-more-button-modal{
+    text-decoration: none;
+    border-radius: 2px;
+    border: 1px solid var(--primary-6, #01A19A);
+    background: var(--primary-6, #01A19A);
+    width: 16vh;
+    height: auto;
+    color: var(--character-primary-inverse, #FFF);
+    text-align: center;
+    align-items: center;
+/* Body/regular */
+    font-family: Montserrat;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+   line-height: normal;
+    margin-top: 2%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+
+}
+.card-off-button-modal{
+    text-decoration: none;
+    border-radius: 2px;
+    background: var(--red-6, #F5222D);
+    color: var(--polar-green-1, #F6FFED);
+    border: none;
+    width: 10vh;
+    height: auto;
+    text-align: center;
+    font-size: 18px;
+    padding-top: 3%;
+    margin-top: 2%;
+    padding-bottom: 3%;
+
+}
+.modal-rating-above{
+    margin-top: 4%;
+    color: var(--character-title-85, rgba(0, 0, 0, 0.85));
+text-align: justify;
+
+font-family: Montserrat;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+.tag-marketplace-modal{
+    display: inline-block;
+  border: 1px solid var(--primary-6, #01A19A);
+  border-radius: 2px;
+  background-color: white;
+  color: var(--primary-6, #01A19A);
+  padding: 3px 5px;
+  margin-right: 5px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 13px;
+  
+
+}
+.Disocunt-Review{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    background: var(--gradient, linear-gradient(90deg, #312783 0%, #00A19A 100%));
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    
+}
+.discountNow{
+    width: 100%;
+    margin-top: 5%;
+    border-radius: 2px;
+    border: 1px solid var(--primary-6, #01A19A);
+    background: var(--primary-6, #01A19A);
+
+    box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.04);
+    display: flex;
+    padding: 4px 15px;
+    justify-content: center;
+align-items: center;
+gap: 8px;
+color: var(--character-primary-inverse, #FFF);
+text-align: center;
+
+/* Body/regular */
+font-family: Montserrat;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+height: auto;
+padding-top: 3%;
+padding-bottom: 3%;
+}
+.Preview{
+    width: 45%;
+    border: 1px solid var(--character-primary-inverse, #FFF);
+    padding-top: 3%;
+    padding-bottom: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.Download-Review{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background: var(--gradient, linear-gradient(90deg, #312783 0%, #00A19A 100%));
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+
+}
+.button-pervious{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5%;
+}
+.button-portfolio{
+    border-radius: 2px;
+border: 1px solid var(--primary-6, #01A19A);
+background: var(--primary-6, #01A19A);
+box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.04);
+color: var(--character-primary-inverse, #FFF);
+text-align: center;
+/* Body/regular */
+font-family: Montserrat;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+height: auto;
+padding-left: 5%;
+padding-right: 5%;
+padding-top: 1%;
+padding-bottom: 1%;
+width: auto;
+
+}
+@media screen and (max-width: 768px){
+    .Marketplace-title-modal{
+        display: flex;
+        flex-direction: column;
+
+    }
+    .Disocunt-Review{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .Preview{
+        width: 90%;
+        margin-top: 5%;
+    }
+    .button-pervious{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        
+    }
+    .button-portfolio{
+        margin-top: 6%;
+
+    }
+}
+@media screen and (max-width: 480px) {
+   
+    .hover{
+        width: 260px;
+    }
+    .card-off-button{
+        font-size: 15px;
+    }
+    .swap-button{
+        font-size: 10px;
+    }
+    .card-more-button{
+        font-size: 12px;    
+
+    }
+   
+  }

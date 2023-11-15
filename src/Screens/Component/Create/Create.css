@@ -1,4 +1,7 @@
 
+.Create{
+    width: 32%;
+}
 .Create p{
     border: 1px solid var(--neutral-5, #D9D9D9); /* Set the border color and width as needed */
     border-radius: 0; /* Set the border radius to 0 for sharp corners */
@@ -7,4 +10,7 @@
     margin-top: 5%;
     padding: 2px; 
     color: var(--neutral-7, #8C8C8C);
+}
+.Create-image{
+    width: 100%;
 }

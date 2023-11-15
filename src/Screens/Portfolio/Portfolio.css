@@ -1,0 +1,8 @@
+.Portfolio{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 3%;
+    width: 80%;
+    
+    
+}

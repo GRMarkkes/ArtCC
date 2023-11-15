@@ -20,7 +20,9 @@ import Create from "../Create/Create";
 import Inbox from "../../../Asset/Inbox.png";
 import axios from "axios";
 import Avitar from "../../../Asset/Avatar.png";
+import ImageCreate from "../../../Asset/Rectangle 3.png";
 import { motion } from "framer-motion";
+// import Cookies from 'universal-cookie';
 
 // import Create from "../Create/Create";
 // import { motion } from "framer-motion";
@@ -70,9 +72,21 @@ interface Web3PageProps {
 }
 
 function Header(props: Web3PageProps) {
+  const [CreateList, setCreateList] = useState([
+    ImageCreate,
+    ImageCreate,
+    ImageCreate,
+  ]);
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState(0);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseFloat(e.target.value);
+    setInputValue(newValue);
+  };
+
   // const [file, setFile] = useState<string>(""); // Change the type to 'string'
 
   const {
@@ -88,6 +102,12 @@ function Header(props: Web3PageProps) {
   const [displayImage, setDisplayImage] = useState<string>("false");
 
   const { setConnectWallet, networkDetails, pubKey, swkKit } = props;
+  //   const cookies = new Cookies();
+  //    cookies.set('myCat', pubKey);
+
+  // console.log(cookies.get('myCat'),"hsuhsuu");
+  localStorage.setItem("pubKey", pubKey);
+  const getPubKeyOne = localStorage.getItem("pubKey");
 
   const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; // Get the selected file
@@ -102,6 +122,8 @@ function Header(props: Web3PageProps) {
       reader.onload = (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
+          let array: any = [event.target.result, ...CreateList];
+          setCreateList([...array]);
         }
       };
 
@@ -121,10 +143,11 @@ function Header(props: Web3PageProps) {
       setBaseImage(file);
 
       const reader = new FileReader();
-
       reader.onload = (event) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
+          let array: any = [event.target.result, ...CreateList];
+          setCreateList([...array]);
         }
       };
 
@@ -134,7 +157,7 @@ function Header(props: Web3PageProps) {
 
   const navigate = useNavigate();
   const contractIdCrowdFund =
-    "CDVKXAJB2UZYVETKZSKEFXAGKEB2D3GBLVWKQ25UE5LSYBNLDWVJFT6O";
+    "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
 
   function toggleMenu() {
     setShowMenu(!showMenu);
@@ -256,10 +279,16 @@ function Header(props: Web3PageProps) {
       console.log(error);
     }
   };
+  const handleDelete = (index: number) => {
+    // Create a new array excluding the item to be deleted
+    const updatedList = [...CreateList];
+    updatedList.splice(index, 1);
+    setCreateList(updatedList);
+  };
 
   return (
     <div>
-      {pubKey === "" ? (
+      {getPubKeyOne === "" ? (
         <div>
           <Navbar
             bg="black"
@@ -290,9 +319,9 @@ function Header(props: Web3PageProps) {
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto" style={{ flex: 1, marginLeft: "20%" }}>
                   <Nav.Link
-                    style={{ color: "white" }}
+                    style={{ color: "white", fontSize: "12px" }}
                     onClick={() => {
-                      navigate("/");
+                      navigate("/Portfolio");
                     }}
                   >
                     PORTFOLIO
@@ -305,43 +334,51 @@ function Header(props: Web3PageProps) {
                         navigate("/ArtProject");
                       }}
                     >
-                      ART PROJECTS
+                      ART&nbsp;PROJECTS
                     </Nav.Link>
                   ) : (
                     <Nav.Link
-                      style={{ color: "white" }}
+                      style={{ color: "white", fontSize: "12px" }}
                       className="header_button"
                       onClick={() => {
                         navigate("/ArtProject");
                       }}
                     >
-                      ART PROJECTS
+                      ART&nbsp;PROJECTS
                     </Nav.Link>
                   )}
 
                   <Nav.Link
-                    style={{ color: "white" }}
+                    style={{ color: "white", fontSize: "12px" }}
                     onClick={() => {
                       navigate("/marketplace");
                     }}
                   >
-                    MARKET PLACE
+                    MARKET&nbsp;PLACE
                   </Nav.Link>
                 </Nav>
                 <Nav style={{ marginLeft: "20%" }}>
                   <Nav.Link
-                    style={{ color: "#01A19A", marginTop: "3%" }}
+                    style={{
+                      color: "#01A19A",
+                      marginTop: "3%",
+                      fontSize: "12px",
+                    }}
                     href="https://www.northernsustainablefutures.com/artclubcard-info"
                   >
-                    CREATE WALLET
+                    CREATE&nbsp;WALLET
                   </Nav.Link>
                   <Nav.Link
-                    style={{ color: "#01A19A", marginTop: "3%" }}
+                    style={{
+                      color: "#01A19A",
+                      marginTop: "3%",
+                      fontSize: "12px",
+                    }}
                     onClick={() => {
                       setConnectWallet(true);
                     }}
                   >
-                    CONNECT WALLET
+                    CONNECT&nbsp;WALLET
                   </Nav.Link>
                   <Nav.Link>
                     <img src={Search_icon} alt="Search" />
@@ -366,14 +403,14 @@ function Header(props: Web3PageProps) {
                       : "header_button"
                   }
                 >
-                  ART PROJECT
+                  ART&nbsp;PROJECT
                 </Nav.Link>
                 <Nav.Link as={Link} to="/market-place" onClick={toggleMenu}>
-                  MARKET PLACE
+                  MARKET&nbsp;PLACE
                 </Nav.Link>
-                <Nav.Link onClick={toggleMenu}>Create Wallet</Nav.Link>
+                <Nav.Link onClick={toggleMenu}>Create&nbsp;Wallet</Nav.Link>
                 <span>|</span>
-                <Nav.Link onClick={toggleMenu}>Connect Wallet</Nav.Link>
+                <Nav.Link onClick={toggleMenu}>Connect&nbsp;Wallet</Nav.Link>
               </Nav>
             </div>
           )}
@@ -412,7 +449,7 @@ function Header(props: Web3PageProps) {
                   style={{ width: "50%", marginLeft: "8%" }}
                 >
                   <Nav.Link
-                    style={{ color: "white" }}
+                    style={{ color: "white", fontSize: "12px" }}
                     onClick={() => {
                       navigate("/");
                     }}
@@ -427,58 +464,70 @@ function Header(props: Web3PageProps) {
                         navigate("/ArtProject");
                       }}
                     >
-                      ART PROJECTS
+                      ART&nbsp;PROJECTS
                     </Nav.Link>
                   ) : (
                     <Nav.Link
-                      style={{ color: "white" }}
+                      style={{ color: "white", fontSize: "12px" }}
                       className="header_button"
                       onClick={() => {
                         navigate("/ArtProject");
                       }}
                     >
-                      ART PROJECTS
+                      ART&nbsp;PROJECTS
                     </Nav.Link>
                   )}
 
                   <Nav.Link
-                    style={{ color: "white" }}
+                    style={{ color: "white", fontSize: "12px" }}
                     onClick={() => {
                       navigate("/marketplace");
                     }}
                   >
-                    MARKET PLACE
+                    MARKET&nbsp;PLACE
                   </Nav.Link>
-                  <Nav style={{ marginLeft: "8%" }}>
+                  <Nav style={{ marginLeft: "5%" }}>
                     <Nav.Link
-                      style={{ color: "white" }}
+                      style={{
+                        color: "white",
+                        fontSize: "12px",
+                        marginTop: "-2%",
+                      }}
                       onClick={() => {
                         navigate("/");
                       }}
                       className=""
                     >
-                      LOAD WALLET
+                      LOAD&nbsp;WALLET
                       <RiArrowDropDownLine style={{ fontSize: "25px" }} />
                     </Nav.Link>
                   </Nav>
                 </Nav>
-                <Nav style={{ marginLeft: "6%" }}>
-                  <Nav.Link style={{ color: "white" }} onClick={openModal}>
-                    NEW ART PROJECT
+                <Nav style={{ marginLeft: "4%", marginTop: "5px" }}>
+                  <Nav.Link
+                    style={{ color: "white", fontSize: "12px" }}
+                    onClick={openModal}
+                  >
+                    NEW&nbsp;ART&nbsp;PROJECT
                   </Nav.Link>
                   <Nav.Link
-                    style={{ color: "white" }}
+                    style={{ color: "white", fontSize: "12px" }}
                     onClick={() => {
                       navigate("/marketplace");
                     }}
                   >
-                    NEW MARKETPLACE
+                    NEW&nbsp;MARKETPLACE
+                  </Nav.Link>
+                  <Nav.Link style={{ marginTop: "-2%" }}>
+                    <img src={Search_icon} alt="Search" />
                   </Nav.Link>
                 </Nav>
                 <Nav style={{ marginLeft: "2%" }}>
                   <Nav.Link style={{ display: "flex" }}>
                     <img style={{ height: "80%" }} src={Avitar} alt="Search" />
-                    <p style={{ color: "white", width: "5%" }}>
+                    <p
+                      style={{ color: "white", width: "5%", fontSize: "12px" }}
+                    >
                       Account
                       <br />
                       UserName
@@ -561,6 +610,7 @@ function Header(props: Web3PageProps) {
                         placeholder="0.00"
                         type="text"
                         {...register("target")}
+                        onChange={handleInputChange}
                       />
                       <div
                         style={{
@@ -579,7 +629,7 @@ function Header(props: Web3PageProps) {
                             lineHeight: "22px",
                           }}
                         >
-                          0.00 ARTcredits
+                          {inputValue * 10}ARTcredits
                         </p>
                       </div>
                     </div>
@@ -799,12 +849,13 @@ function Header(props: Web3PageProps) {
                   </div>
                 </div>
                 <div className="image-file">
-                  <Create />
-                  <Create />
-                  <Create />
-                  <Create />
-                  <Create />
-                  <Create />
+                  {CreateList?.map((images, index) => (
+                    <Create
+                      key={index}
+                      ImageCreate={images}
+                      onDelete={() => handleDelete(index)}
+                    />
+                  ))}
                 </div>
                 <div
                   style={{
