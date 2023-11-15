@@ -91,7 +91,6 @@
 }
 .modal-content-card{
   height: 65vh;
-  width: 100%;
   overflow-y: auto;
   box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -195,6 +194,14 @@
   width:100%;
 }
 @media screen and (max-width: 768px) {
+  .modal-overlay-card{
+    position: fixed;
+    top: 20%;
+    left: 15%;
+    right: 15%;
+  
+    
+  }
   .modal-content {
     /* max-width: 90%; */
     width: 120%;

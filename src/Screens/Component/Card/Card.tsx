@@ -184,7 +184,7 @@ const CardArtProject = (props: Web3PageProps) => {
       console.log(error);
     }
   }
-  console.log(donateToCampaign);
+
 
   useEffect(() => {
     const handleResize = () => {

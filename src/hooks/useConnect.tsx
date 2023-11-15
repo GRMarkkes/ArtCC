@@ -52,6 +52,8 @@ const useConnect = () => {
     if (connectWallet) {
       connect();
     }
+    console.log(connect,"hudhud");
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectWallet]);
   return {

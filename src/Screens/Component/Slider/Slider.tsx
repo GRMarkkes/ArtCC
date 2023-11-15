@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
 import styled from "styled-components";
-import CardSlider from "../CardSlider/CardSlider";
+import CardSlider from "../CardNewSlider/CardNewSlider";
 import { NetworkDetails } from "helper/network";
 import * as Crowdfund from "CrowdFund";
 import { StellarWalletsKit } from "stellar-wallets-kit";
