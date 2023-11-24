@@ -84,7 +84,7 @@ function parseError(message) {
 exports.networks = {
     futurenet: {
         networkPassphrase: "Test SDF Future Network ; October 2022",
-        contractId: "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7",
+        contractId: "CBBVJYS2FKGI5CLMCBNRB62IOTE7ZTMVABBOGZFUOSN7AETXAGXPU2XZ",
     }
 };
 const Errors = {};

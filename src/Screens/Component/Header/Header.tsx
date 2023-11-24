@@ -157,7 +157,7 @@ function Header(props: Web3PageProps) {
 
   const navigate = useNavigate();
   const contractIdCrowdFund =
-    "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+    "CCHODXPIE2BVDDZPX2RGHUZGC5NB53P34J57MDE3J6SMVNMECISDSQ2J";
 
   function toggleMenu() {
     setShowMenu(!showMenu);

@@ -45,7 +45,7 @@ const CardNewSlider = (props: Web3PageProps) => {
   }, [props]);
   return (
    
-    <div className="container" style={{paddingTop:'2rem'}}>
+    <div className="container-fluid" style={{paddingTop:'2rem'}}>
       <h1 style={{ fontWeight: "600", fontSize: "20px" ,color:'#fff',marginBottom:'2.5%', marginTop:'2.6%' }}>{props.title}</h1>
       <Swiper
         loop={true}
@@ -84,6 +84,12 @@ const CardNewSlider = (props: Web3PageProps) => {
           },
 
           1800: {
+            slidesPerView: 5,
+            slidesPerGroup: 5,
+            spaceBetween: 5,
+            centeredSlides: false,
+          },
+          2400: {
             slidesPerView: 5,
             slidesPerGroup: 5,
             spaceBetween: 5,

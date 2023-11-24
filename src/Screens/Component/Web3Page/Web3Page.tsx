@@ -18,7 +18,7 @@ const NATIVE_TOKEN = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+  "CCHODXPIE2BVDDZPX2RGHUZGC5NB53P34J57MDE3J6SMVNMECISDSQ2J";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -27,7 +27,7 @@ const crowdFund = new Crowdfund.Contract({
 });
 
 const contractIdToken =
-  "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7";
+  "CBBVJYS2FKGI5CLMCBNRB62IOTE7ZTMVABBOGZFUOSN7AETXAGXPU2XZ";
 
 const token = new Token.Contract({
   contractId: contractIdToken,
@@ -106,9 +106,10 @@ const Web3Page = (props: Web3PageProps) => {
 
         console.log("result", result);
       } catch (error) {
-        // console.log(error);
+       console.log(error,"this is error");
       }
     } catch (error) {
+      console.log(error,"this is error");
       // console.log(error);
     }
   }

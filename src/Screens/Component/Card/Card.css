@@ -85,6 +85,7 @@
   top: 20%;
   left: 38%;
   right: 36%;
+
   z-index: 9998;
   transition: opacity 0.3s ease, transform 0.3s ease;
   
@@ -92,16 +93,19 @@
 .modal-content-card{
   height: 65vh;
   overflow-y: auto;
+
   box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
   transition: opacity 0.3s ease, transform 0.3s ease;
- 
+
  
 }
 .modal-overlay {
+  
   position: fixed;
   top: 10%;
   left: 20%;
   right: 18%;
+
   bottom: 0;
   /* background-color: rgba(0, 0, 0, 0.5); */
   z-index: 9998;

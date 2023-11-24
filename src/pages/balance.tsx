@@ -5,7 +5,7 @@ import { StellarWalletsKit } from "stellar-wallets-kit";
 
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 const token = new Token.Contract({
-  contractId: "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7",
+  contractId: "CBBVJYS2FKGI5CLMCBNRB62IOTE7ZTMVABBOGZFUOSN7AETXAGXPU2XZ",
   networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
@@ -18,7 +18,7 @@ interface BalanaceProps {
 
 const Balanace = (props: BalanaceProps) => {
   const contractIdToken =
-    "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7";
+    "CBBVJYS2FKGI5CLMCBNRB62IOTE7ZTMVABBOGZFUOSN7AETXAGXPU2XZ";
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
