@@ -1869,43 +1869,43 @@
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.3.3.tgz"
   integrity sha512-0xd7qez0AQ+MbHatZTlI1gu5vkG8r7MYRUJAHPAHJBmGLs16zpkrpAVLvjQKQOqaXPDUBwOiJzNc00znHSCVBw==
 
-"@soroban-react/chains@^6.1.1":
-  version "6.4.1"
-  resolved "https://registry.npmjs.org/@soroban-react/chains/-/chains-6.4.1.tgz"
-  integrity sha512-bONgAI+W+EVLdWiyY1i4LT1nyp8OG3AlYezrmnYZPXWDHwuBcCSJOEgdBp3J2hnoAvj9lgW5UJ2iXPnUYvXtvw==
+"@soroban-react/chains@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@soroban-react/chains/-/chains-8.0.1.tgz#6546652b61632e892c01fb7d926c6da8109490ac"
+  integrity sha512-SsM1dQSqB7J8O7xyVZw7DIEtf7WITa1DkfWUiyhxjlkQz8Dk8ZgbUxXdoGodSLDT4/ZhdPmss1Mv4NjXMjnSDg==
   dependencies:
-    "@soroban-react/types" "^6.1.1"
-    soroban-client "0.10.0"
+    "@soroban-react/types" "^8.0.0"
+    stellar-sdk "11.1.0"
 
-"@soroban-react/contracts@^6.1.1":
-  version "6.6.0"
-  resolved "https://registry.npmjs.org/@soroban-react/contracts/-/contracts-6.6.0.tgz"
-  integrity sha512-cJnbLmtooVGyW69Hz1Ca//WaWyFDXt/yrIAqRLylm3ChHlJEmVp73zg1rz1YPxg1oDsajBtHz+d09LDR5lR3qg==
+"@soroban-react/contracts@^8.1.1":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@soroban-react/contracts/-/contracts-8.1.1.tgz#768892c4485770cb7e4ce0a8009a0c72c66ce649"
+  integrity sha512-5MJ0Hl6OGy5xnDWoictLHs5cCeAi68fAYiZPKiNyXn79KJU9re5F45mZ0q0RGaQgx7PCD+zIePGhyc5o4LypTw==
   dependencies:
-    "@soroban-react/core" "^6.4.1"
-    soroban-client "0.10.0"
+    "@soroban-react/core" "^8.0.0"
+    stellar-sdk "11.1.0"
 
-"@soroban-react/core@^6.1.1", "@soroban-react/core@^6.4.1":
-  version "6.4.1"
-  resolved "https://registry.npmjs.org/@soroban-react/core/-/core-6.4.1.tgz"
-  integrity sha512-ZH/9UOOEYYqcXlN8jF52ww9qELeYBrahPTR/iD5LVM+I8x6BaXSKRbzUjZhUkxYJz3mbyWmWFKU+W+LJpEB8qw==
+"@soroban-react/core@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@soroban-react/core/-/core-8.0.0.tgz#508308d5f5892afae0443b958a2cf8fb5d9297eb"
+  integrity sha512-xJ/1CaBEwQMS9r3heOKeQH0ch1EuG0De0wY8J1EAO3rKpigUAC1B3hhySp6bJzB+4YG22FhoM+3vesiYiTCPdA==
   dependencies:
-    "@soroban-react/freighter" "^6.4.0"
-    "@soroban-react/types" "^6.1.1"
-    soroban-client "0.10.0"
+    "@soroban-react/freighter" "^8.0.0"
+    "@soroban-react/types" "^8.0.0"
+    stellar-sdk "11.1.0"
 
-"@soroban-react/freighter@^6.1.1", "@soroban-react/freighter@^6.4.0":
-  version "6.4.0"
-  resolved "https://registry.npmjs.org/@soroban-react/freighter/-/freighter-6.4.0.tgz"
-  integrity sha512-3kcMNzjdWrXYvsZAUGt9N3UEv88hFCElNy/P+X0SFTUVj4MEzqGoR33qeLtCUJYQpGQJu1X2jSmxNKpoM+tMJQ==
+"@soroban-react/freighter@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@soroban-react/freighter/-/freighter-8.0.0.tgz#7a305724c1d7fdbd5c1490a4fdc49d1a140a600c"
+  integrity sha512-eJXz1Uh7C59XuUU6XiKh/0BSHKrNze/ib7eFhLtjiZ8FQWK5joVNZkhvyNo76+IwQ+VDtVg2KG8qdvcQPtYorw==
   dependencies:
-    "@soroban-react/types" "^6.1.1"
-    "@stellar/freighter-api" "1.6.0"
+    "@soroban-react/types" "^8.0.0"
+    "@stellar/freighter-api" "1.7.1"
 
-"@soroban-react/types@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.npmjs.org/@soroban-react/types/-/types-6.1.1.tgz"
-  integrity sha512-TViubP1rxNvCgqoywHlXzK1h65UE9jSy321MqWcDlQS5cGrYOzp3PEj7JeGLcAjY9CgaTsfx/4uM7VwfI7F17Q==
+"@soroban-react/types@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@soroban-react/types/-/types-8.0.0.tgz#14cb25911d2d45e3448a0fc6c0b2a6ae16b4851e"
+  integrity sha512-t8eohOlmb4LAD1e3bfI01KKK7oCcm468QKsKrD0fL67fnZYcx9K61tSCqwWEbFCWGMGPkwaOwI3sE/bYKKDMIQ==
 
 "@stablelib/aead@^1.0.1":
   version "1.0.1"
@@ -2052,20 +2052,34 @@
     react-copy-to-clipboard "^5.1.0"
     tslib "^2.5.0"
 
-"@stellar/freighter-api@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/@stellar/freighter-api/-/freighter-api-1.5.1.tgz"
-  integrity sha512-WEnKEqd+xVLnOq6bJv+fLXod8JQyPjzpOKTpH4g7tG9MM1fmXzD3y2SXJlpCIw8kVqtiC4ynWOlSWX+TKO7KiQ==
-
-"@stellar/freighter-api@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/@stellar/freighter-api/-/freighter-api-1.6.0.tgz"
-  integrity sha512-Z6CRY+3+whzMspda6PiHEc4Rs9tdQkHLin9FopdnHhij/FEEAK+IiuF8Ki2ROcQweXdazb8N237aSim10s+Zgw==
-
 "@stellar/freighter-api@1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@stellar/freighter-api/-/freighter-api-1.7.0.tgz#da86031fdf82494a7a3cd6e322d492af4150d991"
   integrity sha512-LqqNkjPRHBfME0bgdcgnMg9ki9xfVx6fk2C+HvltBQFYj6tHRvlXh4/Bjvn2FXucPqPjIzBRw5usU0EVrrMeSg==
+
+"@stellar/freighter-api@1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@stellar/freighter-api/-/freighter-api-1.7.1.tgz#d62b432abc7e0140a6025cd672455ecee7b3199a"
+  integrity sha512-XvPO+XgEbkeP0VhP0U1edOkds+rGS28+y8GRGbCVXeZ9ZslbWqRFQoETAdX8IXGuykk2ib/aPokiLc5ZaWYP7w==
+
+"@stellar/js-xdr@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@stellar/js-xdr/-/js-xdr-3.0.1.tgz#d500f1e1332210cd56e0ef95e44c54506d9f48f3"
+  integrity sha512-dp5Eh7Nr1YjiIeqpdkj2cQYxfoPudDAH3ck8MWggp48Htw66Z/hUssNYUQG/OftLjEmHT90Z/dtey2Y77DOxIw==
+
+"@stellar/stellar-base@10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@stellar/stellar-base/-/stellar-base-10.0.1.tgz#cf4458e081f694109422521562e53e642c29991b"
+  integrity sha512-BDbx7VHOEQh+4J3Q+gStNXgPaNckVFmD4aOlBBGwxlF6vPFmVnW8IoJdkX7T58zpX55eWI6DXvEhDBlrqTlhAQ==
+  dependencies:
+    "@stellar/js-xdr" "^3.0.1"
+    base32.js "^0.1.0"
+    bignumber.js "^9.1.2"
+    buffer "^6.0.3"
+    sha.js "^2.3.6"
+    tweetnacl "^1.0.3"
+  optionalDependencies:
+    sodium-native "^4.0.1"
 
 "@stellar/tsconfig@^1.0.2":
   version "1.0.2"
@@ -3153,9 +3167,9 @@
 CrowdFund@./CrowdFund:
   version "0.0.0"
   dependencies:
-    "@stellar/freighter-api" "1.5.1"
+    "@stellar/freighter-api" "1.7.1"
     buffer "6.0.3"
-    soroban-client "1.0.0-beta.2"
+    stellar-sdk "11.1.0"
 
 abab@^2.0.0:
   version "2.0.6"
@@ -3737,6 +3751,15 @@ axios@^1.5.1:
   integrity sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==
   dependencies:
     follow-redirects "^1.15.0"
+    form-data "^4.0.0"
+    proxy-from-env "^1.1.0"
+
+axios@^1.6.0:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.5.tgz#2c090da14aeeab3770ad30c3a1461bc970fb0cd8"
+  integrity sha512-Ii012v05KEVuUoFWmMW/UQv9aRIc3ZwkWDcM+h5Il8izZCtRVpDUfwpoFf7eOtajT3QiGR4yDUx7lPqHJULgbg==
+  dependencies:
+    follow-redirects "^1.15.4"
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
@@ -6245,11 +6268,6 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-es6-promise@^4.2.4:
-  version "4.2.8"
-  resolved "https://registry.npmjs.org/es6-promise/-/es6-promise-4.2.8.tgz"
-  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
-
 escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/escalade/-/escalade-3.1.1.tgz"
@@ -7252,6 +7270,11 @@ follow-redirects@^1.0.0, follow-redirects@^1.15.0:
   version "1.15.2"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.2.tgz"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
+
+follow-redirects@^1.15.4:
+  version "1.15.5"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
+  integrity sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -13924,23 +13947,6 @@ sonic-boom@^2.2.1:
   dependencies:
     atomic-sleep "^1.0.0"
 
-soroban-client@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.npmjs.org/soroban-client/-/soroban-client-0.10.0.tgz"
-  integrity sha512-kqXL4UsP20mVDBZdNcMes6kcktAoQUVFzboQy4eSPzkykf1o5jiQsKPWhitOj7QZhvgsDNY7BmMC7GuiIPWfiA==
-  dependencies:
-    axios "^1.4.0"
-    bignumber.js "^9.1.1"
-    buffer "^6.0.3"
-    detect-node "^2.0.4"
-    es6-promise "^4.2.4"
-    eventsource "^2.0.2"
-    lodash "^4.17.21"
-    randombytes "^2.1.0"
-    stellar-base "10.0.0-soroban.5"
-    toml "^3.0.0"
-    urijs "^1.19.1"
-
 soroban-client@1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.npmjs.org/soroban-client/-/soroban-client-1.0.0-beta.2.tgz"
@@ -14138,20 +14144,6 @@ stealthy-require@^1.1.1:
   resolved "https://registry.npmjs.org/stealthy-require/-/stealthy-require-1.1.1.tgz"
   integrity sha512-ZnWpYnYugiOVEY5GkcuJK1io5V8QmNYChG62gSit9pQVGErXtrKuPC55ITaVSukmMta5qpMU7vqLt2Lnni4f/g==
 
-stellar-base@10.0.0-soroban.5:
-  version "10.0.0-soroban.5"
-  resolved "https://registry.npmjs.org/stellar-base/-/stellar-base-10.0.0-soroban.5.tgz"
-  integrity sha512-4gASMPVftdtuG4JqrRVgjjUyy/gIzv3FTJxR9Y8jfYi7KaduXn5YwaNjRC3UABlScqh2G1ax5+7NFkHhZXg5oA==
-  dependencies:
-    base32.js "^0.1.0"
-    bignumber.js "^9.1.1"
-    buffer "^6.0.3"
-    js-xdr "^3.0.0"
-    sha.js "^2.3.6"
-    tweetnacl "^1.0.3"
-  optionalDependencies:
-    sodium-native "^4.0.1"
-
 stellar-base@v10.0.0-beta.1:
   version "10.0.0-beta.1"
   resolved "https://registry.npmjs.org/stellar-base/-/stellar-base-10.0.0-beta.1.tgz"
@@ -14165,6 +14157,19 @@ stellar-base@v10.0.0-beta.1:
     tweetnacl "^1.0.3"
   optionalDependencies:
     sodium-native "^4.0.1"
+
+stellar-sdk@11.1.0:
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/stellar-sdk/-/stellar-sdk-11.1.0.tgz#04df0be3bfee2ffd1db068c92dc4f3ec27309103"
+  integrity sha512-fIdo77ogpU+ecHgs59pk9velpXd4F/ch0DzOI4QZw8zVZApc3oeNWP3+X6ui7BWpeRHAGsP2CHQzBLxm0JTIgg==
+  dependencies:
+    "@stellar/stellar-base" "10.0.1"
+    axios "^1.6.0"
+    bignumber.js "^9.1.2"
+    eventsource "^2.0.2"
+    randombytes "^2.1.0"
+    toml "^3.0.0"
+    urijs "^1.19.1"
 
 stellar-wallets-kit@./Stellar-Wallets:
   version "0.1.1"
@@ -14816,9 +14821,9 @@ toidentifier@1.0.1:
 token@./Token:
   version "0.0.0"
   dependencies:
-    "@stellar/freighter-api" "1.5.1"
+    "@stellar/freighter-api" "1.7.1"
     buffer "6.0.3"
-    soroban-client "1.0.0-beta.2"
+    stellar-sdk "11.1.0"
 
 toml@^3.0.0:
   version "3.0.0"

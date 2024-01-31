@@ -18,16 +18,17 @@ const NATIVE_TOKEN = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CCHODXPIE2BVDDZPX2RGHUZGC5NB53P34J57MDE3J6SMVNMECISDSQ2J";
+  "CACPJOTDGFBGFOOIGQ4H2CTWL75XBEYRHDBO3IHM7XLF22MPHFPW2SND";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
   networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
+console.log(crowdFund.getCampaigns().AssembledTransaction,"crowdFund");
 
 const contractIdToken =
-  "CBBVJYS2FKGI5CLMCBNRB62IOTE7ZTMVABBOGZFUOSN7AETXAGXPU2XZ";
+  "CDU2ZKX5BJB3DVVLHTN6QVYHKN2NIULULJWRLSI5CE6YPDBR62WNWJVQ";
 
 const token = new Token.Contract({
   contractId: contractIdToken,
@@ -53,10 +54,10 @@ const dataTransform = (data: string, key: string): string => {
 const Web3Page = (props: Web3PageProps) => {
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
 
-  const [tokenName, setTokenName] = useState("");
-  const [tokenSymbol, setTokenSymbol] = useState("");
-  const [tokenAddress, setTokenAddress] = useState("");
-  const [balance, setBalance] = useState(0);
+  const [tokenName, setTokenName] = useState <any>("");
+  const [tokenSymbol, setTokenSymbol] = useState <any>("");
+  const [tokenAddress, setTokenAddress] = useState <any>("");
+  const [balance, setBalance] = useState<any>(0);
 
   async function createCampaign() {
     try {
@@ -167,7 +168,9 @@ const Web3Page = (props: Web3PageProps) => {
       console.log("getCampaigns");
       console.log("props.pubKey", props.pubKey);
 
-      let data = await crowdFund.getCampaigns();
+      let data :any = await crowdFund.getCampaigns();
+   
+  
 
       setCampaigns(data);
 
@@ -220,6 +223,8 @@ const Web3Page = (props: Web3PageProps) => {
     getCampaigns();
     tokenDetail();
   }, [getCampaigns, tokenDetail]); // Use an array of dependencies here
+  console.log(campaigns,"campaigns");
+  
 
   return (
     <div>

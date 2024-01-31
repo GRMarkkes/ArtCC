@@ -41,7 +41,7 @@ export type Duration = bigint;
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CCHODXPIE2BVDDZPX2RGHUZGC5NB53P34J57MDE3J6SMVNMECISDSQ2J";
+  "CACPJOTDGFBGFOOIGQ4H2CTWL75XBEYRHDBO3IHM7XLF22MPHFPW2SND";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -82,7 +82,7 @@ const ArtProject = (props: Web3PageProps) => {
       console.log("getCampaigns");
       console.log("props.pubKey", props.pubKey);
 
-      let data = await crowdFund.getCampaigns();
+      let data : any = await crowdFund.getCampaigns();
 
       setCampaigns(data);
       setLoading(false);

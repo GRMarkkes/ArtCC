@@ -70,7 +70,7 @@ export type Duration = bigint;
 const networkUrl = "https://rpc-futurenet.stellar.org:443";
 
 const contractIdCrowdFund =
-  "CCHODXPIE2BVDDZPX2RGHUZGC5NB53P34J57MDE3J6SMVNMECISDSQ2J";
+  "CACPJOTDGFBGFOOIGQ4H2CTWL75XBEYRHDBO3IHM7XLF22MPHFPW2SND";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
@@ -90,7 +90,7 @@ const CardArtProject = (props: Web3PageProps) => {
 
   const getCampaingByID = async (id: number) => {
     try {
-      let data = await crowdFund.getCampaign({ campaign_id: id });
+      let data : any = await crowdFund.getCampaign({ campaign_id: id });
 
       setSingleCampaign(data);
 
@@ -124,7 +124,7 @@ const CardArtProject = (props: Web3PageProps) => {
     setShowDiscount(false);
   };
   const contractIdCrowdFund =
-    "CCHODXPIE2BVDDZPX2RGHUZGC5NB53P34J57MDE3J6SMVNMECISDSQ2J";
+    "CACPJOTDGFBGFOOIGQ4H2CTWL75XBEYRHDBO3IHM7XLF22MPHFPW2SND";
 
   const NATIVE_TOKEN =
     "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
