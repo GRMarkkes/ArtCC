@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/muhammadzaryabrafique/Downloads/Artcc rust contract-Token contract updated/token/target/debug/build/typenum-9da16e38ec26cee4/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/muhammadzaryabrafique/Downloads/Artcc rust contract-Token contract updated/token/target/debug/build/typenum-9da16e38ec26cee4/out/op.rs
