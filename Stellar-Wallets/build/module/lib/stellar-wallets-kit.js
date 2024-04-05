@@ -14,7 +14,7 @@ export var WalletType;
 export var WalletNetwork;
 (function (WalletNetwork) {
     WalletNetwork["PUBLIC"] = "Public Global Stellar Network ; September 2015";
-    WalletNetwork["FUTURENET"] = "Test SDF Future Network ; October 2022";
+    WalletNetwork["FUTURENET"] = "Public Global Stellar Network ; September 2015";
     WalletNetwork["TESTNET"] = "Test SDF Network ; September 2015";
 })(WalletNetwork || (WalletNetwork = {}));
 export class StellarWalletsKit {

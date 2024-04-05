@@ -8,7 +8,7 @@ export declare enum WalletType {
 }
 export declare enum WalletNetwork {
     PUBLIC = "Public Global Stellar Network ; September 2015",
-    FUTURENET = "Test SDF Future Network ; October 2022",
+    FUTURENET = "Public Global Stellar Network ; September 2015",
     TESTNET = "Test SDF Network ; September 2015"
 }
 export interface IStellarWalletsSignBlob {

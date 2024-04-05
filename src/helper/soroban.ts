@@ -35,7 +35,7 @@ export const SendTxStatus: {
 export const XLM_DECIMALS = 7;
 
 export const RPC_URLS: { [key: string]: string } = {
-  FUTURENET: "https://rpc-futurenet.stellar.org/",
+  FUTURENET: "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53",
 };
 
 // Can be used whenever you need an Address argument for a contract method
@@ -126,7 +126,7 @@ export const submitTx = async (
 
   const sendResponse = await server.sendTransaction(tx);
 
-  if (sendResponse.errorResultXdr) {
+  if (sendResponse.errorResult) {
     throw new Error(ERRORS.UNABLE_TO_SUBMIT_TX);
   }
 

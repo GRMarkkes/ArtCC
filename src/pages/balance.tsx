@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import * as Token from "token";
 import { Address } from "soroban-client";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
-const networkUrl = "https://rpc-futurenet.stellar.org:443";
+const networkUrl = "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53";
 const token = new Token.Contract({
-  contractId: "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7",
-  networkPassphrase: "Test SDF Future Network ; October 2022",
+  contractId: "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP",
+  networkPassphrase: "Public Global Stellar Network ; September 2015",
   rpcUrl: networkUrl,
 });
 
@@ -18,7 +18,7 @@ interface BalanaceProps {
 
 const Balanace = (props: BalanaceProps) => {
   const contractIdToken =
-    "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7";
+    "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP";
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");
@@ -29,13 +29,14 @@ const Balanace = (props: BalanaceProps) => {
     let symbol = await token.symbol();
     let publicKey = new Address(props.pubKey);
 
-    let balance = await token.balance({ id: publicKey });
+    let balance = await token.balance({ id: publicKey.toString() });
     let formatted_balance = Number(balance) / 100000000;
 
     setBalance(formatted_balance);
-
-    setTokenName(name);
-    setTokenSymbol(symbol);
+    const newName = name?.result;
+    const newSymbol = symbol?.result;
+    setTokenName(newName);
+    setTokenSymbol(newSymbol);
     setTokenAddress(contractIdToken);
   }
 

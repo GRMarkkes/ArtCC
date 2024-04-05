@@ -1,4 +1,4 @@
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 export interface NetworkDetails {
   network: string;
@@ -8,7 +8,7 @@ export interface NetworkDetails {
 
 // Soroban is only supported on Futurenet right now
 export const FUTURENET_DETAILS = {
-  network: "FUTURENET",
+  network: "PUBLIC",
   networkUrl: "https://rpc-futurenet.stellar.org:443",
   networkPassphrase: "Test SDF Future Network ; October 2022",
 };

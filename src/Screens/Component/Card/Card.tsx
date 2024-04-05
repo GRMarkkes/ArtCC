@@ -31,7 +31,7 @@ import {
   donateToCampaignByID,
 } from "../../../helper/soroban";
 import { NetworkDetails, signTx } from "helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import {
   CardBody,
   CardSubtitle,
@@ -67,14 +67,14 @@ export type Address = string;
 export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
-const networkUrl = "https://rpc-futurenet.stellar.org:443";
+const networkUrl = "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53";
 
 const contractIdCrowdFund =
-  "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
+  networkPassphrase: "Public Global Stellar Network ; September 2015",
   rpcUrl: networkUrl,
 });
 
@@ -91,8 +91,8 @@ const CardArtProject = (props: Web3PageProps) => {
   const getCampaingByID = async (id: number) => {
     try {
       let data = await crowdFund.getCampaign({ campaign_id: id });
-
-      setSingleCampaign(data);
+      const campaignsData = data.result; 
+      setSingleCampaign(campaignsData);
 
       console.log(singleCampaign);
     } catch (error) {
@@ -124,10 +124,10 @@ const CardArtProject = (props: Web3PageProps) => {
     
   };
   const contractIdCrowdFund =
-    "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+    "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
   const NATIVE_TOKEN =
-    "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
+    "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA";
 
 
   async function donateToCampaign(id: u32) {

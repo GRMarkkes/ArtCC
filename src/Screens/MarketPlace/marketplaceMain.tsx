@@ -1,7 +1,7 @@
 import "./marketPlace.css";
 import Header from "../Component/Header/Header";
 import { NetworkDetails } from "../../helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import Web3Page from "../Component/Web3Page/Web3Page";
 
 // import PaginationMarketPlace from "Screens/Component/PaginationMarketPlace/PaginationMarketPlace";

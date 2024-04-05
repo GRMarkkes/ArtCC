@@ -9,7 +9,7 @@ import "./ArtProjectMain.css";
 import ArtFooter from "../Component/ArtFooter";
 import { useCallback, useEffect, useState } from "react";
 import { NetworkDetails } from "helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 // interface Movie {
 //   genres: string[];
@@ -38,14 +38,14 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-const networkUrl = "https://rpc-futurenet.stellar.org:443";
+const networkUrl = "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53";
 
 const contractIdCrowdFund =
-  "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
+  networkPassphrase: "Public Global Stellar Network ; September 2015",
   rpcUrl: networkUrl,
 });
 
@@ -83,8 +83,9 @@ const ArtProject = (props: Web3PageProps) => {
       console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
+      const campaignsData = data.result; 
 
-      setCampaigns(data);
+      setCampaigns(campaignsData);
       setLoading(false);
 
       // console.log(data);

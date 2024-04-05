@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import Card from "../Card/Card";
 import * as Crowdfund from "CrowdFund";
 import { NetworkDetails } from "helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import { motion } from "framer-motion";
 
 import { Swiper, SwiperSlide } from "swiper/react";

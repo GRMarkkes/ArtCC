@@ -3,9 +3,11 @@ import React, { useEffect } from "react";
 import {
   StellarWalletsKit,
   WalletNetwork,
-  WalletType,
+  allowAllModules,
   ISupportedWallet,
-} from "stellar-wallets-kit";
+  XBULL_ID,
+} from "@creit.tech/stellar-wallets-kit";
+
 const useConnect = () => {
   const [selectedNetwork] = React.useState(FUTURENET_DETAILS);
 
@@ -15,21 +17,15 @@ const useConnect = () => {
   // const [error, setError] = React.useState(null as string | null);
 
   // Setup swc, user will set the desired wallet on connect
-  const [SWKKit] = React.useState(
-    new StellarWalletsKit({
-      network: selectedNetwork.networkPassphrase as WalletNetwork,
-      selectedWallet: WalletType.FREIGHTER,
-    })
-  );
+  const SWKKit: StellarWalletsKit = new StellarWalletsKit({
+    network: WalletNetwork.PUBLIC,
+    selectedWalletId: XBULL_ID,
+    modules: allowAllModules(),
+  });
 
   const connect = () => {
     // See https://github.com/Creit-Tech/Stellar-Wallets-Kit/tree/main for more options
     SWKKit.openModal({
-      allowedWallets: [
-        WalletType.ALBEDO,
-        WalletType.FREIGHTER,
-        WalletType.XBULL,
-      ],
       onWalletSelected: async (option: ISupportedWallet) => {
         try {
           // Set selected wallet,  network, and public key
@@ -41,7 +37,7 @@ const useConnect = () => {
 
           console.log("publicKey", publicKey);
 
-          SWKKit.setNetwork(WalletNetwork.FUTURENET);
+          SWKKit.setNetwork(WalletNetwork.PUBLIC);
         } catch (error) {
           console.log(error);
         }

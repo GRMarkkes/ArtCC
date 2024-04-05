@@ -12,7 +12,7 @@ import Footer from "../Component/Footer/Footer";
 import AboutFooter from "../Component/Footer2/AboutFooter";
 import { useNavigate } from "react-router-dom";
 import { NetworkDetails } from "helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;

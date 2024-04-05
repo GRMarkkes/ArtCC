@@ -7,7 +7,7 @@ import Search_icon from "../../../Asset/icon-wrapper.png";
 import Menu_Icon from "../../../Asset/Menu_Icon.png";
 import "./Header.css";
 import { NetworkDetails, signTx } from "../../../helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import Modal from "react-modal";
 import { AiOutlineCloseCircle, AiOutlineSave } from "react-icons/ai";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -157,7 +157,7 @@ function Header(props: Web3PageProps) {
 
   const navigate = useNavigate();
   const contractIdCrowdFund =
-    "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+    "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
   function toggleMenu() {
     setShowMenu(!showMenu);
