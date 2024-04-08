@@ -6,25 +6,26 @@ import {
   nativeToScVal,
   Operation,
   scValToNative,
-  Server,
   SorobanRpc,
   TimeoutInfinite,
   Transaction,
   TransactionBuilder,
   ScInt,
   xdr,
-} from "soroban-client";
+} from "@stellar/stellar-sdk";
 import BigNumber from "bignumber.js";
 import { NetworkDetails } from "./network";
 import { stroopToXlm } from "./format";
 import { ERRORS } from "./error";
+
+const { Server  } = SorobanRpc;
 
 // TODO: once soroban supports estimated fees, we can fetch this
 export const BASE_FEE = "100";
 export const baseFeeXlm = stroopToXlm(BASE_FEE).toString();
 
 export const SendTxStatus: {
-  [index: string]: SorobanRpc.SendTransactionStatus;
+  [index: string]: any;
 } = {
   Pending: "PENDING",
   Duplicate: "DUPLICATE",
@@ -90,7 +91,7 @@ export const getServer = (networkDetails: NetworkDetails) =>
 export const getTxBuilder = async (
   pubKey: string,
   fee: string,
-  server: Server,
+  server: any,
   networkPassphrase: string
 ) => {
   const source = await server.getAccount(pubKey);
@@ -104,7 +105,7 @@ export const getTxBuilder = async (
 //  Used in getTokenSymbol, getTokenName, and getTokenDecimals
 export const simulateTx = async <ArgType>(
   tx: Transaction<Memo<MemoType>, Operation[]>,
-  server: Server
+  server: any
 ): Promise<ArgType> => {
   const response = await server.simulateTransaction(tx);
 
@@ -120,7 +121,7 @@ export const simulateTx = async <ArgType>(
 export const submitTx = async (
   signedXDR: string,
   networkPassphrase: string,
-  server: Server
+  server: any
 ) => {
   const tx = TransactionBuilder.fromXDR(signedXDR, networkPassphrase);
 
@@ -134,7 +135,7 @@ export const submitTx = async (
     let txResponse = await server.getTransaction(sendResponse.hash);
 
     // Poll this until the status is not "NOT_FOUND"
-    while (txResponse.status === SorobanRpc.GetTransactionStatus.NOT_FOUND) {
+    while (txResponse.status === server.GetTransactionStatus.NOT_FOUND) {
       // See if the transaction is complete
       // eslint-disable-next-line no-await-in-loop
       txResponse = await server.getTransaction(sendResponse.hash);
@@ -143,7 +144,7 @@ export const submitTx = async (
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    if (txResponse.status === SorobanRpc.GetTransactionStatus.SUCCESS) {
+    if (txResponse.status === server.GetTransactionStatus.SUCCESS) {
       return txResponse.resultXdr.toXDR("base64");
     }
   }
@@ -156,7 +157,7 @@ export const submitTx = async (
 export const getTokenSymbol = async (
   tokenId: string,
   txBuilder: TransactionBuilder,
-  server: Server
+  server: any
 ) => {
   const contract = new Contract(tokenId);
 
@@ -173,7 +174,7 @@ export const getTokenSymbol = async (
 export const getTokenName = async (
   tokenId: string,
   txBuilder: TransactionBuilder,
-  server: Server
+  server: any
 ) => {
   const contract = new Contract(tokenId);
   const tx = txBuilder
@@ -189,7 +190,7 @@ export const getTokenName = async (
 export const getTokenDecimals = async (
   tokenId: string,
   txBuilder: TransactionBuilder,
-  server: Server
+  server: any
 ) => {
   const contract = new Contract(tokenId);
   const tx = txBuilder
@@ -228,7 +229,7 @@ export const createNewCampaign = async ({
   deadline: string;
   memo: string;
   txBuilderC: TransactionBuilder;
-  server: Server;
+  server: any;
   networkPassphrase: string;
   category: string;
   date: string;
@@ -290,7 +291,7 @@ export const donateToCampaignByID = async ({
   nativeToken: string;
   memo: string;
   txBuilderC: TransactionBuilder;
-  server: Server;
+  server: any;
   networkPassphrase: string;
 }) => {
   const contract = new Contract(contractID);
@@ -332,7 +333,7 @@ export const getEstimatedFee = async (
   destinationPubKey: string,
   memo: string,
   txBuilder: TransactionBuilder,
-  server: Server
+  server: any
 ) => {
   const contract = new Contract(tokenId);
   const tx = txBuilder

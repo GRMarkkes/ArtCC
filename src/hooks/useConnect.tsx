@@ -29,7 +29,7 @@ const useConnect = () => {
       onWalletSelected: async (option: ISupportedWallet) => {
         try {
           // Set selected wallet,  network, and public key
-          SWKKit.setWallet(option.type);
+          SWKKit.setWallet(option.id);
           const publicKey = await SWKKit.getPublicKey();
 
           setActivePubKey(publicKey);

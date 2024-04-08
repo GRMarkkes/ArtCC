@@ -1600,7 +1600,7 @@
   dependencies:
     "@floating-ui/utils" "^0.2.1"
 
-"@floating-ui/dom@^1.5.3", "@floating-ui/dom@^1.6.1":
+"@floating-ui/dom@^1.6.1", "@floating-ui/dom@^1.6.3":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.6.3.tgz#954e46c1dd3ad48e49db9ada7218b0985cee75ef"
   integrity sha512-RnDthu3mzPlQ31Ss/BTwQ1zjzIhr3lk1gZB1OC56h/1vEtaXkESrOqL5fQVMfXpwGtRwX+YsZBdyHtJMQnkArw==
@@ -2120,15 +2120,7 @@
     "@soroban-react/xbull" "^1.0.1"
     "@stellar/stellar-sdk" "11.1.0"
 
-"@soroban-react/freighter@^6.1.1":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@soroban-react/freighter/-/freighter-6.4.0.tgz#9ce51896038380df255ae05b2c527596244fbee0"
-  integrity sha512-3kcMNzjdWrXYvsZAUGt9N3UEv88hFCElNy/P+X0SFTUVj4MEzqGoR33qeLtCUJYQpGQJu1X2jSmxNKpoM+tMJQ==
-  dependencies:
-    "@soroban-react/types" "^6.1.1"
-    "@stellar/freighter-api" "1.6.0"
-
-"@soroban-react/freighter@^9.0.4":
+"@soroban-react/freighter@9.0.4", "@soroban-react/freighter@^9.0.4":
   version "9.0.4"
   resolved "https://registry.yarnpkg.com/@soroban-react/freighter/-/freighter-9.0.4.tgz#62b05b217162c27c1562c3e4f988b06b487b36a6"
   integrity sha512-WVh8l8jIMlQZJQTT/5fVH9rjEzj48b/bbY9FKshz3JYjV/cs+nPpXjijkEIodzCdKiLat077go3cy0ExVS8HOw==
@@ -2140,11 +2132,6 @@
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@soroban-react/types/-/types-8.0.0.tgz#14cb25911d2d45e3448a0fc6c0b2a6ae16b4851e"
   integrity sha512-t8eohOlmb4LAD1e3bfI01KKK7oCcm468QKsKrD0fL67fnZYcx9K61tSCqwWEbFCWGMGPkwaOwI3sE/bYKKDMIQ==
-
-"@soroban-react/types@^6.1.1":
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/@soroban-react/types/-/types-6.1.1.tgz#c8068bacb333d353f2114bf2701f24985976f10d"
-  integrity sha512-TViubP1rxNvCgqoywHlXzK1h65UE9jSy321MqWcDlQS5cGrYOzp3PEj7JeGLcAjY9CgaTsfx/4uM7VwfI7F17Q==
 
 "@soroban-react/types@^9.0.4":
   version "9.0.4"
@@ -2296,26 +2283,16 @@
     "@stablelib/random" "^1.0.2"
     "@stablelib/wipe" "^1.0.1"
 
-"@stellar/design-system@^1.0.0-beta.12":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@stellar/design-system/-/design-system-1.1.3.tgz#01fd0905c01474314232a896aafcca7082ee1e71"
-  integrity sha512-e4lgbOJ2u3JEI0oA1CKCKsc1zsblptCRGi78fiLQodf6ZkRjUL+4Tkyfx1FxVHOLTu722MuAvTXYwR6d3UtzoQ==
+"@stellar/design-system@2.0.0-beta.9":
+  version "2.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@stellar/design-system/-/design-system-2.0.0-beta.9.tgz#628f90facd625c3918a83eefd0c8f441cba2399d"
+  integrity sha512-0ZGFN42dMZgli61XEwz5vcQYZFSob6DIXt/RWOYi21Rw7oJGujrK2EXTCOBSQlKxNEcv1uywf2yl/Bz1w9xD3g==
   dependencies:
-    "@floating-ui/dom" "^1.5.3"
-    bignumber.js "^9.1.1"
+    "@floating-ui/dom" "^1.6.3"
+    bignumber.js "^9.1.2"
     lodash "^4.17.21"
     react-copy-to-clipboard "^5.1.0"
-    tslib "^2.5.0"
-
-"@stellar/freighter-api@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@stellar/freighter-api/-/freighter-api-1.5.1.tgz#c3b97239a0ca35b70057280f2d914958addf7cf2"
-  integrity sha512-WEnKEqd+xVLnOq6bJv+fLXod8JQyPjzpOKTpH4g7tG9MM1fmXzD3y2SXJlpCIw8kVqtiC4ynWOlSWX+TKO7KiQ==
-
-"@stellar/freighter-api@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@stellar/freighter-api/-/freighter-api-1.6.0.tgz#14deceba47be041ed13a325aad6d05add6646a08"
-  integrity sha512-Z6CRY+3+whzMspda6PiHEc4Rs9tdQkHLin9FopdnHhij/FEEAK+IiuF8Ki2ROcQweXdazb8N237aSim10s+Zgw==
+    tslib "^2.6.2"
 
 "@stellar/freighter-api@1.7.0":
   version "1.7.0"
@@ -2327,7 +2304,12 @@
   resolved "https://registry.yarnpkg.com/@stellar/freighter-api/-/freighter-api-1.7.1.tgz#d62b432abc7e0140a6025cd672455ecee7b3199a"
   integrity sha512-XvPO+XgEbkeP0VhP0U1edOkds+rGS28+y8GRGbCVXeZ9ZslbWqRFQoETAdX8IXGuykk2ib/aPokiLc5ZaWYP7w==
 
-"@stellar/js-xdr@^3.0.1":
+"@stellar/freighter-api@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@stellar/freighter-api/-/freighter-api-2.0.0.tgz#488915a4aa0cec8c9a3fc84ef31e21cd5ec41343"
+  integrity sha512-j/R7MLPL8S3QhwOEdAxSl7MgWBTXWlOXQKQyXR8mPk1JMKKR4tF8e4U+Fs9TPQH0HZoYqfVDvLOOUrTMMY058Q==
+
+"@stellar/js-xdr@^3.0.1", "@stellar/js-xdr@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@stellar/js-xdr/-/js-xdr-3.1.1.tgz#be0ff90c8a861d6e1101bca130fa20e74d5599bb"
   integrity sha512-3gnPjAz78htgqsNEDkEsKHKosV2BF2iZkoHCNxpmZwUxiPsw+2VaXMed8RRMe0rGk3d5GZe7RrSba8zV80J3Ag==
@@ -2345,6 +2327,20 @@
     tweetnacl "^1.0.3"
   optionalDependencies:
     sodium-native "^4.0.1"
+
+"@stellar/stellar-base@^11.0.1":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@stellar/stellar-base/-/stellar-base-11.0.1.tgz#f6eba54e62aa3e827e55d8338b92cdbf5535cfd9"
+  integrity sha512-VQh+1KEtFjegD6spx08+lENt8tQOkQQQZoLtqExjpRXyWlqDhEe+bXMlBTYKDc5MIynHyD42RPEib27UG17trA==
+  dependencies:
+    "@stellar/js-xdr" "^3.1.1"
+    base32.js "^0.1.0"
+    bignumber.js "^9.1.2"
+    buffer "^6.0.3"
+    sha.js "^2.3.6"
+    tweetnacl "^1.0.3"
+  optionalDependencies:
+    sodium-native "^4.0.10"
 
 "@stellar/stellar-sdk@11.1.0":
   version "11.1.0"
@@ -2366,6 +2362,19 @@
   dependencies:
     "@stellar/stellar-base" "10.0.1"
     axios "^1.6.5"
+    bignumber.js "^9.1.2"
+    eventsource "^2.0.2"
+    randombytes "^2.1.0"
+    toml "^3.0.0"
+    urijs "^1.19.1"
+
+"@stellar/stellar-sdk@^11.3.0":
+  version "11.3.0"
+  resolved "https://registry.yarnpkg.com/@stellar/stellar-sdk/-/stellar-sdk-11.3.0.tgz#7cb010651846a07e1853e0fe30e430ece4da340b"
+  integrity sha512-i+heopibJNRA7iM8rEPz0AXphBPYvy2HDo8rxbDwWpozwCfw8kglP9cLkkhgJe8YicgLrdExz/iQZaLpqLC+6w==
+  dependencies:
+    "@stellar/stellar-base" "^11.0.1"
+    axios "^1.6.8"
     bignumber.js "^9.1.2"
     eventsource "^2.0.2"
     randombytes "^2.1.0"
@@ -4106,7 +4115,7 @@ axe-core@=4.7.0:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.0.tgz#34ba5a48a8b564f67e103f0aa5768d76e15bbbbf"
   integrity sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==
 
-axios@^1.5.1, axios@^1.6.0, axios@^1.6.5:
+axios@^1.5.1, axios@^1.6.0, axios@^1.6.5, axios@^1.6.8:
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
   integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
@@ -14784,7 +14793,7 @@ sockjs@^0.3.24:
     uuid "^8.3.2"
     websocket-driver "^0.7.4"
 
-sodium-native@^4.0.1:
+sodium-native@^4.0.1, sodium-native@^4.0.10:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/sodium-native/-/sodium-native-4.1.1.tgz#109bc924dd55c13db87c6dd30da047487595723c"
   integrity sha512-LXkAfRd4FHtkQS4X6g+nRcVaN7mWVNepV06phIsC6+IZFvGh1voW5TNQiQp2twVaMf05gZqQjuS+uWLM6gHhNQ==
@@ -15824,7 +15833,7 @@ tslib@1.14.1, tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.5.0:
+tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
