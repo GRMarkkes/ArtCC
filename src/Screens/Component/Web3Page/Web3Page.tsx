@@ -60,9 +60,119 @@ const Web3Page = (props: Web3PageProps) => {
 
   async function createCampaign() {
     try {
-      console.log("create campaign");
+      console.log("create campaign", props.networkDetails, JSON.stringify(props, null, 2));
 
-      const server = getServer(props.networkDetails);
+      // const server = getServer(props.networkDetails);
+
+
+      let server = {
+        "_links": {
+          "account": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/accounts/{account_id}",
+            "templated": true
+          },
+          "accounts": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/accounts{?signer,sponsor,asset,liquidity_pool,cursor,limit,order}",
+            "templated": true
+          },
+          "account_transactions": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/accounts/{account_id}/transactions{?cursor,limit,order}",
+            "templated": true
+          },
+          "claimable_balances": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/claimable_balances{?asset,sponsor,claimant,cursor,limit,order}",
+            "templated": true
+          },
+          "assets": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/assets{?asset_code,asset_issuer,cursor,limit,order}",
+            "templated": true
+          },
+          "effects": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/effects{?cursor,limit,order}",
+            "templated": true
+          },
+          "fee_stats": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/fee_stats"
+          },
+          "ledger": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/ledgers/{sequence}",
+            "templated": true
+          },
+          "ledgers": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/ledgers{?cursor,limit,order}",
+            "templated": true
+          },
+          "liquidity_pools": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/liquidity_pools{?reserves,account,cursor,limit,order}",
+            "templated": true
+          },
+          "offer": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/offers/{offer_id}",
+            "templated": true
+          },
+          "offers": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/offers{?selling,buying,seller,sponsor,cursor,limit,order}",
+            "templated": true
+          },
+          "operation": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/operations/{id}",
+            "templated": true
+          },
+          "operations": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/operations{?cursor,limit,order,include_failed}",
+            "templated": true
+          },
+          "order_book": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/order_book{?selling_asset_type,selling_asset_code,selling_asset_issuer,buying_asset_type,buying_asset_code,buying_asset_issuer,limit}",
+            "templated": true
+          },
+          "payments": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/payments{?cursor,limit,order,include_failed}",
+            "templated": true
+          },
+          "self": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/"
+          },
+          "strict_receive_paths": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/paths/strict-receive{?source_assets,source_account,destination_account,destination_asset_type,destination_asset_issuer,destination_asset_code,destination_amount}",
+            "templated": true
+          },
+          "strict_send_paths": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/paths/strict-send{?destination_account,destination_assets,source_asset_type,source_asset_issuer,source_asset_code,source_amount}",
+            "templated": true
+          },
+          "trade_aggregations": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/trade_aggregations?base_asset_type={base_asset_type}&base_asset_code={base_asset_code}&base_asset_issuer={base_asset_issuer}&counter_asset_type={counter_asset_type}&counter_asset_code={counter_asset_code}&counter_asset_issuer={counter_asset_issuer}",
+            "templated": true
+          },
+          "trades": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/trades?base_asset_type={base_asset_type}&base_asset_code={base_asset_code}&base_asset_issuer={base_asset_issuer}&counter_asset_type={counter_asset_type}&counter_asset_code={counter_asset_code}&counter_asset_issuer={counter_asset_issuer}",
+            "templated": true
+          },
+          "transaction": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/transactions/{hash}",
+            "templated": true
+          },
+          "transactions": {
+            "href": "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53/transactions{?cursor,limit,order}",
+            "templated": true
+          }
+        },
+        "horizon_version": "2.28.1-433831fb25cce9a1a64f5125f2c132217adf4fca",
+        "core_version": "stellar-core 20.2.0.rc3 (34d82fc00426643e16b7ad59c9fde169b778eb4b)",
+        "ingest_latest_ledger": 51246237,
+        "history_latest_ledger": 51246237,
+        "history_latest_ledger_closed_at": "2024-04-15T07:27:27Z",
+        "history_elder_ledger": 49688837,
+        "core_latest_ledger": 51246238,
+        "network_passphrase": "Public Global Stellar Network ; September 2015",
+        "current_protocol_version": 20,
+        "supported_protocol_version": 20,
+        "core_supported_protocol_version": 20
+      };
+
+
+      console.log("get server", JSON.stringify(server, null, 2));
 
       const txBuilder = await getTxBuilder(
         props.pubKey,
@@ -112,7 +222,7 @@ const Web3Page = (props: Web3PageProps) => {
         // console.log(error);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(JSON.stringify(error, null, 2), "error");
     }
   }
 
@@ -170,9 +280,9 @@ const Web3Page = (props: Web3PageProps) => {
       console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
-      const campaignsData = data.result; 
+      const campaignsData = data.result;
 
-      
+
       setCampaigns(campaignsData);
 
       // console.log(data);

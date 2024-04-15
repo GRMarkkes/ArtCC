@@ -85,6 +85,7 @@ export const parseTokenAmount = (value: string, decimals: number) => {
 export const getServer = (networkDetails: NetworkDetails) =>
   new Server(RPC_URLS[networkDetails.network], {
     allowHttp: networkDetails.networkUrl.startsWith("http://"),
+    headers: {"abc": "testing"}
   });
 
 // Get a TransactionBuilder configured with our public key
