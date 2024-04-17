@@ -39,7 +39,7 @@ function App(): JSX.Element {
           path="/"
           element={
             <MainPage
-              networkDetails={networkDetails}
+             networkDetails={networkDetails}
               setPubKey={setPubKey}
               swkKit={swkKit}
               pubKey={pubKey}

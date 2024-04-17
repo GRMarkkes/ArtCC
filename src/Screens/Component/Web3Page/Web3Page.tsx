@@ -1,37 +1,39 @@
-import { useCallback, useEffect, useState } from "react";
 import * as Crowdfund from "CrowdFund";
 import * as Token from "token";
-import { BASE_FEE, Address } from "soroban-client";
 
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { Address, BASE_FEE } from "soroban-client";
 import { NetworkDetails, signTx } from "../../../helper/network";
 import {
-  getServer,
-  submitTx,
-  getTxBuilder,
   createNewCampaign,
   donateToCampaignByID,
+  getServer,
+  getTxBuilder,
+  submitTx,
 } from "../../../helper/soroban";
+import { useCallback, useEffect, useState } from "react";
 
-const NATIVE_TOKEN = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
-const networkUrl = "https://rpc-futurenet.stellar.org:443";
+const NATIVE_TOKEN = "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA";
+
+const networkUrl =
+  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
 
 const contractIdCrowdFund =
-  "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
+  networkPassphrase: "Public Global Stellar Network ; September 2015",
   rpcUrl: networkUrl,
 });
 
 const contractIdToken =
-  "CCBVEEJDAFPKUSIOQIYMQVXURWB3NFIKXTKIEWWYDXEDDTKSX26XQMS7";
+  "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP";
 
 const token = new Token.Contract({
   contractId: contractIdToken,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
+  networkPassphrase: "Public Global Stellar Network ; September 2015",
   rpcUrl: networkUrl,
 });
 
@@ -60,9 +62,16 @@ const Web3Page = (props: Web3PageProps) => {
 
   async function createCampaign() {
     try {
-      console.log("create campaign");
+      console.log(
+        "create campaign",
+        props.networkDetails,
+        JSON.stringify(props, null, 2)
+      );
 
       const server = getServer(props.networkDetails);
+      console.log("🚀 ~ createCampaign ~ server:", server);
+
+      console.log("get server", JSON.stringify(server, null, 2));
 
       const txBuilder = await getTxBuilder(
         props.pubKey,
@@ -71,6 +80,8 @@ const Web3Page = (props: Web3PageProps) => {
         props.networkDetails.networkPassphrase
       );
 
+      console.log("create txBuilder", txBuilder);
+
       const preparedTransaction = await createNewCampaign({
         contractID: contractIdCrowdFund,
         artistPubKey: props.pubKey,
@@ -78,10 +89,10 @@ const Web3Page = (props: Web3PageProps) => {
         desc: "Fund to Food Campaign",
         category: "Art",
         main_location: "lahore",
-        date: "1700613645",
+        metaData: "{}",
         imageUrl: "image url food",
         target: "5000",
-        deadline: "1700613645",
+        deadline: "1776398614",
         memo: "",
         txBuilderC: txBuilder,
         // category: "Art",
@@ -91,25 +102,21 @@ const Web3Page = (props: Web3PageProps) => {
 
       console.log("preparedTransaction", preparedTransaction);
 
-      try {
-        const signedTx = await signTx(
-          preparedTransaction,
-          props.pubKey,
-          props.swkKit
-        );
+      const signedTx = await signTx(
+        preparedTransaction,
+        props.pubKey,
+        props.swkKit
+      );
 
-        const result = await submitTx(
-          signedTx,
-          props.networkDetails.networkPassphrase,
-          server
-        );
+      const result = await submitTx(
+        signedTx,
+        props.networkDetails.networkPassphrase,
+        server
+      );
 
-        console.log("result", result);
-      } catch (error) {
-        // console.log(error);
-      }
+      console.log("result", result);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
 
@@ -167,8 +174,9 @@ const Web3Page = (props: Web3PageProps) => {
       console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
+      const campaignsData = data.result;
 
-      setCampaigns(data);
+      setCampaigns(campaignsData);
 
       // console.log(data);
     } catch (error) {
@@ -184,7 +192,9 @@ const Web3Page = (props: Web3PageProps) => {
         "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
         tokenName
       );
-      token.symbol().then(setTokenSymbol);
+      const assembledTx = await token.symbol();
+      const symbolValue = assembledTx.result;
+      setTokenSymbol(symbolValue);
 
       let publicKey = new Address(props.pubKey);
       console.log(
@@ -196,7 +206,7 @@ const Web3Page = (props: Web3PageProps) => {
         publicKey
       );
 
-      let balance = await token.balance({ id: publicKey });
+      let balance = await token.balance({ id: publicKey.toString() });
       console.log(
         "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
         balance
@@ -205,12 +215,13 @@ const Web3Page = (props: Web3PageProps) => {
       let formatted_balance = Number(balance) / 100000000;
 
       setBalance(formatted_balance);
-
-      setTokenName(tokenName);
+      const tokenNameIs = tokenName.result;
+      setTokenName(tokenNameIs);
       setTokenAddress(contractIdToken);
 
       // console.log(token.options.contractId);
     } catch (error) {
+      console.log("🚀 ~ tokenDetail ~ error:", error);
       // console.log(error);
     }
   }, [props.pubKey]);
@@ -268,8 +279,10 @@ const Web3Page = (props: Web3PageProps) => {
             <h5>Donators: [ {campaign.donators.toString()} ]</h5>
             <h5>Owner: {campaign.owner.toString()}</h5>
             <h5>Cateogry: {campaign.category.toString()}</h5>
-            <h5>Date: {dataTransform(campaign.date, "date")}</h5>
-            <h5>Creater Name: {dataTransform(campaign.date, "createrName")}</h5>
+            <h5>Date: {dataTransform(campaign.category, "category2")}</h5>
+            <h5>
+              Creater Name: {dataTransform(campaign.category, "category3")}
+            </h5>
             <h5>
               ----------------------------------------------------------------------
             </h5>

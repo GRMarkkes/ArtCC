@@ -5,7 +5,7 @@ import Card from "../Card/Card";
 import * as Crowdfund from "CrowdFund";
 import { motion } from "framer-motion";
 import { NetworkDetails } from "helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import "./CardSlider.css";
 
 

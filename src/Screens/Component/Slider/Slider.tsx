@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CardSlider from "../CardNewSlider/CardNewSlider";
 import { NetworkDetails } from "helper/network";
 import * as Crowdfund from "CrowdFund";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 export type u32 = number;
 export type i32 = number;

@@ -1,7 +1,7 @@
 // import React from "react";
 import { NetworkDetails } from "helper/network";
 import Header from "../Component/Header/Header";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 // import Footer from "../Component/Footer/Footer";
 // import Wallet from '../WalletConnect/walletConnection'
 interface Web3PageProps {

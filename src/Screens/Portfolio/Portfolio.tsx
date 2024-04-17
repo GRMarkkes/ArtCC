@@ -1,6 +1,6 @@
 import Header from "Screens/Component/Header/Header";
 import { NetworkDetails } from "../../helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import { Box, Typography } from "@mui/material";
 import { AiOutlineSetting } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";

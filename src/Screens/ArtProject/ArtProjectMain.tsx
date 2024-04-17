@@ -1,15 +1,20 @@
 // import  { useState } from "react";
-import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
-import Slider from "../Component/Slider/Slider";
-import Header from "../Component/Header/Header";
-import * as Crowdfund from "CrowdFund";
-import artimg from "../../Asset/Images/ArtProject_main.png";
+
 import "./ArtProjectMain.css";
-import ArtFooter from "../Component/ArtFooter";
+
+import * as Crowdfund from "CrowdFund";
+
 import { useCallback, useEffect, useState } from "react";
+
+import ArtFooter from "../Component/ArtFooter";
+import Header from "../Component/Header/Header";
 import { NetworkDetails } from "helper/network";
-import { StellarWalletsKit } from "stellar-wallets-kit";
+import Slider from "../Component/Slider/Slider";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import artimg from "../../Asset/Images/ArtProject_main.png";
+import styled from "styled-components";
+
+// import { useNavigate } from "react-router-dom";
 
 // interface Movie {
 //   genres: string[];
@@ -38,14 +43,15 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-const networkUrl = "https://rpc-futurenet.stellar.org:443";
+const networkUrl =
+  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
 
 const contractIdCrowdFund =
-  "CC76MEUKWE4ZAW2XDVR67KTSJOUAOHGZR7UTFKFOWCWVLOWQC3CTJVEZ";
+  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
+  networkPassphrase: "Public Global Stellar Network ; September 2015",
   rpcUrl: networkUrl,
 });
 
@@ -83,8 +89,9 @@ const ArtProject = (props: Web3PageProps) => {
       console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
+      const campaignsData = data.result;
 
-      setCampaigns(data);
+      setCampaigns(campaignsData);
       setLoading(false);
 
       // console.log(data);
