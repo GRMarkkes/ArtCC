@@ -1401,7 +1401,7 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@creit-tech/xbull-wallet-connect@github:Creit-Tech/xBull-Wallet-Connect", "@creit-tech/xbull-wallet-connect@github:Creit-Tech/xBull-Wallet-Connect#0.2.0":
+"@creit-tech/xbull-wallet-connect@github:Creit-Tech/xBull-Wallet-Connect":
   version "0.2.0"
   resolved "https://codeload.github.com/Creit-Tech/xBull-Wallet-Connect/tar.gz/a93e2e0d97c61bbd83fedcca0c71feef9f28b2d3"
   dependencies:
@@ -1409,13 +1409,19 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
-"@creit.tech/stellar-wallets-kit@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@creit.tech/stellar-wallets-kit/-/stellar-wallets-kit-0.7.0.tgz#834724e4546a15befbc7532f9689eddeb92ff326"
-  integrity sha512-sZgsCrP8XJFHKyTZZV2diD/M5Xvn7SywcFB5OmvOkdA6GN3BAnlANYO/LXhyhlgqDbldvI10ZfgQGVaSoDL9xA==
+"@creit-tech/xbull-wallet-connect@xbull-wallet-connect":
+  version "0.2.0"
+  dependencies:
+    rxjs "^7.5.5"
+    tweetnacl "^1.0.3"
+    tweetnacl-util "^0.15.1"
+
+"@creit.tech/stellar-wallets-kit@./stellar-wallets-kit":
+  version "0.8.0"
   dependencies:
     "@albedo-link/intent" "^0.12.0"
-    "@creit-tech/xbull-wallet-connect" "github:Creit-Tech/xBull-Wallet-Connect#0.2.0"
+    "@creit-tech/xbull-wallet-connect" xbull-wallet-connect
+    "@lobstrco/signer-extension-api" "^1.0.0-beta.0"
     "@stellar/freighter-api" "1.7.0"
     "@walletconnect/modal" "^2.6.2"
     "@walletconnect/sign-client" "^2.11.2"
@@ -1736,6 +1742,11 @@
   integrity sha512-QuTgnG52Poic7uM1AN5yJ09QMe0O28e10XzSvWDz02TJiiKee4stsiownEIadWm8nYzyDAyT+gKzUoZmiWQtsQ==
   dependencies:
     "@lit-labs/ssr-dom-shim" "^1.0.0"
+
+"@lobstrco/signer-extension-api@^1.0.0-beta.0":
+  version "1.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@lobstrco/signer-extension-api/-/signer-extension-api-1.0.0-beta.0.tgz#785b9ba93b879f7d7f61998ae94de409b8d6f8aa"
+  integrity sha512-16V34W9MyTgunGvgkzv1JmV+k59OjNWCrNOH+KH+6vWamcGDGBnFhvRgGEarEhINYITMGkdqEvaEy7qTD5s5cw==
 
 "@mapbox/node-pre-gyp@^1.0.0":
   version "1.0.11"
