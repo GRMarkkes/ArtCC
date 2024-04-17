@@ -1,48 +1,50 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { MdOutlineLocationOn } from "react-icons/md";
-import { FaStar } from "react-icons/fa";
-import { MdOutlineReportProblem } from "react-icons/md";
-import decimg from "../../../Asset/ModalImg.png";
-import * as Crowdfund from "CrowdFund";
-import '../CardMarketPlace/CardMarketPlace.css'
-
-import {
-  AiOutlineCloseCircle,
-  AiOutlineCalendar,
-  AiFillStar,
-  AiOutlineInfoCircle,
-  AiOutlineAreaChart,
-} from "react-icons/ai";
-// import { BiChevronDown } from "react-icons/bi";
+import "../CardMarketPlace/CardMarketPlace.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../NewCard/NewCard.css";
 import "./Card.css";
-import Modal from "react-modal";
-import { motion } from "framer-motion";
-import cardImg from "../../../Asset/Images/Card_Image.png";
-import wrapperswap from "../../../Asset/wrapper 2.png";
-import graphimage from "../../../Asset/Graphic.png"
+
+import * as Crowdfund from "CrowdFund";
 
 import {
-  getServer,
-  submitTx,
-  getTxBuilder,
-  donateToCampaignByID,
-} from "../../../helper/soroban";
-import { NetworkDetails, signTx } from "helper/network";
-import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+  AiFillStar,
+  AiOutlineAreaChart,
+  AiOutlineCalendar,
+  AiOutlineCloseCircle,
+  AiOutlineInfoCircle,
+} from "react-icons/ai";
+import { Box, Rating, Typography } from "@mui/material";
 import {
+  Card,
   CardBody,
   CardSubtitle,
   CardText,
   CardTitle,
   Progress,
-  Card,
 } from "reactstrap";
-import { Box, Rating, Typography } from "@mui/material";
+import { NetworkDetails, signTx } from "helper/network";
+import React, { useEffect, useState } from "react";
+import {
+  donateToCampaignByID,
+  getServer,
+  getTxBuilder,
+  submitTx,
+} from "../../../helper/soroban";
+
 import { CiLocationOn } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { MdOutlineLocationOn } from "react-icons/md";
+import { MdOutlineReportProblem } from "react-icons/md";
+import Modal from "react-modal";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import cardImg from "../../../Asset/Images/Card_Image.png";
+import decimg from "../../../Asset/ModalImg.png";
+import graphimage from "../../../Asset/Graphic.png";
+import { motion } from "framer-motion";
+import styled from "styled-components";
+import wrapperswap from "../../../Asset/wrapper 2.png";
+
+// import { BiChevronDown } from "react-icons/bi";
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
@@ -67,7 +69,8 @@ export type Address = string;
 export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
-const networkUrl = "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53";
+const networkUrl =
+  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
 
 const contractIdCrowdFund =
   "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
@@ -91,7 +94,7 @@ const CardArtProject = (props: Web3PageProps) => {
   const getCampaingByID = async (id: number) => {
     try {
       let data = await crowdFund.getCampaign({ campaign_id: id });
-      const campaignsData = data.result; 
+      const campaignsData = data.result;
       setSingleCampaign(campaignsData);
 
       console.log(singleCampaign);
@@ -108,10 +111,12 @@ const CardArtProject = (props: Web3PageProps) => {
   const isModalScreen = window.innerHeight <= 768;
   const [showDiscount, setShowDiscount] = useState(false);
   const [showFeedBack, setShowFeedBack] = useState(false);
-  const [donationAmount, setDonationAmount] = useState('');
+  const [donationAmount, setDonationAmount] = useState("");
 
   // ... (other parts of your component)
-  const handleInputChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleInputChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
     setDonationAmount(event.target.value);
   };
   const handleGetDiscountClick = () => {
@@ -120,15 +125,12 @@ const CardArtProject = (props: Web3PageProps) => {
   const handleGetEmailClick = () => {
     setShowFeedBack(true);
     setShowDiscount(false);
-   
-    
   };
   const contractIdCrowdFund =
     "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
 
   const NATIVE_TOKEN =
     "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA";
-
 
   async function donateToCampaign(id: u32) {
     try {
@@ -185,7 +187,6 @@ const CardArtProject = (props: Web3PageProps) => {
     }
   }
 
-
   useEffect(() => {
     const handleResize = () => {
       setIsWideScreen(window.innerWidth >= 1220);
@@ -216,7 +217,7 @@ const CardArtProject = (props: Web3PageProps) => {
     setIsModalOpen(false);
     // setIsHovered(false);
   };
-  
+
   interface TagProps {
     text: string;
   }
@@ -246,7 +247,6 @@ const CardArtProject = (props: Web3PageProps) => {
       handleGetEmailClick(); // Call handleGetEmailClick after donateToCampaign
     }
   };
-  
 
   const Review = () => {
     return (
@@ -281,7 +281,6 @@ const CardArtProject = (props: Web3PageProps) => {
     );
   };
 
-
   const Dicount = () => {
     return (
       <Box
@@ -294,13 +293,15 @@ const CardArtProject = (props: Web3PageProps) => {
           paddingLeft: "10%",
         }}
       >
-        <div className="Disocunt-Review"  style={{paddingTop:'15%', paddingBottom:'15%'}}>
+        <div
+          className="Disocunt-Review"
+          style={{ paddingTop: "15%", paddingBottom: "15%" }}
+        >
           <Box
             sx={{
               width: isModalScreen ? "90%" : "45%",
-
             }}
-          >      
+          >
             <Box sx={{ marginTop: "3%" }}>
               <Typography
                 sx={{
@@ -309,7 +310,7 @@ const CardArtProject = (props: Web3PageProps) => {
                   fontWeight: 400,
                 }}
               >
-                Your Support 
+                Your Support
               </Typography>
               <input
                 placeholder="0.00"
@@ -329,13 +330,27 @@ const CardArtProject = (props: Web3PageProps) => {
                   paddingLeft: "5%",
                 }}
               />
-              <Typography style={{textAlign:'end', color:'#FFFFFF'}}>{donationAmount}0 <span>ARTcredits</span></Typography>
-              <button className="discountNow"  onClick={() => handleButtonClick(singleCampaign?.id)}>
+              <Typography style={{ textAlign: "end", color: "#FFFFFF" }}>
+                {donationAmount}0 <span>ARTcredits</span>
+              </Typography>
+              <button
+                className="discountNow"
+                onClick={() => handleButtonClick(singleCampaign?.id)}
+              >
                 Support Now
               </button>
             </Box>
           </Box>
-          <div className="Preview" style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center'}}>
+          <div
+            className="Preview"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
             <Typography
               sx={{
                 color: "var(--character-primary-inverse, #FFF)",
@@ -344,7 +359,7 @@ const CardArtProject = (props: Web3PageProps) => {
               }}
             >
               Your Portfolio Preview
-              <img src={graphimage} alt="graph"/>
+              <img src={graphimage} alt="graph" />
             </Typography>
           </div>
         </div>
@@ -416,10 +431,15 @@ const CardArtProject = (props: Web3PageProps) => {
           </Typography>
           <div className="button-pervious">
             <Link to="/">
-            <button className="button-portfolio"> Go&nbsp;to&nbsp;Your&nbsp;Portfolio</button>
+              <button className="button-portfolio">
+                {" "}
+                Go&nbsp;to&nbsp;Your&nbsp;Portfolio
+              </button>
             </Link>
             <Link to="/">
-            <button className="button-portfolio">Go&nbsp;to&nbsp;Marketplace</button>
+              <button className="button-portfolio">
+                Go&nbsp;to&nbsp;Marketplace
+              </button>
             </Link>
           </div>
         </div>
@@ -480,8 +500,8 @@ const CardArtProject = (props: Web3PageProps) => {
           onClick={openModal}
         />
       )}
-      
-      {!isCardModalOpen && isHovered &&  (
+
+      {!isCardModalOpen && isHovered && (
         <motion.div
           initial={{
             opacity: 0,
@@ -489,7 +509,6 @@ const CardArtProject = (props: Web3PageProps) => {
             translateY: isHovered ? "-50%" : 0, // Adjust the initial translateY value
             translateX: isHovered ? "-50%" : 0, // Adjust the initial translateX value
             transformOrigin: "center center",
-           
           }}
           animate={{
             opacity: 1,
@@ -502,7 +521,7 @@ const CardArtProject = (props: Web3PageProps) => {
           className="hover"
           onClick={openCardModal}
         >
-          <div className="image-video-container" >
+          <div className="image-video-container">
             <img
               src={
                 singleCampaign?.image.includes("s.com")
@@ -609,13 +628,12 @@ const CardArtProject = (props: Web3PageProps) => {
           </div>
         </motion.div>
       )}
-     
+
       <Modal
         isOpen={isCardModalOpen}
         onRequestClose={closeCardModal}
         className="modal-content-card"
         overlayClassName="modal-overlay-card"
-
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.8, translateY: -100 }}
@@ -914,7 +932,6 @@ const CardArtProject = (props: Web3PageProps) => {
                         fontFamily: "Montserrat",
                         textAlign: "center",
                         marginTop: "4%",
-
                       }}
                     >
                       <span style={{ color: "#BFBFBF" }}>Example:</span> &nbsp;
@@ -946,10 +963,9 @@ const CardArtProject = (props: Web3PageProps) => {
                           paddingBottom: "2%",
                           paddingLeft: "2%",
                           paddingRight: "2%",
-                          fontSize:'15px'
+                          fontSize: "15px",
                         }}
                         onClick={handleGetDiscountClick}
-                       
                       >
                         <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
                         &nbsp; &nbsp; Support This Project
@@ -958,13 +974,13 @@ const CardArtProject = (props: Web3PageProps) => {
                   </div>
                   {showDiscount && (
                     <div>
-                      <Box sx={{ marginTop: "3%", marginBottom:'3%' }}>
+                      <Box sx={{ marginTop: "3%", marginBottom: "3%" }}>
                         <Dicount />
                       </Box>
                     </div>
                   )}
                   {showFeedBack && (
-                    <Box sx={{ marginTop: "3%" ,marginBottom:'3%'}}>
+                    <Box sx={{ marginTop: "3%", marginBottom: "3%" }}>
                       <ThankYou />
                     </Box>
                   )}

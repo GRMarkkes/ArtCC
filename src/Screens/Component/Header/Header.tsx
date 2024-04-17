@@ -1,31 +1,8 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { ChangeEvent, useState, DragEvent } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import staller_header_logo from "../../../Asset/Images/main_logo.png";
-import Search_icon from "../../../Asset/icon-wrapper.png";
-import Menu_Icon from "../../../Asset/Menu_Icon.png";
-import "./Header.css";
-import { NetworkDetails, signTx } from "../../../helper/network";
-import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
-import Modal from "react-modal";
-import { AiOutlineCloseCircle, AiOutlineSave } from "react-icons/ai";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { MdOutlineLocationSearching } from "react-icons/md";
-import { SlEnergy } from "react-icons/sl";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import Create from "../Create/Create";
-import Inbox from "../../../Asset/Inbox.png";
-import axios from "axios";
-import Avitar from "../../../Asset/Avatar.png";
-import ImageCreate from "../../../Asset/Rectangle 3.png";
-import { motion } from "framer-motion";
-// import Cookies from 'universal-cookie';
 
-// import Create from "../Create/Create";
-// import { motion } from "framer-motion";
+import "./Header.css";
+
+import { AiOutlineCloseCircle, AiOutlineSave } from "react-icons/ai";
 import {
   BASE_FEE,
   createNewCampaign,
@@ -33,6 +10,33 @@ import {
   getTxBuilder,
   submitTx,
 } from "helper/soroban";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { NetworkDetails, signTx } from "../../../helper/network";
+import React, { ChangeEvent, DragEvent, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import Avitar from "../../../Asset/Avatar.png";
+import Create from "../Create/Create";
+import ImageCreate from "../../../Asset/Rectangle 3.png";
+import Inbox from "../../../Asset/Inbox.png";
+import { MdOutlineLocationSearching } from "react-icons/md";
+import Menu_Icon from "../../../Asset/Menu_Icon.png";
+import Modal from "react-modal";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import Search_icon from "../../../Asset/icon-wrapper.png";
+import { SlEnergy } from "react-icons/sl";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import axios from "axios";
+import { motion } from "framer-motion";
+import staller_header_logo from "../../../Asset/Images/main_logo.png";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// import Cookies from 'universal-cookie';
+
+// import Create from "../Create/Create";
+// import { motion } from "framer-motion";
 
 const validationSchema = z.object({
   createrName: z.string().min(1, { message: "Create Name is required" }),
@@ -227,7 +231,7 @@ function Header(props: Web3PageProps) {
         desc: values.desc,
         category: values.category,
         main_location: values.mainLocation,
-        date: JSON.stringify({
+        metaData: JSON.stringify({
           date: values.date,
           createrName: values.createrName,
           addressAccount: values.addressAccount,
@@ -237,7 +241,7 @@ function Header(props: Web3PageProps) {
         }),
         imageUrl,
         target: values.target.toString(),
-        deadline: "1700613645",
+        deadline: "1776398614",
         memo: "",
         txBuilderC: txBuilder,
         // category: "Art",

@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
 import * as Token from "token";
+
+import { useEffect, useState } from "react";
+
 import { Address } from "soroban-client";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
-const networkUrl = "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53";
+const networkUrl =
+  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
 const token = new Token.Contract({
   contractId: "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP",
   networkPassphrase: "Public Global Stellar Network ; September 2015",

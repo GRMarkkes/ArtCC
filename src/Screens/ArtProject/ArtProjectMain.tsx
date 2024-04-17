@@ -1,15 +1,20 @@
 // import  { useState } from "react";
-import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
-import Slider from "../Component/Slider/Slider";
-import Header from "../Component/Header/Header";
-import * as Crowdfund from "CrowdFund";
-import artimg from "../../Asset/Images/ArtProject_main.png";
+
 import "./ArtProjectMain.css";
-import ArtFooter from "../Component/ArtFooter";
+
+import * as Crowdfund from "CrowdFund";
+
 import { useCallback, useEffect, useState } from "react";
+
+import ArtFooter from "../Component/ArtFooter";
+import Header from "../Component/Header/Header";
 import { NetworkDetails } from "helper/network";
+import Slider from "../Component/Slider/Slider";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import artimg from "../../Asset/Images/ArtProject_main.png";
+import styled from "styled-components";
+
+// import { useNavigate } from "react-router-dom";
 
 // interface Movie {
 //   genres: string[];
@@ -38,7 +43,8 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-const networkUrl = "https://still-magical-meadow.stellar-mainnet.quiknode.pro/c4ad23482bb8b07d64af9498be18ffdd3d7aca53";
+const networkUrl =
+  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
 
 const contractIdCrowdFund =
   "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
@@ -83,7 +89,7 @@ const ArtProject = (props: Web3PageProps) => {
       console.log("props.pubKey", props.pubKey);
 
       let data = await crowdFund.getCampaigns();
-      const campaignsData = data.result; 
+      const campaignsData = data.result;
 
       setCampaigns(campaignsData);
       setLoading(false);

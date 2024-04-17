@@ -1,12 +1,13 @@
-import { FUTURENET_DETAILS } from "helper/network";
-import React, { useEffect } from "react";
 import {
+  FREIGHTER_ID,
+  ISupportedWallet,
   StellarWalletsKit,
   WalletNetwork,
   allowAllModules,
-  ISupportedWallet,
-  XBULL_ID,
 } from "@creit.tech/stellar-wallets-kit";
+import React, { useEffect } from "react";
+
+import { FUTURENET_DETAILS } from "helper/network";
 
 const useConnect = () => {
   const [selectedNetwork] = React.useState(FUTURENET_DETAILS);
@@ -19,7 +20,7 @@ const useConnect = () => {
   // Setup swc, user will set the desired wallet on connect
   const SWKKit: StellarWalletsKit = new StellarWalletsKit({
     network: WalletNetwork.PUBLIC,
-    selectedWalletId: XBULL_ID,
+    selectedWalletId: FREIGHTER_ID,
     modules: allowAllModules(),
   });
 
@@ -48,8 +49,8 @@ const useConnect = () => {
     if (connectWallet) {
       connect();
     }
-    console.log(connect,"hudhud");
-    
+    console.log(connect, "hudhud");
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connectWallet]);
   return {
