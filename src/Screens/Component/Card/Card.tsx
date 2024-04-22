@@ -32,7 +32,7 @@ import {
 
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { MdOutlineReportProblem } from "react-icons/md";
 import Modal from "react-modal";
@@ -430,17 +430,22 @@ const CardArtProject = (props: Web3PageProps) => {
             marketplace again soon.
           </Typography>
           <div className="button-pervious">
-            <Link to="/">
-              <button className="button-portfolio">
+          
+              <button className="button-portfolio" >
                 {" "}
+                <a href="/" style={{textDecoration:"none"}} className="button-portfolio">
                 Go&nbsp;to&nbsp;Your&nbsp;Portfolio
+
+                </a>
+           
               </button>
-            </Link>
-            <Link to="/">
+           
               <button className="button-portfolio">
+              <a href="/" style={{textDecoration:"none"}} className="button-portfolio">
                 Go&nbsp;to&nbsp;Marketplace
+                </a>
               </button>
-            </Link>
+        
           </div>
         </div>
       </Box>
@@ -829,7 +834,7 @@ const CardArtProject = (props: Web3PageProps) => {
           className="modal-header"
         >
           <div>
-            <AiOutlineCloseCircle onClick={closeModal} className="close-icon" />
+            <AiOutlineCloseCircle onClick={closeModal} className="close-icon-main" />
             <div className="modal-length">
               <div className="col-md-12">
                 <img
