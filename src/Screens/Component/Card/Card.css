@@ -86,17 +86,17 @@
   left: 38%;
   right: 36%;
   z-index: 9998;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+  box-shadow: none;
 }
 .modal-content-card{
   height: 65vh;
   overflow-y: auto;
-  box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
+  box-shadow: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
- 
- 
+
 }
+
 .modal-overlay {
   position: fixed;
   top: 10%;
@@ -124,6 +124,17 @@
   font-size: 24px;
   cursor: pointer;
   z-index: 2;
+}
+.close-icon-main{
+  position: absolute;
+  top: 10px;
+  right: 5%;
+  color: #01A19A;
+
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 2;
+
 }
 .overlays {
   display: flex;
@@ -192,6 +203,12 @@
 }
 .modal-length{
   width:100%;
+}
+@media screen and (min-width: 1500px){
+  .close-icon{
+    right: 20%;
+  }
+  
 }
 @media screen and (max-width: 768px) {
   .modal-overlay-card{

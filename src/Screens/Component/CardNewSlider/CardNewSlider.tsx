@@ -91,7 +91,7 @@ const CardNewSlider = (props: Web3PageProps) => {
           },
         }}
       >
-        <motion.div className="slider" style={{marginTop:'5%'}} >
+        <motion.div className="slider"  >
         
           {data?.reverse()?.map((movie, index) => (
           
@@ -105,6 +105,7 @@ const CardNewSlider = (props: Web3PageProps) => {
                   x: 2,
                   // transition: { duration: 0.5, delay: index * 0.1 },
                 }}
+               
                
         
               >
