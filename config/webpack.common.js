@@ -56,7 +56,7 @@ const commonConfig = (env) => ({
         test: /\.svg$/,
         use: [
           {
-            loader: 'svg-url-loader',
+            loader: "svg-url-loader",
           },
         ],
       },
@@ -72,6 +72,14 @@ const commonConfig = (env) => ({
       },
       {
         test: /\.png$/,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
+      {
+        test: /\.jpg$/,
         use: [
           {
             loader: "file-loader",

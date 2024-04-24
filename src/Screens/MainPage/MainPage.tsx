@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
-import Header from "../Component/Header/Header";
-import bgimage from "../../Asset/Images/Main_Page.png";
-import { CgArrowLongLeft, CgArrowLongRight } from "react-icons/cg";
-import act_icon from "../../Asset/art_icon.png";
 import "./MainPage.css";
-import portfolio_image from "../../Asset/Images/portfolio_image.png";
-import Portfolio_image_mobile from "../../Asset/Images/Portfolio_image_mobile.png";
-import Netflix_image from "../../Asset/Images/Netflix_image.png";
+
+import { CgArrowLongLeft, CgArrowLongRight } from "react-icons/cg";
+import { useEffect, useState } from "react";
+
+import AboutFooter from "../Component/Footer2/AboutFooter";
 import Art_Credit from "../../Asset/Images/Art_Credit.png";
 import Footer from "../Component/Footer/Footer";
-import AboutFooter from "../Component/Footer2/AboutFooter";
-import { useNavigate } from "react-router-dom";
+import Header from "../Component/Header/Header";
+import Netflix_image from "../../Asset/Images/Netflix_image.png";
 import { NetworkDetails } from "helper/network";
+import Portfolio_image_mobile from "../../Asset/Images/Portfolio_image_mobile.png";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import act_icon from "../../Asset/art_icon.png";
+import bgimage from "../../Asset/Images/Main_Page.jpg";
+import portfolio_image from "../../Asset/Images/portfolio_image.png";
+import { useNavigate } from "react-router-dom";
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
@@ -181,7 +183,7 @@ function MainPage(props: Web3PageProps) {
             <div className="border-white border-1 h-50 border-end "></div>
             <div style={{ textAlign: "center" }}>
               <p style={{ fontSize: 13, fontWeight: 400, margin: 0 }}>
-               Art Projects
+                Art Projects
               </p>
               <p style={{ fontSize: 36, fontWeight: 500 }}>124,656,456</p>
             </div>
