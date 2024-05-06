@@ -128,7 +128,7 @@ const Web3Page = (props: Web3PageProps) => {
       // Gets a transaction builder and use it to add a "swap" operation and build the corresponding XDR
       const txBuilder = await getTxBuilder(
         props.pubKey,
-        "1000000",
+        "100000",
         server,
         props.networkDetails.networkPassphrase
       );
@@ -137,7 +137,7 @@ const Web3Page = (props: Web3PageProps) => {
         contractID: contractIdCrowdFund,
         id: 1, // Campaign id
         donorPubKey: props.pubKey, // Donor public key
-        amount: "150", // amount to donate
+        amount: "49", // amount to donate
         nativeToken: NATIVE_TOKEN, // XLM Native Addresss
         memo: "",
         txBuilderC: txBuilder,

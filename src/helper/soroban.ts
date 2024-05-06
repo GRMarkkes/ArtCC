@@ -314,6 +314,9 @@ export const donateToCampaignByID = async ({
         )
       )
       .setTimeout(TimeoutInfinite);
+    console.log("🚀 ~ tx:", tx);
+    console.log("🚀 ~ networkPassphrase:", networkPassphrase);
+    console.log("🚀 ~ amount:", amount);
 
     if (memo?.length > 0) {
       tx.addMemo(Memo.text(memo));
@@ -323,10 +326,11 @@ export const donateToCampaignByID = async ({
       tx.build(),
       networkPassphrase
     );
+    console.log("🚀 ~ preparedTransaction:", preparedTransaction);
 
     return preparedTransaction.toXDR();
   } catch (err) {
-    console.log("err");
+    console.log(err);
     return "error";
   }
 };
