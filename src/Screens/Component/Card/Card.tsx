@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../NewCard/NewCard.css";
 import "./Card.css";
 
-import * as Crowdfund from "CrowdFund";
+import * as Crowdfund from "crowdfund";
 
 import {
   AiFillStar,
@@ -826,17 +826,19 @@ const CardArtProject = (props: Web3PageProps) => {
                   <div>
                     <p className="modal-paragraph">Donators:</p>
                     <ul>
-                      {singleCampaign?.donators.map((donator, index) => (
-                        <li
-                          key={index}
-                          style={{
-                            color: "white",
-                          }}
-                          className="list-donation"
-                        >
-                          {donator.toString()}
-                        </li>
-                      ))}
+                      {singleCampaign?.donators.map(
+                        (donator, index: number) => (
+                          <li
+                            key={index}
+                            style={{
+                              color: "white",
+                            }}
+                            className="list-donation"
+                          >
+                            {donator.toString()}
+                          </li>
+                        )
+                      )}
                     </ul>
                   </div>
 

@@ -1,4 +1,4 @@
-import * as Crowdfund from "CrowdFund";
+import * as Crowdfund from "crowdfund";
 
 import {
   Address,

@@ -1,4 +1,4 @@
-import * as Crowdfund from "CrowdFund";
+import * as Crowdfund from "crowdfund";
 
 import { NetworkDetails, signTx } from "../helper/network";
 import {

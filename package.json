@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "=20.0.x"
+    "node": ">=20.4.x"
   },
   "scripts": {
     "dev": "vite --port 8080",
@@ -30,7 +30,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "CrowdFund": "CrowdFund",
+    "crowdfund": "./CrowdFund",
     "axios": "^1.5.1",
     "bigint-conversion": "^2.4.1",
     "bignumber.js": "^9.1.0",
@@ -63,7 +63,7 @@
     "styled-components": "^5.3.10",
     "swiper": "^11.0.4",
     "swiper-react": "^1.0.0",
-    "token": "Token",
+    "token": "./Token",
     "zod": "^3.22.2"
   },
   "devDependencies": {

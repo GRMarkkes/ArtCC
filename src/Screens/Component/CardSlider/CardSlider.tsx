@@ -1,6 +1,6 @@
 import "./CardSlider.css";
 
-import * as Crowdfund from "CrowdFund";
+import * as Crowdfund from "crowdfund";
 
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";

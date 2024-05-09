@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
 
-import * as Crowdfund from "CrowdFund";
+import * as Crowdfund from "crowdfund";
 
 import CardSlider from "../CardNewSlider/CardNewSlider";
 import { NetworkDetails } from "../../../helper/network";

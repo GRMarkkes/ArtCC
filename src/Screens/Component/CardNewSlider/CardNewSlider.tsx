@@ -3,7 +3,7 @@ import "./CardNewSlider.css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import * as Crowdfund from "CrowdFund";
+import * as Crowdfund from "crowdfund";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";

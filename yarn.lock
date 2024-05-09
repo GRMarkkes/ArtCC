@@ -3512,13 +3512,6 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.1.tgz#5c85d662f76fa1d34575766c5dcd6615abcd30d8"
   integrity sha512-FZdkNBDqBRHKQ2MEbSC17xnPFOhZxeJ2YGSfr2BKf3sujG49Qe3bB+rGCwQfIaA7WHnGeGkSijX4FuBCdrzW/g==
 
-CrowdFund@CrowdFund:
-  version "0.0.0"
-  dependencies:
-    "@stellar/freighter-api" "2.0.0"
-    "@stellar/stellar-sdk" "11.3.0"
-    buffer "6.0.3"
-
 abab@^2.0.0:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
@@ -5491,6 +5484,13 @@ crossws@^0.2.0, crossws@^0.2.2:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/crossws/-/crossws-0.2.4.tgz#82a8b518bff1018ab1d21ced9e35ffbe1681ad03"
   integrity sha512-DAxroI2uSOgUKLz00NX6A8U/8EE3SZHmIND+10jkVSaypvyt57J5JEOxAQOL6lQxyzi/wZbTIwssU1uy69h5Vg==
+
+crowdfund@./CrowdFund:
+  version "0.0.0"
+  dependencies:
+    "@stellar/freighter-api" "2.0.0"
+    "@stellar/stellar-sdk" "11.3.0"
+    buffer "6.0.3"
 
 crypto-browserify@^3.11.0:
   version "3.12.0"
@@ -14755,7 +14755,7 @@ toidentifier@1.0.1:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.1.tgz#3be34321a88a820ed1bd80dfaa33e479fbb8dd35"
   integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
 
-token@Token:
+token@./Token:
   version "0.0.0"
   dependencies:
     "@stellar/freighter-api" "2.0.0"
