@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=20.4.x"
+    "node": "20.x"
   },
   "scripts": {
     "dev": "vite --port 8080",
@@ -13,7 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@creit.tech/stellar-wallets-kit": "stellar-wallets-kit",
+    "@creit.tech/stellar-wallets-kit": "./stellar-wallets-kit",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/poppins": "^5.0.8",
