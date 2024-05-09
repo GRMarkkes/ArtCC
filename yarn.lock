@@ -1404,7 +1404,7 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
-"@creit.tech/stellar-wallets-kit@stellar-wallets-kit":
+"@creit.tech/stellar-wallets-kit@./stellar-wallets-kit":
   version "0.8.0"
   dependencies:
     "@albedo-link/intent" "^0.12.0"

@@ -1,5 +1,3 @@
-import * as Crowdfund from "crowdfund";
-
 import { NetworkDetails, signTx } from "../helper/network";
 import {
   createNewCampaign,
@@ -15,6 +13,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 import { BASE_FEE } from "soroban-client";
+import { Campaign } from "../../crowdfund/dist/types";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";
@@ -37,7 +36,7 @@ type CreateCampaignParams = {
   target: string;
 };
 export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
-  const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [createloading, setCreateLoading] = useState<boolean>(false);

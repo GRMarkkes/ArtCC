@@ -1,7 +1,4 @@
-// import { useEffect, useState } from "react";
-
-import * as Crowdfund from "crowdfund";
-
+import { Campaign } from "../../../../crowdfund/dist/types";
 import CardSlider from "../CardNewSlider/CardNewSlider";
 import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
@@ -22,7 +19,7 @@ export type Duration = bigint;
 
 interface CategoryData {
   category: string;
-  data: Crowdfund.Campaign[];
+  data: Campaign[];
 }
 
 interface Web3PageProps {

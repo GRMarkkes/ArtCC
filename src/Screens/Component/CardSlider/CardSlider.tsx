@@ -1,10 +1,9 @@
 import "./CardSlider.css";
 
-import * as Crowdfund from "crowdfund";
-
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";
 
+import { Campaign } from "../../../../crowdfund/dist/types";
 import Card from "../Card/Card";
 import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
@@ -29,13 +28,13 @@ interface Web3PageProps {
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
-  data: Crowdfund.Campaign[];
+  data: Campaign[];
   title: string;
   onPress?: (created: any) => void;
 }
 
 const CardSlider = React.memo(function (props: Web3PageProps) {
-  const [data, setData] = useState<Crowdfund.Campaign[]>([]);
+  const [data, setData] = useState<Campaign[]>([]);
   const isWideScreen = window.innerWidth >= 1220;
   useEffect(() => {
     if (props?.data) {

@@ -7,7 +7,7 @@ import Header from "../Component/Header/Header";
 import { NetworkDetails } from "../../helper/network";
 import Slider from "../Component/Slider/Slider";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
-import artimg from "../../Asset/Images/ArtProject_main.jpg";
+import artimg from "../../assets/Images/ArtProject_main.jpg";
 import styled from "styled-components";
 import { useWallet } from "../../hooks";
 

@@ -3,8 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../NewCard/NewCard.css";
 import "./Card.css";
 
-import * as Crowdfund from "crowdfund";
-
 import {
   AiFillStar,
   AiOutlineAreaChart,
@@ -23,6 +21,7 @@ import {
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
+import { Campaign } from "../../../../crowdfund/dist/types";
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { MdOutlineLocationOn } from "react-icons/md";
@@ -30,13 +29,13 @@ import { MdOutlineReportProblem } from "react-icons/md";
 import Modal from "react-modal";
 import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
-import cardImg from "../../../Asset/Images/Card_Image.png";
-import decimg from "../../../Asset/ModalImg.png";
-import graphimage from "../../../Asset/Graphic.png";
+import cardImg from "../../../assets/Images/Card_Image.png";
+import decimg from "../../../assets/ModalImg.png";
+import graphimage from "../../../assets/Graphic.png";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { useWallet } from "../../../hooks";
-import wrapperswap from "../../../Asset/wrapper 2.png";
+import wrapperswap from "../../../assets/wrapper 2.png";
 
 // import { Link } from "react-router-dom";
 
@@ -67,7 +66,7 @@ export type Typepoint = bigint;
 export type Duration = bigint;
 
 const CardArtProject = (props: Web3PageProps) => {
-  const [singleCampaign, setSingleCampaign] = useState<Crowdfund.Campaign>();
+  const [singleCampaign, setSingleCampaign] = useState<Campaign>();
   const { donateToCampaign, getCampaignById } = useWallet(props);
   let movieData = props?.movieData;
   useEffect(() => {

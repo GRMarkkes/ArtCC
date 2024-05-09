@@ -1,4 +1,5 @@
 import "./marketPlace.css";
+
 import Header from "../Component/Header/Header";
 import { NetworkDetails } from "../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
@@ -6,7 +7,7 @@ import Web3Page from "../Component/Web3Page/Web3Page";
 
 // import PaginationMarketPlace from "Screens/Component/PaginationMarketPlace/PaginationMarketPlace";
 // import Footer from "../Component/Footer/Footer";
-// import marketplacebackground_image from '../../Asset/Images/MarketPlace_main.png'
+// import marketplacebackground_image from '../../assets/Images/MarketPlace_main.png'
 
 interface MarketplaceMainProps {
   networkDetails: NetworkDetails;

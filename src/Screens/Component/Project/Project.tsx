@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { cardData } from "../../../Asset/CardData";
-import ReactPaginate from "react-paginate";
 import "./Project.css";
+
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
+
+import ReactPaginate from "react-paginate";
+import Slider from "react-slick";
+import { cardData } from "../../../assets/CardData";
 
 const Project: React.FC = () => {
   // const [pageNumber, setPageNumber] = useState<number>(0);
@@ -35,7 +37,7 @@ const Project: React.FC = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  const PrevArrow: React.FC<any> = (props : any) => {
+  const PrevArrow: React.FC<any> = (props: any) => {
     const { className, style, onClick } = props;
     return (
       <div
@@ -56,7 +58,7 @@ const Project: React.FC = () => {
       </div>
     );
   };
-  const NextArrow: React.FC<any> = (props : any) => {
+  const NextArrow: React.FC<any> = (props: any) => {
     const { className, style, onClick } = props;
     return (
       <div
@@ -120,10 +122,6 @@ const Project: React.FC = () => {
     ],
   };
 
-
-
-  
-
   return (
     <div
       className="card-container "
@@ -143,16 +141,12 @@ const Project: React.FC = () => {
 
         {isMobileView ? ( // Render pagination on laptop screens
           <div style={{ marginLeft: "15%" }}>
-            <Slider {...settings}>
-              
-            </Slider>
+            <Slider {...settings}></Slider>
           </div>
         ) : (
           // Render slider on mobile screens
           <div className="position-relative">
-            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mx-md-5">
-              
-            </div>
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mx-md-5"></div>
             <div className="position-absolute top-0 end-0 me-5">
               <ReactPaginate
                 previousLabel={

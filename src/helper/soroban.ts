@@ -1,5 +1,3 @@
-import * as Crowdfund from "crowdfund";
-
 import {
   Address,
   Contract,
@@ -17,6 +15,7 @@ import {
 } from "@stellar/stellar-sdk";
 
 import BigNumber from "bignumber.js";
+import { Campaign } from "../../crowdfund";
 import { ERRORS } from "./error";
 import { NetworkDetails } from "./network";
 import { stroopToXlm } from "./format";
@@ -386,7 +385,7 @@ export const getCampaigns = async (
     .setTimeout(TimeoutInfinite)
     .build();
 
-  const result = await simulateTx<Crowdfund.Campaign[]>(tx, server);
+  const result = await simulateTx<Campaign[]>(tx, server);
   return result;
 };
 export const numberToU32 = (value: number): xdr.ScVal =>
@@ -404,7 +403,7 @@ export const getCampaignById = async (
     .setTimeout(TimeoutInfinite)
     .build();
 
-  const result = await simulateTx<Crowdfund.Campaign>(tx, server);
+  const result = await simulateTx<Campaign>(tx, server);
   return result;
 };
 export const getTokenBalance = async (

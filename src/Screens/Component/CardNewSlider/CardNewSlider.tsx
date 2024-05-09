@@ -3,11 +3,10 @@ import "./CardNewSlider.css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import * as Crowdfund from "crowdfund";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 
+import { Campaign } from "../../../../crowdfund/dist/types";
 import Card from "../Card/Card";
 import { Navigation } from "swiper/modules";
 import { NetworkDetails } from "../../../helper/network";
@@ -32,12 +31,12 @@ interface Web3PageProps {
   setPubKey: (pubKey: string) => void;
   swkKit: StellarWalletsKit;
   pubKey: string;
-  data: Crowdfund.Campaign[];
+  data: Campaign[];
   title: string;
   onPress?: (created: any) => void;
 }
 const CardNewSlider = (props: Web3PageProps) => {
-  const [data, setData] = useState<Crowdfund.Campaign[]>([]);
+  const [data, setData] = useState<Campaign[]>([]);
   useEffect(() => {
     if (props?.data) {
       setData(props?.data);

@@ -1,9 +1,11 @@
+import "./walletConnect.css";
+
 import React from "react";
+import leager from "../../assets/SVG/Leager.svg";
+import mainbackground from "../../assets/Images/Main_background.png";
+import wallet_icon from "../../assets/SVG/wallet.svg";
+
 // import { Navigate } from "react-router-dom";
-import mainbackground from "../../Asset/Images/Main_background.png";
-import wallet_icon from "../../Asset/SVG/wallet.svg";
-import leager from "../../Asset/SVG/Leager.svg";
-import './walletConnect.css';
 
 const WalletConnection: React.FC = () => {
   return (
@@ -17,7 +19,7 @@ const WalletConnection: React.FC = () => {
     >
       <div
         className="child-container d-flex justify-content-center align-items-center flex-column bg-black position-absolute top-50 start-50 translate-middle vw-60"
-        style={{ zIndex: 1, height: '60%' }}
+        style={{ zIndex: 1, height: "60%" }}
       >
         <p className="fs-5 fw-bold text-white">CONNECT YOUR WALLET </p>
         <p className="text-white">Select a wallet or log in with email</p>
@@ -66,6 +68,6 @@ const WalletConnection: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default WalletConnection;

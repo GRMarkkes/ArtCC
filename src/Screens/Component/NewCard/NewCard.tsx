@@ -1,24 +1,22 @@
-import React, { useState } from "react";
-import cardimg from "../../../Asset/Images/Card_Image.png";
 import "./NewCard.css";
+
 import {
-  Card,
-  Row,
-  Col,
-  Tooltip,
-  OverlayTrigger,
-} from "react-bootstrap";
-import {
-  PlayArrow,
   Add,
-  ThumbUpAltOutlined,
-  ThumbDownOutlined,
   InfoOutlined,
+  PlayArrow,
+  ThumbDownOutlined,
+  ThumbUpAltOutlined,
 } from "@material-ui/icons";
+import { Card, Col, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import React, { useState } from "react";
+
+import cardimg from "../../../assets/Images/Card_Image.png";
 
 const NewCard: React.FC = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const renderTooltip = (text: string) => <Tooltip id="tooltip">{text}</Tooltip>;
+  const renderTooltip = (text: string) => (
+    <Tooltip id="tooltip">{text}</Tooltip>
+  );
 
   return (
     <Card
