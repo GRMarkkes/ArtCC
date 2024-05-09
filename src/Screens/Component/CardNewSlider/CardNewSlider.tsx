@@ -6,7 +6,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState } from "react";
 
-import { Campaign } from "../../../../crowdfund/dist/types";
+import { Campaign } from "../../../../types";
 import Card from "../Card/Card";
 import { Navigation } from "swiper/modules";
 import { NetworkDetails } from "../../../helper/network";

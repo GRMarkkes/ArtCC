@@ -1,4 +1,4 @@
-import { Campaign } from "../../../../crowdfund/dist/types";
+import { Campaign } from "../../../../types";
 import CardSlider from "../CardNewSlider/CardNewSlider";
 import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";

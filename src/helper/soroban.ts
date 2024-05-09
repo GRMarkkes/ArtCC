@@ -15,7 +15,7 @@ import {
 } from "@stellar/stellar-sdk";
 
 import BigNumber from "bignumber.js";
-import { Campaign } from "../../crowdfund";
+import { Campaign } from "../../types";
 import { ERRORS } from "./error";
 import { NetworkDetails } from "./network";
 import { stroopToXlm } from "./format";

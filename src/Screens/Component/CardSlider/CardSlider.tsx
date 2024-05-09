@@ -3,7 +3,7 @@ import "./CardSlider.css";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import React, { useEffect, useRef, useState } from "react";
 
-import { Campaign } from "../../../../crowdfund/dist/types";
+import { Campaign } from "../../../../types";
 import Card from "../Card/Card";
 import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";

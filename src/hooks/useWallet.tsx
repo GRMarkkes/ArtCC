@@ -13,7 +13,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 import { BASE_FEE } from "soroban-client";
-import { Campaign } from "../../crowdfund/dist/types";
+import { Campaign } from "../../types";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";

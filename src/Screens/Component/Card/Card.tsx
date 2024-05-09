@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
 
-import { Campaign } from "../../../../crowdfund/dist/types";
+import { Campaign } from "../../../../types";
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { MdOutlineLocationOn } from "react-icons/md";
