@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@creit.tech/stellar-wallets-kit": "./stellar-wallets-kit",
+    "@creit.tech/stellar-wallets-kit": "stellar-wallets-kit",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/poppins": "^5.0.8",
@@ -27,7 +27,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "CrowdFund": "./CrowdFund",
+    "CrowdFund": "CrowdFund",
     "axios": "^1.5.1",
     "bigint-conversion": "^2.4.1",
     "bignumber.js": "^9.1.0",
@@ -60,7 +60,7 @@
     "styled-components": "^5.3.10",
     "swiper": "^11.0.4",
     "swiper-react": "^1.0.0",
-    "token": "./Token",
+    "token": "Token",
     "zod": "^3.22.2"
   },
   "devDependencies": {

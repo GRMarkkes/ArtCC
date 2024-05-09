@@ -1404,7 +1404,7 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
-"@creit.tech/stellar-wallets-kit@./stellar-wallets-kit":
+"@creit.tech/stellar-wallets-kit@stellar-wallets-kit":
   version "0.8.0"
   dependencies:
     "@albedo-link/intent" "^0.12.0"
@@ -3512,7 +3512,7 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.1.tgz#5c85d662f76fa1d34575766c5dcd6615abcd30d8"
   integrity sha512-FZdkNBDqBRHKQ2MEbSC17xnPFOhZxeJ2YGSfr2BKf3sujG49Qe3bB+rGCwQfIaA7WHnGeGkSijX4FuBCdrzW/g==
 
-CrowdFund@./CrowdFund:
+CrowdFund@CrowdFund:
   version "0.0.0"
   dependencies:
     "@stellar/freighter-api" "2.0.0"
@@ -14755,7 +14755,7 @@ toidentifier@1.0.1:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.1.tgz#3be34321a88a820ed1bd80dfaa33e479fbb8dd35"
   integrity sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==
 
-token@./Token:
+token@Token:
   version "0.0.0"
   dependencies:
     "@stellar/freighter-api" "2.0.0"
