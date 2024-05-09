@@ -1,0 +1,5 @@
+@media (min-width: 990px) and (max-width: 1880px) {
+    .child-container {
+      width: 70vh; /* Adjust the height as needed */
+    }
+  }

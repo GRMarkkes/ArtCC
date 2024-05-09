@@ -1,0 +1,7 @@
+.pagination {
+    color: white;
+  }
+  
+  .pagination .Mui-selected {
+    color: green;
+  }
