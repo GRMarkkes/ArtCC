@@ -19,7 +19,7 @@ const useConnect = () => {
 
   // Setup swc, user will set the desired wallet on connect
   const SWKKit: StellarWalletsKit = new StellarWalletsKit({
-    network: WalletNetwork.PUBLIC,
+    network: WalletNetwork.FUTURENET,
     selectedWalletId: FREIGHTER_ID,
     modules: allowAllModules(),
   });
@@ -38,7 +38,7 @@ const useConnect = () => {
 
           console.log("publicKey", publicKey);
 
-          SWKKit.setNetwork(WalletNetwork.PUBLIC);
+          SWKKit.setNetwork(WalletNetwork.FUTURENET);
         } catch (error) {
           console.log(error);
         }

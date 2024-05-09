@@ -14,25 +14,23 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Contract = exports.Errors = exports.networks = void 0;
+exports.Client = exports.Errors = exports.networks = void 0;
 const stellar_sdk_1 = require("@stellar/stellar-sdk");
 const buffer_1 = require("buffer");
-const assembled_tx_js_1 = require("./assembled-tx.js");
-__exportStar(require("./assembled-tx.js"), exports);
-__exportStar(require("./method-options.js"), exports);
+const index_js_1 = require("@stellar/stellar-sdk/lib/contract_client/index.js");
+__exportStar(require("@stellar/stellar-sdk"), exports);
+__exportStar(require("@stellar/stellar-sdk/lib/contract_client/index.js"), exports);
+__exportStar(require("@stellar/stellar-sdk/lib/rust_types/index.js"), exports);
 if (typeof window !== 'undefined') {
     //@ts-ignore Buffer exists
     window.Buffer = window.Buffer || buffer_1.Buffer;
 }
 exports.networks = {
-    unknown: {
-        networkPassphrase: "Public Global Stellar Network ; September 2015",
-        contractId: "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB",
+    futurenet: {
+        networkPassphrase: "Test SDF Future Network ; October 2022",
+        contractId: "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX",
     }
 };
-/**
-    
-    */
 exports.Errors = {
     1: { message: "" },
     2: { message: "" },
@@ -43,13 +41,10 @@ exports.Errors = {
     7: { message: "" },
     8: { message: "" }
 };
-class Contract {
+class Client extends index_js_1.ContractClient {
     options;
-    spec;
     constructor(options) {
-        this.options = options;
-        this.spec = new stellar_sdk_1.ContractSpec([
-            "AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAACAAAAAAAAAAWRGVhZGxpbmVTaG91bGRCZUZ1dHVyZQAAAAAAAQAAAAAAAAAQQ2FtcGFpZ25Ob3RFeGlzdAAAAAIAAAAAAAAAEUFtb3VudE11c3ROb25aZXJvAAAAAAAAAwAAAAAAAAANVGFyZ2V0UmVhY2hlZAAAAAAAAAQAAAAAAAAAF0Ftb3VudEV4Y2VlZFRhcmdldExpbWl0AAAAAAUAAAAAAAAAFENhbXBhaWduQWxyZWFkeUV4aXN0AAAABgAAAAAAAAAVSWRDYW1wYWlnbk11c3ROb25aZXJvAAAAAAAABwAAAAAAAAAUTG93QW1vdW50Rm9yU3BsaXR0ZXIAAAAI",
+        super(new stellar_sdk_1.ContractSpec(["AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAACAAAAAAAAAAWRGVhZGxpbmVTaG91bGRCZUZ1dHVyZQAAAAAAAQAAAAAAAAAQQ2FtcGFpZ25Ob3RFeGlzdAAAAAIAAAAAAAAAEUFtb3VudE11c3ROb25aZXJvAAAAAAAAAwAAAAAAAAANVGFyZ2V0UmVhY2hlZAAAAAAAAAQAAAAAAAAAF0Ftb3VudEV4Y2VlZFRhcmdldExpbWl0AAAAAAUAAAAAAAAAFENhbXBhaWduQWxyZWFkeUV4aXN0AAAABgAAAAAAAAAVSWRDYW1wYWlnbk11c3ROb25aZXJvAAAAAAAABwAAAAAAAAAUTG93QW1vdW50Rm9yU3BsaXR0ZXIAAAAI",
             "AAAAAQAAAAAAAAAAAAAACENhbXBhaWduAAAADgAAAAAAAAAQYW1vdW50X2NvbGxlY3RlZAAAAAsAAAAAAAAACGNhdGVnb3J5AAAAEAAAAAAAAAAIZGVhZGxpbmUAAAAGAAAAAAAAAAtkZXNjcmlwdGlvbgAAAAAQAAAAAAAAAAlkb25hdGlvbnMAAAAAAAPqAAAACwAAAAAAAAAIZG9uYXRvcnMAAAPqAAAAEwAAAAAAAAACaWQAAAAAAAQAAAAAAAAABWltYWdlAAAAAAAAEAAAAAAAAAANbWFpbl9sb2NhdGlvbgAAAAAAABAAAAAAAAAACG1ldGFkYXRhAAAAEAAAAAAAAAAFb3duZXIAAAAAAAATAAAAAAAAAAZzdGF0dXMAAAAAAAEAAAAAAAAABnRhcmdldAAAAAAACwAAAAAAAAAFdGl0bGUAAAAAAAAQ",
             "AAAAAgAAAAAAAAAAAAAAB0RhdGFLZXkAAAAABAAAAAAAAAAAAAAACkRldkFjY291bnQAAAAAAAAAAAAAAAAAEExhdW5jaHBhZEFjY291bnQAAAAAAAAAAAAAAAlBcnR5VG9rZW4AAAAAAAAAAAAAAAAAAApUb2tlbkFkbWluAAA=",
             "AAAAAAAAAAAAAAAKaW5pdGlhbGl6ZQAAAAAABAAAAAAAAAAHZGV2X2FjYwAAAAATAAAAAAAAAA1sYXVuY2hwYWRfYWNjAAAAAAAAEwAAAAAAAAAKYXJ0eV90b2tlbgAAAAAAEwAAAAAAAAALdG9rZW5fYWRtaW4AAAAAEwAAAAA=",
@@ -61,182 +56,20 @@ class Contract {
             "AAAAAAAAAAAAAAALZ2V0X2Rldl9hY2MAAAAAAAAAAAEAAAAT",
             "AAAAAAAAAAAAAAARZ2V0X2xhdW5jaHBhZF9hY2MAAAAAAAAAAAAAAQAAABM=",
             "AAAAAAAAAAAAAAAOZ2V0X2FydHlfdG9rZW4AAAAAAAAAAAABAAAAEw==",
-            "AAAAAAAAAAAAAAAPZ2V0X3Rva2VuX2FkbWluAAAAAAAAAAABAAAAEw=="
-        ]);
+            "AAAAAAAAAAAAAAAPZ2V0X3Rva2VuX2FkbWluAAAAAAAAAAABAAAAEw=="]), options);
+        this.options = options;
     }
-    parsers = {
-        initialize: () => { },
-        createCampaign: (result) => {
-            if (result instanceof assembled_tx_js_1.Err)
-                return result;
-            return new assembled_tx_js_1.Ok(this.spec.funcResToNative("create_campaign", result));
-        },
-        getCampaigns: (result) => this.spec.funcResToNative("get_campaigns", result),
-        getCampaign: (result) => this.spec.funcResToNative("get_campaign", result),
-        donateToCampaign: (result) => {
-            if (result instanceof assembled_tx_js_1.Err)
-                return result;
-            return new assembled_tx_js_1.Ok(this.spec.funcResToNative("donate_to_campaign", result));
-        },
-        getDonators: (result) => {
-            if (result instanceof assembled_tx_js_1.Err)
-                return result;
-            return new assembled_tx_js_1.Ok(this.spec.funcResToNative("get_donators", result));
-        },
-        getDevAcc: (result) => this.spec.funcResToNative("get_dev_acc", result),
-        getLaunchpadAcc: (result) => this.spec.funcResToNative("get_launchpad_acc", result),
-        getArtyToken: (result) => this.spec.funcResToNative("get_arty_token", result),
-        getTokenAdmin: (result) => this.spec.funcResToNative("get_token_admin", result)
-    };
-    txFromJSON = (json) => {
-        const { method, ...tx } = JSON.parse(json);
-        return assembled_tx_js_1.AssembledTransaction.fromJSON({
-            ...this.options,
-            method,
-            parseResultXdr: this.parsers[method],
-        }, tx);
-    };
     fromJSON = {
         initialize: (this.txFromJSON),
-        createCampaign: (this.txFromJSON),
-        getCampaigns: (this.txFromJSON),
-        getCampaign: (this.txFromJSON),
-        donateToCampaign: (this.txFromJSON),
-        getDonators: (this.txFromJSON),
-        getDevAcc: (this.txFromJSON),
-        getLaunchpadAcc: (this.txFromJSON),
-        getArtyToken: (this.txFromJSON),
-        getTokenAdmin: (this.txFromJSON)
-    };
-    /**
-* Construct and simulate a initialize transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    initialize = async ({ dev_acc, launchpad_acc, arty_token, token_admin }, options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'initialize',
-            args: this.spec.funcArgsToScVals("initialize", { dev_acc: new stellar_sdk_1.Address(dev_acc), launchpad_acc: new stellar_sdk_1.Address(launchpad_acc), arty_token: new stellar_sdk_1.Address(arty_token), token_admin: new stellar_sdk_1.Address(token_admin) }),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['initialize'],
-        });
-    };
-    /**
-* Construct and simulate a create_campaign transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    createCampaign = async ({ owner_addr, title_cmp, desc_cmp, category_cmp, main_location_cmp, metadata_cmp, image_cmp, target_cmp, deadline_cmp }, options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'create_campaign',
-            args: this.spec.funcArgsToScVals("create_campaign", { owner_addr: new stellar_sdk_1.Address(owner_addr), title_cmp, desc_cmp, category_cmp, main_location_cmp, metadata_cmp, image_cmp, target_cmp, deadline_cmp }),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['createCampaign'],
-        });
-    };
-    /**
-* Construct and simulate a get_campaigns transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getCampaigns = async (options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_campaigns',
-            args: this.spec.funcArgsToScVals("get_campaigns", {}),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getCampaigns'],
-        });
-    };
-    /**
-* Construct and simulate a get_campaign transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getCampaign = async ({ campaign_id }, options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_campaign',
-            args: this.spec.funcArgsToScVals("get_campaign", { campaign_id }),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getCampaign'],
-        });
-    };
-    /**
-* Construct and simulate a donate_to_campaign transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    donateToCampaign = async ({ id, donor_address, amount, token_id }, options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'donate_to_campaign',
-            args: this.spec.funcArgsToScVals("donate_to_campaign", { id, donor_address: new stellar_sdk_1.Address(donor_address), amount, token_id: new stellar_sdk_1.Address(token_id) }),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['donateToCampaign'],
-        });
-    };
-    /**
-* Construct and simulate a get_donators transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getDonators = async ({ id }, options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_donators',
-            args: this.spec.funcArgsToScVals("get_donators", { id }),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getDonators'],
-        });
-    };
-    /**
-* Construct and simulate a get_dev_acc transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getDevAcc = async (options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_dev_acc',
-            args: this.spec.funcArgsToScVals("get_dev_acc", {}),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getDevAcc'],
-        });
-    };
-    /**
-* Construct and simulate a get_launchpad_acc transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getLaunchpadAcc = async (options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_launchpad_acc',
-            args: this.spec.funcArgsToScVals("get_launchpad_acc", {}),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getLaunchpadAcc'],
-        });
-    };
-    /**
-* Construct and simulate a get_arty_token transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getArtyToken = async (options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_arty_token',
-            args: this.spec.funcArgsToScVals("get_arty_token", {}),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getArtyToken'],
-        });
-    };
-    /**
-* Construct and simulate a get_token_admin transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getTokenAdmin = async (options = {}) => {
-        return await assembled_tx_js_1.AssembledTransaction.fromSimulation({
-            method: 'get_token_admin',
-            args: this.spec.funcArgsToScVals("get_token_admin", {}),
-            ...options,
-            ...this.options,
-            errorTypes: exports.Errors,
-            parseResultXdr: this.parsers['getTokenAdmin'],
-        });
+        create_campaign: (this.txFromJSON),
+        get_campaigns: (this.txFromJSON),
+        get_campaign: (this.txFromJSON),
+        donate_to_campaign: (this.txFromJSON),
+        get_donators: (this.txFromJSON),
+        get_dev_acc: (this.txFromJSON),
+        get_launchpad_acc: (this.txFromJSON),
+        get_arty_token: (this.txFromJSON),
+        get_token_admin: (this.txFromJSON)
     };
 }
-exports.Contract = Contract;
+exports.Client = Client;

@@ -8,10 +8,9 @@ export interface NetworkDetails {
 
 // Soroban is only supported on Futurenet right now
 export const FUTURENET_DETAILS = {
-  network: "PUBLIC",
-  networkUrl:
-    "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4",
-  networkPassphrase: "Public Global Stellar Network ; September 2015",
+  network: "FUTURENET",
+  networkUrl: "https://rpc-futurenet.stellar.org",
+  networkPassphrase: "Test SDF Future Network ; October 2022",
 };
 
 export const signTx = async (

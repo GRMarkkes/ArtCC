@@ -1,41 +1,49 @@
 import * as Crowdfund from "CrowdFund";
-import * as Token from "token";
 
-import { Address, BASE_FEE } from "soroban-client";
-import { NetworkDetails, signTx } from "../../../helper/network";
+import {
+  FUTURENET_DETAILS,
+  NetworkDetails,
+  signTx,
+} from "../../../helper/network";
 import {
   createNewCampaign,
   donateToCampaignByID,
+  getCampaigns as getCampaignsFromServer,
   getServer,
+  getTokenBalance,
+  getTokenName,
+  getTokenSymbol,
   getTxBuilder,
   submitTx,
 } from "../../../helper/soroban";
 import { useCallback, useEffect, useState } from "react";
 
+import { BASE_FEE } from "soroban-client";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
-const NATIVE_TOKEN = "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA";
+// import * as Token from "token";
 
-const networkUrl =
-  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
+const NATIVE_TOKEN = "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
+
+// const networkUrl = "https://rpc-futurenet.stellar.org";
 
 const contractIdCrowdFund =
-  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
+  "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
 
-const crowdFund = new Crowdfund.Contract({
-  contractId: contractIdCrowdFund,
-  networkPassphrase: "Public Global Stellar Network ; September 2015",
-  rpcUrl: networkUrl,
-});
+// const crowdFund = new Crowdfund.Contract({
+//   contractId: contractIdCrowdFund,
+//   networkPassphrase: "Test SDF Future Network ; October 2022",
+//   rpcUrl: networkUrl,
+// });
 
 const contractIdToken =
-  "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP";
+  "CCEHX6Q3A6TOQTGQXR6OGFZ3LODD7EEFX67667FAXD3AHQ4Z6B6VLQNM";
 
-const token = new Token.Contract({
-  contractId: contractIdToken,
-  networkPassphrase: "Public Global Stellar Network ; September 2015",
-  rpcUrl: networkUrl,
-});
+// const token = new Token.Contract({
+//   contractId: contractIdToken,
+//   networkPassphrase: "Test SDF Future Network ; October 2022",
+//   rpcUrl: networkUrl,
+// });
 
 interface Web3PageProps {
   networkDetails: NetworkDetails;
@@ -54,11 +62,11 @@ const dataTransform = (data: string, key: string): string => {
 };
 const Web3Page = (props: Web3PageProps) => {
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
-
+  const [selectedNetwork] = useState(FUTURENET_DETAILS);
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
-  const [tokenAddress, setTokenAddress] = useState("");
-  const [balance, setBalance] = useState(0);
+  const [tokenAddress] = useState("");
+  const [balance, setBalance] = useState<number | string>(0);
 
   async function createCampaign() {
     try {
@@ -123,7 +131,6 @@ const Web3Page = (props: Web3PageProps) => {
   async function donateToCampaign() {
     try {
       console.log("donateToCampaign");
-
       const server = getServer(props.networkDetails);
       // Gets a transaction builder and use it to add a "swap" operation and build the corresponding XDR
       const txBuilder = await getTxBuilder(
@@ -132,100 +139,228 @@ const Web3Page = (props: Web3PageProps) => {
         server,
         props.networkDetails.networkPassphrase
       );
-
       const preparedTransaction = await donateToCampaignByID({
         contractID: contractIdCrowdFund,
         id: 1, // Campaign id
         donorPubKey: props.pubKey, // Donor public key
-        amount: "150", // amount to donate
+        amount: "25", // amount to donate
         nativeToken: NATIVE_TOKEN, // XLM Native Addresss
         memo: "",
         txBuilderC: txBuilder,
         server: server,
         networkPassphrase: props.networkDetails.networkPassphrase,
       });
-
       console.log("preparedTransaction", preparedTransaction);
-
       try {
         const signedTx = await signTx(
           preparedTransaction,
           props.pubKey,
           props.swkKit
         );
-
         const result = await submitTx(
           signedTx,
           props.networkDetails.networkPassphrase,
           server
         );
-
         console.log("result", result);
       } catch (error) {
         // console.log(error);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   }
   const getCampaigns = useCallback(async () => {
     try {
-      console.log("getCampaigns");
-      console.log("props.pubKey", props.pubKey);
+      const server = getServer(selectedNetwork);
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        selectedNetwork.networkPassphrase
+      );
+      const data = await getCampaignsFromServer(
+        contractIdCrowdFund,
+        txBuilder,
+        server
+      );
+      setCampaigns(data);
 
-      let data = await crowdFund.getCampaigns();
-      const campaignsData = data.result;
-
-      setCampaigns(campaignsData);
-
-      // console.log(data);
+      //   console.log("getCampaigns");
+      //   console.log("props.pubKey", props.pubKey);
+      //   let data = await crowdFund.getCampaigns();
+      //   const campaignsData = data.result;
+      //   setCampaigns(campaignsData);
+      //   // console.log(data);
     } catch (error) {
-      // Handle errors here
-      console.error(error);
+      //   // Handle errors here
+      //   console.error(error);
     }
-  }, [props.pubKey]);
+  }, [props.pubKey, selectedNetwork]);
 
   const tokenDetail = useCallback(async () => {
     try {
-      let tokenName = await token.name();
-      console.log(
-        "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
-        tokenName
+      const server = getServer(selectedNetwork);
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        selectedNetwork.networkPassphrase
       );
-      const assembledTx = await token.symbol();
-      const symbolValue = assembledTx.result;
-      setTokenSymbol(symbolValue);
+      const symbol = await getTokenSymbol(contractIdToken, txBuilder, server);
+      console.log("🚀 ~ tokenDetail ~ symbol:", symbol);
+      setTokenSymbol(symbol);
+      // let tokenName = await token.name();
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
+      //   tokenName
+      // );
+      // const assembledTx = await token.symbol();
+      // const symbolValue = assembledTx.result;
+      // setTokenSymbol(symbolValue);
 
-      let publicKey = new Address(props.pubKey);
-      console.log(
-        "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
-        props.pubKey
-      );
-      console.log(
-        "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
-        publicKey
-      );
+      // let publicKey = new Address(props.pubKey);
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
+      //   props.pubKey
+      // );
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
+      //   publicKey
+      // );
 
-      let balance = await token.balance({ id: publicKey.toString() });
-      console.log(
-        "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
-        balance
-      );
+      // let balance = await token.balance({ id: publicKey.toString() });
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
+      //   balance
+      // );
 
-      let formatted_balance = Number(balance) / 100000000;
+      // let formatted_balance = Number(balance) / 100000000;
 
-      setBalance(formatted_balance);
-      const tokenNameIs = tokenName.result;
-      setTokenName(tokenNameIs);
-      setTokenAddress(contractIdToken);
+      // setBalance(formatted_balance);
+      // const tokenNameIs = tokenName.result;
+      // setTokenName(tokenNameIs);
+      // setTokenAddress(contractIdToken);
 
       // console.log(token.options.contractId);
     } catch (error) {
       console.log("🚀 ~ tokenDetail ~ error:", error);
       // console.log(error);
     }
-  }, [props.pubKey]);
+  }, [props.pubKey, selectedNetwork]);
 
+  const getName = useCallback(async () => {
+    try {
+      const server = getServer(selectedNetwork);
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        selectedNetwork.networkPassphrase
+      );
+      const name = await getTokenName(contractIdToken, txBuilder, server);
+      console.log("🚀 ~ getName ~ name:", name);
+      setTokenName(name);
+      // let tokenName = await token.name();
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
+      //   tokenName
+      // );
+      // const assembledTx = await token.symbol();
+      // const symbolValue = assembledTx.result;
+      // setTokenSymbol(symbolValue);
+
+      // let publicKey = new Address(props.pubKey);
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
+      //   props.pubKey
+      // );
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
+      //   publicKey
+      // );
+
+      // let balance = await token.balance({ id: publicKey.toString() });
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
+      //   balance
+      // );
+
+      // let formatted_balance = Number(balance) / 100000000;
+
+      // setBalance(formatted_balance);
+      // const tokenNameIs = tokenName.result;
+      // setTokenName(tokenNameIs);
+      // setTokenAddress(contractIdToken);
+
+      // console.log(token.options.contractId);
+    } catch (error) {
+      console.log("🚀 ~ name ~ error:", error);
+      // console.log(error);
+    }
+  }, [props.pubKey, selectedNetwork]);
+
+  const getBalance = useCallback(async () => {
+    try {
+      const server = getServer(selectedNetwork);
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        selectedNetwork.networkPassphrase
+      );
+      const balance = await getTokenBalance(
+        props.pubKey,
+        contractIdToken,
+        txBuilder,
+        server
+      );
+      setBalance(balance);
+
+      // let tokenName = await token.name();
+      console.log(
+        "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ balance:",
+        balance
+      );
+      // const assembledTx = await token.symbol();
+      // const symbolValue = assembledTx.result;
+      // setTokenSymbol(symbolValue);
+
+      // let publicKey = new Address(props.pubKey);
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
+      //   props.pubKey
+      // );
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
+      //   publicKey
+      // );
+
+      // let balance = await token.balance({ id: publicKey.toString() });
+      // console.log(
+      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
+      //   balance
+      // );
+
+      // let formatted_balance = Number(balance) / 100000000;
+
+      // setBalance(formatted_balance);
+      // const tokenNameIs = tokenName.result;
+      // setTokenName(tokenNameIs);
+      // setTokenAddress(contractIdToken);
+
+      // console.log(token.options.contractId);
+    } catch (error) {
+      console.log("🚀 ~ name ~ error:", error);
+      // console.log(error);
+    }
+  }, [props.pubKey, selectedNetwork]);
+  useEffect(() => {
+    getBalance();
+  }, [getBalance]);
+  useEffect(() => {
+    getName();
+  }, [getName]);
   useEffect(() => {
     getCampaigns();
     tokenDetail();

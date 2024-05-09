@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { Address } from "soroban-client";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
-const networkUrl =
-  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
+const networkUrl = "https://rpc-futurenet.stellar.org";
 const token = new Token.Contract({
-  contractId: "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP",
-  networkPassphrase: "Public Global Stellar Network ; September 2015",
+  contractId: "CCEHX6Q3A6TOQTGQXR6OGFZ3LODD7EEFX67667FAXD3AHQ4Z6B6VLQNM",
+  networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
 
@@ -21,7 +20,7 @@ interface BalanaceProps {
 
 const Balanace = (props: BalanaceProps) => {
   const contractIdToken =
-    "CAMPH7W5NXSV643YAQTJX6O76G6DGSEL6TWB2HOB6QCHXALN67ZUQTHP";
+    "CCEHX6Q3A6TOQTGQXR6OGFZ3LODD7EEFX67667FAXD3AHQ4Z6B6VLQNM";
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenAddress, setTokenAddress] = useState("");

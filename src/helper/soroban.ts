@@ -1,3 +1,5 @@
+import * as Crowdfund from "CrowdFund";
+
 import {
   Address,
   Contract,
@@ -37,8 +39,7 @@ export const SendTxStatus: {
 export const XLM_DECIMALS = 7;
 
 export const RPC_URLS: { [key: string]: string } = {
-  PUBLIC:
-    "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4",
+  FUTURENET: "https://rpc-futurenet.stellar.org",
 };
 
 // Can be used whenever you need an Address argument for a contract method
@@ -183,7 +184,7 @@ export const getTokenName = async (
   const contract = new Contract(tokenId);
   const tx = txBuilder
     .addOperation(contract.call("name"))
-    .setTimeout(TimeoutInfinite)
+    .setTimeout(1)
     .build();
 
   const result = await simulateTx<string>(tx, server);
@@ -374,4 +375,40 @@ export const getEstimatedFee = async (
   const minResourceFeeNum = parseInt(simResponse.minResourceFee, 10) || 0;
   const fee = (classicFeeNum + minResourceFeeNum).toString();
   return fee;
+};
+
+export const getCampaigns = async (
+  ContractId: string,
+  // address: string,
+  txBuilder: TransactionBuilder,
+  server: SorobanRpc.Server
+) => {
+  // const params = [accountToScVal(address)];
+  const contract = new Contract(ContractId);
+  const tx = txBuilder
+    .addOperation(contract.call("get_campaigns"))
+    .setTimeout(TimeoutInfinite)
+    .build();
+
+  const result = await simulateTx<Crowdfund.Campaign[]>(tx, server);
+  return result;
+};
+
+export const getTokenBalance = async (
+  address: string,
+  tokenId: string,
+  txBuilder: TransactionBuilder,
+  server: SorobanRpc.Server
+) => {
+  const params = [accountToScVal(address)];
+  const contract = new Contract(tokenId);
+  const tx = txBuilder
+    .addOperation(contract.call("balance", ...params))
+    .setTimeout(TimeoutInfinite)
+    .build();
+
+  const result = await simulateTx<string>(tx, server);
+  let formatted_balance = Number(result) / 100000000;
+
+  return formatted_balance;
 };

@@ -32,7 +32,6 @@ import {
 
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
-// import { Link } from "react-router-dom";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { MdOutlineReportProblem } from "react-icons/md";
 import Modal from "react-modal";
@@ -43,6 +42,8 @@ import graphimage from "../../../Asset/Graphic.png";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import wrapperswap from "../../../Asset/wrapper 2.png";
+
+// import { Link } from "react-router-dom";
 
 // import { BiChevronDown } from "react-icons/bi";
 
@@ -69,15 +70,14 @@ export type Address = string;
 export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
-const networkUrl =
-  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
+const networkUrl = "https://rpc-futurenet.stellar.org";
 
 const contractIdCrowdFund =
-  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
+  "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
-  networkPassphrase: "Public Global Stellar Network ; September 2015",
+  networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
 
@@ -127,10 +127,10 @@ const CardArtProject = (props: Web3PageProps) => {
     setShowDiscount(false);
   };
   const contractIdCrowdFund =
-    "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
+    "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
 
   const NATIVE_TOKEN =
-    "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA";
+    "CB64D3G7SM2RTH6JSGG34DDTFTQ5CFDKVDZJZSODMCX4NJ2HV2KN7OHT";
 
   async function donateToCampaign(id: u32) {
     try {
@@ -430,22 +430,26 @@ const CardArtProject = (props: Web3PageProps) => {
             marketplace again soon.
           </Typography>
           <div className="button-pervious">
-          
-              <button className="button-portfolio" >
-                {" "}
-                <a href="/" style={{textDecoration:"none"}} className="button-portfolio">
+            <button className="button-portfolio">
+              {" "}
+              <a
+                href="/"
+                style={{ textDecoration: "none" }}
+                className="button-portfolio"
+              >
                 Go&nbsp;to&nbsp;Your&nbsp;Portfolio
+              </a>
+            </button>
 
-                </a>
-           
-              </button>
-           
-              <button className="button-portfolio">
-              <a href="/" style={{textDecoration:"none"}} className="button-portfolio">
+            <button className="button-portfolio">
+              <a
+                href="/"
+                style={{ textDecoration: "none" }}
+                className="button-portfolio"
+              >
                 Go&nbsp;to&nbsp;Marketplace
-                </a>
-              </button>
-        
+              </a>
+            </button>
           </div>
         </div>
       </Box>
@@ -834,7 +838,10 @@ const CardArtProject = (props: Web3PageProps) => {
           className="modal-header"
         >
           <div>
-            <AiOutlineCloseCircle onClick={closeModal} className="close-icon-main" />
+            <AiOutlineCloseCircle
+              onClick={closeModal}
+              className="close-icon-main"
+            />
             <div className="modal-length">
               <div className="col-md-12">
                 <img

@@ -43,15 +43,14 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-const networkUrl =
-  "https://mainnet.stellar.validationcloud.io/v1/TfG9-m1TsFivRBylmjcE2Xw_GeWb9yV7wOcx1MgilH4";
+const networkUrl = "https://rpc-futurenet.stellar.org";
 
 const contractIdCrowdFund =
-  "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB";
+  "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
 
 const crowdFund = new Crowdfund.Contract({
   contractId: contractIdCrowdFund,
-  networkPassphrase: "Public Global Stellar Network ; September 2015",
+  networkPassphrase: "Test SDF Future Network ; October 2022",
   rpcUrl: networkUrl,
 });
 

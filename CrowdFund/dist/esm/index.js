@@ -1,21 +1,19 @@
-import { ContractSpec, Address } from '@stellar/stellar-sdk';
+import { ContractSpec } from '@stellar/stellar-sdk';
 import { Buffer } from "buffer";
-import { AssembledTransaction, Ok, Err } from './assembled-tx.js';
-export * from './assembled-tx.js';
-export * from './method-options.js';
+import { ContractClient, } from '@stellar/stellar-sdk/lib/contract_client/index.js';
+export * from '@stellar/stellar-sdk';
+export * from '@stellar/stellar-sdk/lib/contract_client/index.js';
+export * from '@stellar/stellar-sdk/lib/rust_types/index.js';
 if (typeof window !== 'undefined') {
     //@ts-ignore Buffer exists
     window.Buffer = window.Buffer || Buffer;
 }
 export const networks = {
-    unknown: {
-        networkPassphrase: "Public Global Stellar Network ; September 2015",
-        contractId: "CBYMFAAA3OIFXXBHH7C2JKXDCNB547VGZSURPUPFDDSF2MBNYKJUZXMB",
+    futurenet: {
+        networkPassphrase: "Test SDF Future Network ; October 2022",
+        contractId: "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX",
     }
 };
-/**
-    
-    */
 export const Errors = {
     1: { message: "" },
     2: { message: "" },
@@ -26,13 +24,10 @@ export const Errors = {
     7: { message: "" },
     8: { message: "" }
 };
-export class Contract {
+export class Client extends ContractClient {
     options;
-    spec;
     constructor(options) {
-        this.options = options;
-        this.spec = new ContractSpec([
-            "AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAACAAAAAAAAAAWRGVhZGxpbmVTaG91bGRCZUZ1dHVyZQAAAAAAAQAAAAAAAAAQQ2FtcGFpZ25Ob3RFeGlzdAAAAAIAAAAAAAAAEUFtb3VudE11c3ROb25aZXJvAAAAAAAAAwAAAAAAAAANVGFyZ2V0UmVhY2hlZAAAAAAAAAQAAAAAAAAAF0Ftb3VudEV4Y2VlZFRhcmdldExpbWl0AAAAAAUAAAAAAAAAFENhbXBhaWduQWxyZWFkeUV4aXN0AAAABgAAAAAAAAAVSWRDYW1wYWlnbk11c3ROb25aZXJvAAAAAAAABwAAAAAAAAAUTG93QW1vdW50Rm9yU3BsaXR0ZXIAAAAI",
+        super(new ContractSpec(["AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAACAAAAAAAAAAWRGVhZGxpbmVTaG91bGRCZUZ1dHVyZQAAAAAAAQAAAAAAAAAQQ2FtcGFpZ25Ob3RFeGlzdAAAAAIAAAAAAAAAEUFtb3VudE11c3ROb25aZXJvAAAAAAAAAwAAAAAAAAANVGFyZ2V0UmVhY2hlZAAAAAAAAAQAAAAAAAAAF0Ftb3VudEV4Y2VlZFRhcmdldExpbWl0AAAAAAUAAAAAAAAAFENhbXBhaWduQWxyZWFkeUV4aXN0AAAABgAAAAAAAAAVSWRDYW1wYWlnbk11c3ROb25aZXJvAAAAAAAABwAAAAAAAAAUTG93QW1vdW50Rm9yU3BsaXR0ZXIAAAAI",
             "AAAAAQAAAAAAAAAAAAAACENhbXBhaWduAAAADgAAAAAAAAAQYW1vdW50X2NvbGxlY3RlZAAAAAsAAAAAAAAACGNhdGVnb3J5AAAAEAAAAAAAAAAIZGVhZGxpbmUAAAAGAAAAAAAAAAtkZXNjcmlwdGlvbgAAAAAQAAAAAAAAAAlkb25hdGlvbnMAAAAAAAPqAAAACwAAAAAAAAAIZG9uYXRvcnMAAAPqAAAAEwAAAAAAAAACaWQAAAAAAAQAAAAAAAAABWltYWdlAAAAAAAAEAAAAAAAAAANbWFpbl9sb2NhdGlvbgAAAAAAABAAAAAAAAAACG1ldGFkYXRhAAAAEAAAAAAAAAAFb3duZXIAAAAAAAATAAAAAAAAAAZzdGF0dXMAAAAAAAEAAAAAAAAABnRhcmdldAAAAAAACwAAAAAAAAAFdGl0bGUAAAAAAAAQ",
             "AAAAAgAAAAAAAAAAAAAAB0RhdGFLZXkAAAAABAAAAAAAAAAAAAAACkRldkFjY291bnQAAAAAAAAAAAAAAAAAEExhdW5jaHBhZEFjY291bnQAAAAAAAAAAAAAAAlBcnR5VG9rZW4AAAAAAAAAAAAAAAAAAApUb2tlbkFkbWluAAA=",
             "AAAAAAAAAAAAAAAKaW5pdGlhbGl6ZQAAAAAABAAAAAAAAAAHZGV2X2FjYwAAAAATAAAAAAAAAA1sYXVuY2hwYWRfYWNjAAAAAAAAEwAAAAAAAAAKYXJ0eV90b2tlbgAAAAAAEwAAAAAAAAALdG9rZW5fYWRtaW4AAAAAEwAAAAA=",
@@ -44,181 +39,19 @@ export class Contract {
             "AAAAAAAAAAAAAAALZ2V0X2Rldl9hY2MAAAAAAAAAAAEAAAAT",
             "AAAAAAAAAAAAAAARZ2V0X2xhdW5jaHBhZF9hY2MAAAAAAAAAAAAAAQAAABM=",
             "AAAAAAAAAAAAAAAOZ2V0X2FydHlfdG9rZW4AAAAAAAAAAAABAAAAEw==",
-            "AAAAAAAAAAAAAAAPZ2V0X3Rva2VuX2FkbWluAAAAAAAAAAABAAAAEw=="
-        ]);
+            "AAAAAAAAAAAAAAAPZ2V0X3Rva2VuX2FkbWluAAAAAAAAAAABAAAAEw=="]), options);
+        this.options = options;
     }
-    parsers = {
-        initialize: () => { },
-        createCampaign: (result) => {
-            if (result instanceof Err)
-                return result;
-            return new Ok(this.spec.funcResToNative("create_campaign", result));
-        },
-        getCampaigns: (result) => this.spec.funcResToNative("get_campaigns", result),
-        getCampaign: (result) => this.spec.funcResToNative("get_campaign", result),
-        donateToCampaign: (result) => {
-            if (result instanceof Err)
-                return result;
-            return new Ok(this.spec.funcResToNative("donate_to_campaign", result));
-        },
-        getDonators: (result) => {
-            if (result instanceof Err)
-                return result;
-            return new Ok(this.spec.funcResToNative("get_donators", result));
-        },
-        getDevAcc: (result) => this.spec.funcResToNative("get_dev_acc", result),
-        getLaunchpadAcc: (result) => this.spec.funcResToNative("get_launchpad_acc", result),
-        getArtyToken: (result) => this.spec.funcResToNative("get_arty_token", result),
-        getTokenAdmin: (result) => this.spec.funcResToNative("get_token_admin", result)
-    };
-    txFromJSON = (json) => {
-        const { method, ...tx } = JSON.parse(json);
-        return AssembledTransaction.fromJSON({
-            ...this.options,
-            method,
-            parseResultXdr: this.parsers[method],
-        }, tx);
-    };
     fromJSON = {
         initialize: (this.txFromJSON),
-        createCampaign: (this.txFromJSON),
-        getCampaigns: (this.txFromJSON),
-        getCampaign: (this.txFromJSON),
-        donateToCampaign: (this.txFromJSON),
-        getDonators: (this.txFromJSON),
-        getDevAcc: (this.txFromJSON),
-        getLaunchpadAcc: (this.txFromJSON),
-        getArtyToken: (this.txFromJSON),
-        getTokenAdmin: (this.txFromJSON)
-    };
-    /**
-* Construct and simulate a initialize transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    initialize = async ({ dev_acc, launchpad_acc, arty_token, token_admin }, options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'initialize',
-            args: this.spec.funcArgsToScVals("initialize", { dev_acc: new Address(dev_acc), launchpad_acc: new Address(launchpad_acc), arty_token: new Address(arty_token), token_admin: new Address(token_admin) }),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['initialize'],
-        });
-    };
-    /**
-* Construct and simulate a create_campaign transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    createCampaign = async ({ owner_addr, title_cmp, desc_cmp, category_cmp, main_location_cmp, metadata_cmp, image_cmp, target_cmp, deadline_cmp }, options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'create_campaign',
-            args: this.spec.funcArgsToScVals("create_campaign", { owner_addr: new Address(owner_addr), title_cmp, desc_cmp, category_cmp, main_location_cmp, metadata_cmp, image_cmp, target_cmp, deadline_cmp }),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['createCampaign'],
-        });
-    };
-    /**
-* Construct and simulate a get_campaigns transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getCampaigns = async (options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_campaigns',
-            args: this.spec.funcArgsToScVals("get_campaigns", {}),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getCampaigns'],
-        });
-    };
-    /**
-* Construct and simulate a get_campaign transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getCampaign = async ({ campaign_id }, options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_campaign',
-            args: this.spec.funcArgsToScVals("get_campaign", { campaign_id }),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getCampaign'],
-        });
-    };
-    /**
-* Construct and simulate a donate_to_campaign transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    donateToCampaign = async ({ id, donor_address, amount, token_id }, options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'donate_to_campaign',
-            args: this.spec.funcArgsToScVals("donate_to_campaign", { id, donor_address: new Address(donor_address), amount, token_id: new Address(token_id) }),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['donateToCampaign'],
-        });
-    };
-    /**
-* Construct and simulate a get_donators transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getDonators = async ({ id }, options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_donators',
-            args: this.spec.funcArgsToScVals("get_donators", { id }),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getDonators'],
-        });
-    };
-    /**
-* Construct and simulate a get_dev_acc transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getDevAcc = async (options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_dev_acc',
-            args: this.spec.funcArgsToScVals("get_dev_acc", {}),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getDevAcc'],
-        });
-    };
-    /**
-* Construct and simulate a get_launchpad_acc transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getLaunchpadAcc = async (options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_launchpad_acc',
-            args: this.spec.funcArgsToScVals("get_launchpad_acc", {}),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getLaunchpadAcc'],
-        });
-    };
-    /**
-* Construct and simulate a get_arty_token transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getArtyToken = async (options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_arty_token',
-            args: this.spec.funcArgsToScVals("get_arty_token", {}),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getArtyToken'],
-        });
-    };
-    /**
-* Construct and simulate a get_token_admin transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
-*/
-    getTokenAdmin = async (options = {}) => {
-        return await AssembledTransaction.fromSimulation({
-            method: 'get_token_admin',
-            args: this.spec.funcArgsToScVals("get_token_admin", {}),
-            ...options,
-            ...this.options,
-            errorTypes: Errors,
-            parseResultXdr: this.parsers['getTokenAdmin'],
-        });
+        create_campaign: (this.txFromJSON),
+        get_campaigns: (this.txFromJSON),
+        get_campaign: (this.txFromJSON),
+        donate_to_campaign: (this.txFromJSON),
+        get_donators: (this.txFromJSON),
+        get_dev_acc: (this.txFromJSON),
+        get_launchpad_acc: (this.txFromJSON),
+        get_arty_token: (this.txFromJSON),
+        get_token_admin: (this.txFromJSON)
     };
 }
