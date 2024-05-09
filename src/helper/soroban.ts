@@ -393,7 +393,24 @@ export const getCampaigns = async (
   const result = await simulateTx<Crowdfund.Campaign[]>(tx, server);
   return result;
 };
+export const numberToU32 = (value: number): xdr.ScVal =>
+  nativeToScVal(value, { type: "u32" });
+export const getCampaignById = async (
+  ContractId: string,
+  id: number,
+  txBuilder: TransactionBuilder,
+  server: SorobanRpc.Server
+) => {
+  const params = [numberToU32(id)];
+  const contract = new Contract(ContractId);
+  const tx = txBuilder
+    .addOperation(contract.call("get_campaign", ...params))
+    .setTimeout(TimeoutInfinite)
+    .build();
 
+  const result = await simulateTx<Crowdfund.Campaign>(tx, server);
+  return result;
+};
 export const getTokenBalance = async (
   address: string,
   tokenId: string,

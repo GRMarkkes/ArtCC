@@ -21,7 +21,7 @@ import {
   CardTitle,
   Progress,
 } from "reactstrap";
-import { NetworkDetails, signTx } from "helper/network";
+import { FUTURENET_DETAILS, NetworkDetails, signTx } from "helper/network";
 import React, { useEffect, useState } from "react";
 import {
   donateToCampaignByID,
@@ -30,6 +30,7 @@ import {
   submitTx,
 } from "../../../helper/soroban";
 
+import { BASE_FEE } from "soroban-client";
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
 import { MdOutlineLocationOn } from "react-icons/md";
@@ -38,6 +39,7 @@ import Modal from "react-modal";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import cardImg from "../../../Asset/Images/Card_Image.png";
 import decimg from "../../../Asset/ModalImg.png";
+import { getCampaignById } from "../../../helper/soroban";
 import graphimage from "../../../Asset/Graphic.png";
 import { motion } from "framer-motion";
 import styled from "styled-components";
@@ -70,19 +72,11 @@ export type Address = string;
 export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
-const networkUrl = "https://rpc-futurenet.stellar.org";
-
-const contractIdCrowdFund =
-  "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
-
-const crowdFund = new Crowdfund.Contract({
-  contractId: contractIdCrowdFund,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
-  rpcUrl: networkUrl,
-});
 
 const CardArtProject = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Crowdfund.Campaign>();
+  const [selectedNetwork] = useState(FUTURENET_DETAILS);
+
   let movieData = props?.movieData;
   useEffect(() => {
     if (movieData) {
@@ -93,9 +87,22 @@ const CardArtProject = (props: Web3PageProps) => {
 
   const getCampaingByID = async (id: number) => {
     try {
-      let data = await crowdFund.getCampaign({ campaign_id: id });
-      const campaignsData = data.result;
-      setSingleCampaign(campaignsData);
+      const server = getServer(selectedNetwork);
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        selectedNetwork.networkPassphrase
+      );
+      const data = await getCampaignById(
+        contractIdCrowdFund,
+        id,
+        txBuilder,
+        server
+      );
+      // let data = await crowdFund.getCampaign({ campaign_id: id });
+      // const campaignsData = data.result;
+      setSingleCampaign(data);
 
       console.log(singleCampaign);
     } catch (error) {

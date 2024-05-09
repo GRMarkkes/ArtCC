@@ -4,24 +4,22 @@ import "./ArtProjectMain.css";
 
 import * as Crowdfund from "CrowdFund";
 
+import { FUTURENET_DETAILS, NetworkDetails } from "helper/network";
+import {
+  getCampaigns as getCampaignsFromServer,
+  getServer,
+  getTxBuilder,
+} from "helper/soroban";
 import { useCallback, useEffect, useState } from "react";
 
 import ArtFooter from "../Component/ArtFooter";
+import { BASE_FEE } from "soroban-client";
 import Header from "../Component/Header/Header";
-import { NetworkDetails } from "helper/network";
 import Slider from "../Component/Slider/Slider";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import artimg from "../../Asset/Images/ArtProject_main.jpg";
 import styled from "styled-components";
 
-// import { useNavigate } from "react-router-dom";
-
-// interface Movie {
-//   genres: string[];
-//   id: number;
-//   image: string[];
-//   name: string;
-// }
 interface Web3PageProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;
@@ -43,21 +41,14 @@ export type Option<T> = T | undefined;
 export type Typepoint = bigint;
 export type Duration = bigint;
 
-const networkUrl = "https://rpc-futurenet.stellar.org";
-
 const contractIdCrowdFund =
   "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
-
-const crowdFund = new Crowdfund.Contract({
-  contractId: contractIdCrowdFund,
-  networkPassphrase: "Test SDF Future Network ; October 2022",
-  rpcUrl: networkUrl,
-});
 
 const ArtProject = (props: Web3PageProps) => {
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState<Crowdfund.Campaign[]>([]);
   const [categoriesCampgains, setCategoriesCampgains] = useState<any>([]);
+  const [selectedNetwork] = useState(FUTURENET_DETAILS);
 
   const fetchData = useCallback(() => {
     const uniqueCategories = [
@@ -84,13 +75,20 @@ const ArtProject = (props: Web3PageProps) => {
   const getCampaigns = useCallback(async () => {
     try {
       setLoading(true);
-      console.log("getCampaigns");
-      console.log("props.pubKey", props.pubKey);
+      const server = getServer(selectedNetwork);
+      const txBuilder = await getTxBuilder(
+        props.pubKey,
+        BASE_FEE,
+        server,
+        selectedNetwork.networkPassphrase
+      );
+      const data = await getCampaignsFromServer(
+        contractIdCrowdFund,
+        txBuilder,
+        server
+      );
+      setCampaigns(data);
 
-      let data = await crowdFund.getCampaigns();
-      const campaignsData = data.result;
-
-      setCampaigns(campaignsData);
       setLoading(false);
 
       // console.log(data);
@@ -98,7 +96,7 @@ const ArtProject = (props: Web3PageProps) => {
       // Handle errors here
       console.error(error);
     }
-  }, [props.pubKey]);
+  }, [props.pubKey, selectedNetwork]);
 
   useEffect(() => {
     getCampaigns();

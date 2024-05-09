@@ -1,16 +1,15 @@
-import * as Token from "token";
-
+import {
+  getServer,
+  getTokenBalance,
+  getTokenName,
+  getTokenSymbol,
+  getTxBuilder,
+} from "helper/soroban";
 import { useEffect, useState } from "react";
 
-import { Address } from "soroban-client";
+import { BASE_FEE } from "soroban-client";
+import { FUTURENET_DETAILS } from "helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
-
-const networkUrl = "https://rpc-futurenet.stellar.org";
-const token = new Token.Contract({
-  contractId: "CCEHX6Q3A6TOQTGQXR6OGFZ3LODD7EEFX67667FAXD3AHQ4Z6B6VLQNM",
-  networkPassphrase: "Test SDF Future Network ; October 2022",
-  rpcUrl: networkUrl,
-});
 
 interface BalanaceProps {
   setPubKey: (pubKey: string) => void;
@@ -19,6 +18,8 @@ interface BalanaceProps {
 }
 
 const Balanace = (props: BalanaceProps) => {
+  const [selectedNetwork] = useState(FUTURENET_DETAILS);
+
   const contractIdToken =
     "CCEHX6Q3A6TOQTGQXR6OGFZ3LODD7EEFX67667FAXD3AHQ4Z6B6VLQNM";
   const [tokenName, setTokenName] = useState("");
@@ -27,19 +28,43 @@ const Balanace = (props: BalanaceProps) => {
   const [balance, setBalance] = useState(0);
 
   async function tokenDetail() {
-    let name = await token.name();
-    let symbol = await token.symbol();
-    let publicKey = new Address(props.pubKey);
-
-    let balance = await token.balance({ id: publicKey.toString() });
-    let formatted_balance = Number(balance) / 100000000;
-
-    setBalance(formatted_balance);
-    const newName = name?.result;
-    const newSymbol = symbol?.result;
-    setTokenName(newName);
-    setTokenSymbol(newSymbol);
     setTokenAddress(contractIdToken);
+
+    try {
+      {
+        const server = getServer(selectedNetwork);
+        const txBuilder = await getTxBuilder(
+          props.pubKey,
+          BASE_FEE,
+          server,
+          selectedNetwork.networkPassphrase
+        );
+        const symbol = await getTokenSymbol(contractIdToken, txBuilder, server);
+        const name = await getTokenName(contractIdToken, txBuilder, server);
+        setTokenSymbol(symbol);
+        setTokenName(name);
+      }
+
+      {
+        const server = getServer(selectedNetwork);
+        const txBuilder = await getTxBuilder(
+          props.pubKey,
+          BASE_FEE,
+          server,
+          selectedNetwork.networkPassphrase
+        );
+        const balance = await getTokenBalance(
+          props.pubKey,
+          contractIdToken,
+          txBuilder,
+          server
+        );
+        setBalance(balance);
+      }
+    } catch (error) {
+      console.log("🚀 ~ tokenDetail ~ error:", error);
+      // console.log(error);
+    }
   }
 
   useEffect(() => {

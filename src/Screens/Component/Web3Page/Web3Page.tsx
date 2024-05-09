@@ -185,14 +185,8 @@ const Web3Page = (props: Web3PageProps) => {
         server
       );
       setCampaigns(data);
-
-      //   console.log("getCampaigns");
-      //   console.log("props.pubKey", props.pubKey);
-      //   let data = await crowdFund.getCampaigns();
-      //   const campaignsData = data.result;
-      //   setCampaigns(campaignsData);
-      //   // console.log(data);
     } catch (error) {
+      console.log("🚀 ~ getCampaigns ~ error:", error);
       //   // Handle errors here
       //   console.error(error);
     }
@@ -210,42 +204,8 @@ const Web3Page = (props: Web3PageProps) => {
       const symbol = await getTokenSymbol(contractIdToken, txBuilder, server);
       console.log("🚀 ~ tokenDetail ~ symbol:", symbol);
       setTokenSymbol(symbol);
-      // let tokenName = await token.name();
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
-      //   tokenName
-      // );
-      // const assembledTx = await token.symbol();
-      // const symbolValue = assembledTx.result;
-      // setTokenSymbol(symbolValue);
-
-      // let publicKey = new Address(props.pubKey);
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
-      //   props.pubKey
-      // );
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
-      //   publicKey
-      // );
-
-      // let balance = await token.balance({ id: publicKey.toString() });
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
-      //   balance
-      // );
-
-      // let formatted_balance = Number(balance) / 100000000;
-
-      // setBalance(formatted_balance);
-      // const tokenNameIs = tokenName.result;
-      // setTokenName(tokenNameIs);
-      // setTokenAddress(contractIdToken);
-
-      // console.log(token.options.contractId);
     } catch (error) {
       console.log("🚀 ~ tokenDetail ~ error:", error);
-      // console.log(error);
     }
   }, [props.pubKey, selectedNetwork]);
 
@@ -261,39 +221,6 @@ const Web3Page = (props: Web3PageProps) => {
       const name = await getTokenName(contractIdToken, txBuilder, server);
       console.log("🚀 ~ getName ~ name:", name);
       setTokenName(name);
-      // let tokenName = await token.name();
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ tokenName:",
-      //   tokenName
-      // );
-      // const assembledTx = await token.symbol();
-      // const symbolValue = assembledTx.result;
-      // setTokenSymbol(symbolValue);
-
-      // let publicKey = new Address(props.pubKey);
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
-      //   props.pubKey
-      // );
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
-      //   publicKey
-      // );
-
-      // let balance = await token.balance({ id: publicKey.toString() });
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
-      //   balance
-      // );
-
-      // let formatted_balance = Number(balance) / 100000000;
-
-      // setBalance(formatted_balance);
-      // const tokenNameIs = tokenName.result;
-      // setTokenName(tokenNameIs);
-      // setTokenAddress(contractIdToken);
-
-      // console.log(token.options.contractId);
     } catch (error) {
       console.log("🚀 ~ name ~ error:", error);
       // console.log(error);
@@ -322,34 +249,6 @@ const Web3Page = (props: Web3PageProps) => {
         "🚀 ~ file: Web3Page.tsx:171 ~ tokenDetail ~ balance:",
         balance
       );
-      // const assembledTx = await token.symbol();
-      // const symbolValue = assembledTx.result;
-      // setTokenSymbol(symbolValue);
-
-      // let publicKey = new Address(props.pubKey);
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ props.pubKey:",
-      //   props.pubKey
-      // );
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:174 ~ tokenDetail ~ publicKey:",
-      //   publicKey
-      // );
-
-      // let balance = await token.balance({ id: publicKey.toString() });
-      // console.log(
-      //   "🚀 ~ file: Web3Page.tsx:188 ~ tokenDetail ~ balance:",
-      //   balance
-      // );
-
-      // let formatted_balance = Number(balance) / 100000000;
-
-      // setBalance(formatted_balance);
-      // const tokenNameIs = tokenName.result;
-      // setTokenName(tokenNameIs);
-      // setTokenAddress(contractIdToken);
-
-      // console.log(token.options.contractId);
     } catch (error) {
       console.log("🚀 ~ name ~ error:", error);
       // console.log(error);

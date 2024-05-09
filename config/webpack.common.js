@@ -30,10 +30,26 @@ const commonConfig = (env) => ({
     ],
     fallback: {
       buffer: require.resolve("buffer/"),
+      https: require.resolve("https-browserify"),
+      http: require.resolve("stream-http"),
     },
   },
   module: {
     rules: [
+      {
+        test: /\.json$/,
+        loader: "json-loader",
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
       {
         test: /\.m?js/,
         type: "javascript/auto",
