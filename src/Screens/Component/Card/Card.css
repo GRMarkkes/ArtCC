@@ -1,7 +1,6 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-.bg-custom{
-  background: #1F1F1F;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+.bg-custom {
+  background: #1f1f1f;
 }
 
 .card-container {
@@ -76,25 +75,23 @@
 .card-container .genres ul li:first-of-type {
   list-style-type: none;
 }
-.card{
+.card {
   --bs-card-border-color: none;
-
 }
-.modal-overlay-card{
+.modal-overlay-card {
   position: fixed;
   top: 20%;
   left: 38%;
   right: 36%;
   z-index: 9998;
-  transition: opacity 0.3s ease, transform 0.3s ease; 
+  transition: opacity 0.3s ease, transform 0.3s ease;
   box-shadow: none;
 }
-.modal-content-card{
+.modal-content-card {
   height: 65vh;
   overflow-y: auto;
   box-shadow: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
-
 }
 
 .modal-overlay {
@@ -106,41 +103,36 @@
   /* background-color: rgba(0, 0, 0, 0.5); */
   z-index: 9998;
   transition: opacity 0.3s ease, transform 0.3s ease;
-
 }
 .modal-content {
-  height: 90vh; 
+  height: 90vh;
   overflow-y: auto;
   box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
   transition: opacity 0.3s ease, transform 0.3s ease;
-
 }
 .close-icon {
   position: absolute;
   top: 10px;
   right: 5%;
-  color: #01A19A;
+  color: #01a19a;
 
   font-size: 24px;
   cursor: pointer;
   z-index: 2;
 }
-.close-icon-main{
+.close-icon-main {
   position: absolute;
   top: 10px;
   right: 5%;
-  color: #01A19A;
+  color: #01a19a;
 
   font-size: 24px;
   cursor: pointer;
   z-index: 2;
-
 }
 .overlays {
   display: flex;
   background-color: rgba(0, 0, 0, 0.5);
-  
-
 }
 
 .matching {
@@ -189,7 +181,7 @@
   word-break: break-word;
   font-family: Netflix Sans, Helvetica Neue, Segoe UI, Roboto, Ubuntu,
     sans-serif;
-  margintop: "6%";
+  margin-top: "6%";
 }
 .Genering {
   color: #ddd;
@@ -201,34 +193,29 @@
   margin: 0.5em 0.5em 0.5em 0;
   word-break: break-word;
 }
-.modal-length{
-  width:100%;
+.modal-length {
+  width: 100%;
 }
-@media screen and (min-width: 1500px){
-  .close-icon{
+@media screen and (min-width: 1500px) {
+  .close-icon {
     right: 20%;
   }
-  
 }
 @media screen and (max-width: 768px) {
-  .modal-overlay-card{
+  .modal-overlay-card {
     position: fixed;
     top: 20%;
     left: 15%;
     right: 15%;
-  
-    
   }
   .modal-content {
     /* max-width: 90%; */
     width: 120%;
     margin-left: -10%;
   }
-  .modal-length{
-    width:100%;
+  .modal-length {
+    width: 100%;
   }
-  
-  
 }
 
 .episode-container {
@@ -310,7 +297,7 @@
 .controls {
   display: flex;
   color: #2196cc;
-  margintop: -10px;
+  margin-top: -10px;
 }
 
 .modal-main-heading {
@@ -383,49 +370,45 @@
   margin-top: 3%;
 }
 @media (max-width: 768px) {
-  .list-donation{
+  .list-donation {
     max-width: 200px;
     word-wrap: break-word;
   }
-  .ownercampgain{
+  .ownercampgain {
     max-width: 200px;
     word-wrap: break-word;
   }
-  .modal-rating-location  {
+  .modal-rating-location {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
   }
-  .modal-rating{
-    margin-left: -18%
+  .modal-rating {
+    margin-left: -18%;
   }
-  .modal-location{
-    margin-left: -20%
+  .modal-location {
+    margin-left: -20%;
   }
-  .modal-date{
+  .modal-date {
     margin-right: 50%;
-    margin-top : -4%;
+    margin-top: -4%;
   }
-  .modal-location-date{
+  .modal-location-date {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
   }
-  .modal-des-img{
+  .modal-des-img {
     display: flex;
-    flex-direction: column
-
+    flex-direction: column;
   }
-  .row{
+  .row {
     display: flex;
-    flex-direction: column
-    
+    flex-direction: column;
   }
 }
 .modal-rating {
   display: flex;
   align-items: center;
-  
 }
 
 .star-rating {
@@ -457,7 +440,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 3%;
-  margin-right: 8%
+  margin-right: 8%;
 }
 
 .modal-location,
@@ -478,7 +461,6 @@
 
 .modal-description {
   width: 92%;
-  
 
   /* Body/regular */
 
@@ -570,7 +552,7 @@
   line-height: 24px;
   /* identical to box height, or 150% */
 
- /* Character / Primary(inverse) */
+  /* Character / Primary(inverse) */
 
   color: #ffffff;
 }

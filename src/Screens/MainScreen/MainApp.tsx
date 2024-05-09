@@ -1,9 +1,7 @@
-// import React from "react";
-import { NetworkDetails } from "helper/network";
 import Header from "../Component/Header/Header";
+import { NetworkDetails } from "../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
-// import Footer from "../Component/Footer/Footer";
-// import Wallet from '../WalletConnect/walletConnection'
+
 interface Web3PageProps {
   networkDetails: NetworkDetails;
   setPubKey: (pubKey: string) => void;

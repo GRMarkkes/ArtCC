@@ -1,14 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
-import styled from "styled-components";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import Card from "../Card/Card";
-import * as Crowdfund from "CrowdFund";
-import { motion } from "framer-motion";
-import { NetworkDetails } from "helper/network";
-import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import "./CardSlider.css";
 
+import * as Crowdfund from "CrowdFund";
 
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import React, { useEffect, useRef, useState } from "react";
+
+import Card from "../Card/Card";
+import { NetworkDetails } from "../../../helper/network";
+import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import { motion } from "framer-motion";
+import styled from "styled-components";
 
 export type u32 = number;
 export type i32 = number;
@@ -37,9 +38,9 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
   const [data, setData] = useState<Crowdfund.Campaign[]>([]);
   const isWideScreen = window.innerWidth >= 1220;
   useEffect(() => {
-    if(props?.data){
+    if (props?.data) {
       setData(props?.data);
-  }
+    }
   }, [props]);
   const listRef = useRef<HTMLDivElement>(null);
   const [sliderPosition, setSliderPosition] = useState(0);
@@ -47,43 +48,39 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
   const [isMobileView, setIsMobileView] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
-  // const [duplicatedDataCard, setDuplicatedDataCard] =useState<Crowdfund.Campaign[]>([]);  
+  // const [duplicatedDataCard, setDuplicatedDataCard] =useState<Crowdfund.Campaign[]>([]);
   // const duplicatedData = [...data, ...data];
 
   const handleDirection = (direction: "left" | "right") => {
-    
     const slideWidth = 240;
     const numVisibleCards = isMobileView ? 1 : 5;
     const totalSlides = data.length;
     let newPosition = sliderPosition;
-    
-    
-     
-     
+
     if (data.length <= numVisibleCards && isWideScreen) {
       // If there are 5 or fewer cards and it's a wide screen, don't slide.
       return;
     }
-  
-    if (direction === "left") { 
-      newPosition -= numVisibleCards  ;
+
+    if (direction === "left") {
+      newPosition -= numVisibleCards;
       if (newPosition < 0) {
         newPosition = totalSlides - 1;
       }
     } else if (direction === "right") {
       newPosition += numVisibleCards;
-      if (newPosition >= totalSlides ) {
+      if (newPosition >= totalSlides) {
         newPosition = 0; // Reset to the beginning
       }
       setShowLeftArrow(true);
     }
-  
+
     if (listRef.current) {
       listRef.current.style.transform = `translateX(-${
         slideWidth * newPosition
       }px)`;
       // listRef.current.classList.add("left-to-right-transition");
-      listRef.current.classList.remove('right-to-left-transition');
+      listRef.current.classList.remove("right-to-left-transition");
     }
     setSliderPosition(newPosition);
   };
@@ -118,9 +115,6 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
     }
   };
 
- 
-  
-
   return (
     <Container
       className="flex column"
@@ -138,14 +132,13 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
             <AiOutlineLeft onClick={() => handleDirection("left")} />
           </div>
         )}
-        
+
         <motion.div
           className="slider left-to-right-transition flex"
           ref={listRef}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-        
           {data?.map((movie, index) => (
             <motion.div
               key={movie.id}
@@ -179,8 +172,6 @@ const CardSlider = React.memo(function (props: Web3PageProps) {
           </div>
         )}
       </div>
-      
-      
     </Container>
   );
 });

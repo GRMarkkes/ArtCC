@@ -1,9 +1,11 @@
 // import { useEffect, useState } from "react";
-import styled from "styled-components";
-import CardSlider from "../CardNewSlider/CardNewSlider";
-import { NetworkDetails } from "helper/network";
+
 import * as Crowdfund from "CrowdFund";
+
+import CardSlider from "../CardNewSlider/CardNewSlider";
+import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
+import styled from "styled-components";
 
 export type u32 = number;
 export type i32 = number;

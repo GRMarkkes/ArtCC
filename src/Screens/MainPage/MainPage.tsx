@@ -8,7 +8,7 @@ import Art_Credit from "../../Asset/Images/Art_Credit.png";
 import Footer from "../Component/Footer/Footer";
 import Header from "../Component/Header/Header";
 import Netflix_image from "../../Asset/Images/Netflix_image.png";
-import { NetworkDetails } from "helper/network";
+import { NetworkDetails } from "../../helper/network";
 import Portfolio_image_mobile from "../../Asset/Images/Portfolio_image_mobile.png";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 import act_icon from "../../Asset/art_icon.png";
