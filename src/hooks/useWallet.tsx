@@ -17,6 +17,7 @@ import { Campaign } from "../../types";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";
+const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY || "";
 const contractIdCrowdFund = import.meta.env.VITE_CONTRACT_CROWD_FUND_ID || "";
 
 const contractIdToken = import.meta.env.VITE_CONTRACT_TOKEN_ID || "";
@@ -127,21 +128,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
       const server = getServer(networkDetails);
 
       await getCampaignList(false);
-      {
-        const txBuilder = await getTxBuilder(
-          key,
-          BASE_FEE,
-          server,
-          networkDetails.networkPassphrase
-        );
-        const balance = await getTokenBalance(
-          pubKey,
-          contractIdToken,
-          txBuilder,
-          server
-        );
-        setBalance(balance);
-      }
+
       {
         const txBuilder = await getTxBuilder(
           key,
@@ -170,6 +157,23 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         );
         setTokenSymbol(tokenSymbol);
       }
+
+      {
+        if (!pubKey) return setLoading(false);
+        const txBuilder = await getTxBuilder(
+          key,
+          BASE_FEE,
+          server,
+          networkDetails.networkPassphrase
+        );
+        const balance = await getTokenBalance(
+          pubKey,
+          contractIdToken,
+          txBuilder,
+          server
+        );
+        setBalance(balance);
+      }
       setLoading(false);
     },
     [pubKey, swkKit, networkDetails]
@@ -179,7 +183,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
     async (id: number) => {
       const server = getServer(networkDetails);
       const txBuilder = await getTxBuilder(
-        pubKey,
+        pubKey || PUBLIC_KEY,
         BASE_FEE,
         server,
         networkDetails.networkPassphrase
@@ -201,7 +205,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         handleLoading && setLoading(true);
         const server = getServer(networkDetails);
         const txBuilder = await getTxBuilder(
-          pubKey,
+          pubKey || PUBLIC_KEY,
           BASE_FEE,
           server,
           networkDetails.networkPassphrase
@@ -217,8 +221,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
     [pubKey, swkKit, networkDetails]
   );
   useEffect(() => {
-    if (!pubKey) return;
-    getDetails(pubKey);
+    getDetails(pubKey || PUBLIC_KEY);
   }, [pubKey, swkKit, networkDetails]);
 
   return {
