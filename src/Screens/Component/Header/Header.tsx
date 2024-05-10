@@ -191,7 +191,7 @@ function Header(props: Web3PageProps) {
       let imageUrl = "";
       await axios({
         method: "post",
-        url: "https://artcc-api-gmuh2.ondigitalocean.app/upload",
+        url: `${import.meta.env.VITE_IMAGE_SERVER_URL}/upload`,
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then(function ({ data }) {
