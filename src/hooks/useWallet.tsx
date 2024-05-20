@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NetworkDetails, signTx } from "../helper/network";
 import {
   createNewCampaign,
@@ -10,13 +11,17 @@ import {
   getTxBuilder,
   submitTx,
 } from "../helper/soroban";
-import { useCallback, useEffect, useState } from "react";
+import * as StellarSdk from "stellar-sdk";
 
+import { Asset } from "stellar-sdk";
+import { useCallback, useEffect, useState } from "react";
 import { BASE_FEE } from "soroban-client";
 import { Campaign } from "../../types";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY || "";
+const HORIZON_SERVER = import.meta.env.VITE_HORIZON_SERVER || "";
 const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY || "";
 const contractIdCrowdFund = import.meta.env.VITE_CONTRACT_CROWD_FUND_ID || "";
 
@@ -38,12 +43,13 @@ type CreateCampaignParams = {
 };
 export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-
   const [loading, setLoading] = useState<boolean>(false);
   const [createloading, setCreateLoading] = useState<boolean>(false);
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [balance, setBalance] = useState<number>(0);
+
+  const horizonServer = new StellarSdk.Horizon.Server(HORIZON_SERVER);
   const createCampaign = useCallback(
     async ({
       category,
@@ -93,7 +99,19 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
 
   const donateToCampaign = useCallback(
     async (id: number, amount: string) => {
+      // eslint-disable-next-line no-useless-catch
       try {
+        setLoading(true);
+        const issuingKeys = StellarSdk.Keypair.fromSecret(SECRET_KEY);
+
+        const trustAssetVal = new Asset("ARTY", issuingKeys.publicKey());
+
+        await trustAsset({
+          source: issuingKeys.publicKey(),
+          asset: trustAssetVal,
+          limit: parseInt(amount) + 1000,
+        });
+
         const server = getServer(networkDetails);
         const txBuilder = await getTxBuilder(
           pubKey,
@@ -114,13 +132,85 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         });
         const signedTx = await signTx(preparedTransaction, pubKey, swkKit);
         await submitTx(signedTx, networkDetails.networkPassphrase, server);
+
+        await sendPayment({
+          issuerKeys: issuingKeys,
+          asset: trustAssetVal,
+          amount: amount,
+        });
+
+        setLoading(false);
+
         await getDetails(pubKey);
       } catch (error) {
+        setLoading(false);
         throw error;
       }
     },
     [pubKey, swkKit, networkDetails]
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const trustAsset = async ({ source, asset, limit }) => {
+    try {
+      const receiverAccount = await horizonServer.loadAccount(pubKey);
+      const transaction = new StellarSdk.TransactionBuilder(receiverAccount, {
+        fee: StellarSdk.BASE_FEE,
+        networkPassphrase: StellarSdk.Networks.FUTURENET,
+      })
+        .addOperation(
+          StellarSdk.Operation.changeTrust({
+            asset: asset,
+            limit: limit.toString(),
+          })
+        )
+        .setTimeout(100)
+        .build();
+
+      const signedTx = await signTx(transaction?.toXDR(), pubKey, swkKit);
+      const server = getServer(networkDetails);
+
+      const submitTran = await submitTx(
+        signedTx,
+        networkDetails.networkPassphrase,
+        server
+      );
+
+      console.log("Trustline established successfully.");
+    } catch (error) {
+      console.error("Error establishing trustline:", error);
+    }
+  };
+
+  const sendPayment = async ({ issuerKeys, asset, amount }) => {
+    try {
+      const issuerAccount = await horizonServer.loadAccount(
+        issuerKeys.publicKey()
+      );
+
+      const transaction = new StellarSdk.TransactionBuilder(issuerAccount, {
+        fee: StellarSdk.BASE_FEE,
+        networkPassphrase: StellarSdk.Networks.FUTURENET,
+      })
+        .addOperation(
+          StellarSdk.Operation.payment({
+            destination: pubKey,
+            asset: asset,
+            amount: amount.toString(),
+          })
+        )
+        .setTimeout(100)
+        .build();
+
+      await transaction.sign(issuerKeys);
+
+      await horizonServer.submitTransaction(transaction);
+      console.log("Payment sent successfully.");
+    } catch (error) {
+      console.error("Error sending payment:", error);
+      setLoading(false);
+    }
+  };
 
   const getDetails = useCallback(
     async (key: string) => {

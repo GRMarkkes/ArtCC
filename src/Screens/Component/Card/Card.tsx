@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import "../CardMarketPlace/CardMarketPlace.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../NewCard/NewCard.css";
@@ -20,7 +21,7 @@ import {
   Progress,
 } from "reactstrap";
 import React, { useEffect, useState } from "react";
-
+import CircularProgress from "@mui/material/CircularProgress";
 import { Campaign } from "../../../../types";
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
@@ -67,8 +68,9 @@ export type Duration = bigint;
 
 const CardArtProject = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Campaign>();
-  const { donateToCampaign, getCampaignById } = useWallet(props);
+  const { donateToCampaign, getCampaignById, loading } = useWallet(props);
   let movieData = props?.movieData;
+
   useEffect(() => {
     if (movieData) {
       getCampaingByID(movieData);
@@ -86,6 +88,7 @@ const CardArtProject = (props: Web3PageProps) => {
   };
 
   const [isHovered, setIsHovered] = useState(false);
+  const [compaingData, setCompaingData] = useState<unknown>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
 
@@ -99,7 +102,8 @@ const CardArtProject = (props: Web3PageProps) => {
   const handleInputChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    setDonationAmount(event.target.value);
+    const numericValue = event?.target?.value?.replace(/\D/g, "");
+    setDonationAmount(numericValue);
   };
   const handleGetDiscountClick = () => {
     setShowDiscount(true);
@@ -145,6 +149,7 @@ const CardArtProject = (props: Web3PageProps) => {
   };
   const openModal = () => {
     setIsHovered(false);
+    setCompaingData(singleCampaign);
     setIsModalOpen(true);
     setIsCardModalOpen(false);
   };
@@ -251,6 +256,7 @@ const CardArtProject = (props: Web3PageProps) => {
               <input
                 placeholder="0.00"
                 value={donationAmount}
+                autoFocus
                 onChange={handleInputChange}
                 type="text"
                 style={{
@@ -270,6 +276,7 @@ const CardArtProject = (props: Web3PageProps) => {
                 {donationAmount}0 <span>ARTcredits</span>
               </Typography>
               <button
+                disabled={donationAmount > 0 ? false : true}
                 className="discountNow"
                 onClick={() => handleButtonClick(singleCampaign?.id)}
               >
@@ -398,6 +405,32 @@ const CardArtProject = (props: Web3PageProps) => {
       document.body.classList.remove("disable-pointer-events");
     }
   }, [isModalOpen]);
+
+  const getSupportButton = (data: unknown) => {
+    let donateDisabled = false;
+    let date: unknown = null;
+    const todayDate = new Date();
+    if (data?.deadline) {
+      date = new Date(parseInt(data?.deadline?.toString()) * 1000);
+    }
+    if (data?.owner.toString() == props?.pubKey) {
+      donateDisabled = true;
+    } else {
+      if (data?.donations?.length > 0) {
+        const sum = data?.donations?.reduce(
+          (accumulator, currentValue) => accumulator + currentValue
+        );
+        if (sum?.toString() >= data?.target) {
+          donateDisabled = true;
+        }
+      }
+    }
+    if (todayDate >= date) {
+      donateDisabled = true;
+    }
+    return donateDisabled;
+  };
+
   return (
     <Container
       onMouseEnter={() => {
@@ -502,20 +535,24 @@ const CardArtProject = (props: Web3PageProps) => {
                 </p>
               </div>
               {/* <div
-                className="info"
-                style={{
-                  color: "#2196CC",
-                  marginTop: "-30px",
-                  fontSize: "24px",
-                }}
-                onClick={openModal}
-              >
-                <BiChevronDown title="More Info" />
-              </div> */}
+              className="info"
+              style={{
+                color: "#2196CC",
+                marginTop: "-30px",
+                fontSize: "24px",
+              }}
+              onClick={openModal}
+            >
+              <BiChevronDown title="More Info" />
+            </div> */}
             </div>
             <div
               className="modal-location"
-              style={{ marginTop: "-5%", fontWeight: "400", fontSize: "12px" }}
+              style={{
+                marginTop: "-5%",
+                fontWeight: "400",
+                fontSize: "12px",
+              }}
             >
               <MdOutlineLocationOn style={{ marginTop: "-1%" }} />
               <p>{singleCampaign?.main_location}</p>
@@ -557,12 +594,12 @@ const CardArtProject = (props: Web3PageProps) => {
                   {/* <p style={{ height: 5, color: "#45AFD9" }}>SEK</p> */}
                 </>
                 {/* <button
-                  onClick={() => {
-                    if (singleCampaign?.id)
-                      donateToCampaign(singleCampaign?.id);
-                  }}
-                  style={{ border: "none", color: "#45AFD9" }}
-                ></button> */}
+                onClick={() => {
+                  if (singleCampaign?.id)
+                    donateToCampaign(singleCampaign?.id);
+                }}
+                style={{ border: "none", color: "#45AFD9" }}
+              ></button> */}
               </div>
             </div>
             <Progress
@@ -761,6 +798,7 @@ const CardArtProject = (props: Web3PageProps) => {
           </div>
         </motion.div>
       </Modal>
+
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -778,223 +816,256 @@ const CardArtProject = (props: Web3PageProps) => {
               onClick={closeModal}
               className="close-icon-main"
             />
-            <div className="modal-length">
-              <div className="col-md-12">
-                <img
-                  src={
-                    singleCampaign?.image.includes("s.com")
-                      ? singleCampaign?.image
-                      : cardImg
-                  }
-                  alt="card"
-                  className="img-fluid"
-                  style={{ width: "100%", background: "#6c757d" }}
+            {loading ? (
+              <>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)", // semi-transparent black overlay
+                    zIndex: 999, // higher z-index to ensure it's above other content
+                  }}
                 />
-              </div>
-              <div className="container bg-custom">
-                <div className="modal-main" style={{ marginLeft: "3%" }}>
-                  <div>
-                    <p
-                      className="modal-main-heading"
-                      style={{ paddingTop: "4%" }}
-                    >
-                      {singleCampaign?.title}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="modal-paragraph ">
-                      Description: {singleCampaign?.description}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="modal-paragraph ">
-                      DeadLine: {singleCampaign?.deadline.toString()}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="modal-paragraph ">
-                      Target: {singleCampaign?.target.toString()}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="modal-paragraph ">
-                      Total donation: {singleCampaign?.donations.toString()}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="modal-paragraph">Donators:</p>
-                    <ul>
-                      {singleCampaign?.donators.map(
-                        (donator, index: number) => (
-                          <li
-                            key={index}
-                            style={{
-                              color: "white",
-                            }}
-                            className="list-donation"
-                          >
-                            {donator.toString()}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p
-                      className="modal-paragraph ownercampgain"
-                      style={{
-                        color: "white",
-                      }}
-                    >
-                      Owner: {singleCampaign?.owner.toString()}
-                    </p>
-                  </div>
-                  <div className="modal-tags">
-                    <Tag text="green" />
-                    <Tag text="green" />
-                    <Tag text="green" />
-                  </div>
-
-                  <div className="modal-rating-location">
-                    <div className="modal-rating">
-                      <div className="star-rating">{renderStarRating()}</div>
-                      <p>234567 Ratings</p>
-                    </div>
-                    <div className="modal-location-date">
-                      <div className="modal-location">
-                        <MdOutlineLocationOn />
-                        <p>Bemowo, Warsaw, Poland</p>
-                      </div>
-                      <div className="modal-date">
-                        <AiOutlineCalendar />
-                        <p>Jan 2023</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="modal-support-project">
-                    <CardText
-                      style={{
-                        color: "#FFFFFF",
-                        fontSize: "13px",
-                        fontWeight: 400,
-                        fontFamily: "Montserrat",
-                        textAlign: "center",
-                        marginTop: "4%",
-                      }}
-                    >
-                      <span style={{ color: "#BFBFBF" }}>Example:</span> &nbsp;
-                      10 UDC{" "}
-                      <img
-                        src={wrapperswap}
-                        alt="swap"
-                        style={{ height: "17px" }}
-                      />{" "}
-                      100 ARTcredits
-                      <br />
-                      <span style={{ color: "#BFBFBF" }}>
-                        Support with minimum of 1 USDC and get ART credits
-                      </span>
-                    </CardText>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginBottom: "5%",
-                      }}
-                    >
-                      <button
-                        style={{
-                          background: "#52C41A",
-                          color: "white",
-                          border: "none",
-                          paddingTop: "2%",
-                          paddingBottom: "2%",
-                          paddingLeft: "2%",
-                          paddingRight: "2%",
-                          fontSize: "15px",
-                        }}
-                        onClick={handleGetDiscountClick}
-                      >
-                        <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
-                        &nbsp; &nbsp; Support This Project
-                      </button>
-                    </div>
-                  </div>
-                  {showDiscount && (
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 1000, // higher z-index than the overlay
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              </>
+            ) : (
+              <div className="modal-length">
+                <div className="col-md-12">
+                  <img
+                    src={
+                      singleCampaign?.image.includes("s.com")
+                        ? singleCampaign?.image
+                        : cardImg
+                    }
+                    alt="card"
+                    className="img-fluid"
+                    style={{ width: "100%", background: "#6c757d" }}
+                  />
+                </div>
+                <div className="container bg-custom">
+                  <div className="modal-main" style={{ marginLeft: "3%" }}>
                     <div>
-                      <Box sx={{ marginTop: "3%", marginBottom: "3%" }}>
-                        <Dicount />
-                      </Box>
+                      <p
+                        className="modal-main-heading"
+                        style={{ paddingTop: "4%" }}
+                      >
+                        {singleCampaign?.title}
+                      </p>
                     </div>
-                  )}
-                  {showFeedBack && (
-                    <Box sx={{ marginTop: "3%", marginBottom: "3%" }}>
-                      <ThankYou />
-                    </Box>
-                  )}
 
-                  <div>
-                    <p className="modal-description">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book
-                      <br />
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book.Lorem Ipsum is simply dummy text of the
-                      printing and typesetting industry. Lorem Ipsum has been
-                      the industry's standard dummy text ever since the 1500s,
-                      when an unknown printer took a galley of type and
-                      scrambled it to make a type specimen book.
-                    </p>
-                  </div>
-                  <div className="modal-des-img">
-                    <div className="modal-des1-img">
-                      <img src={decimg} alt="dec" />
-                      <p>Lorem Ipsum is simply</p>
+                    <div>
+                      <p className="modal-paragraph ">
+                        Description: {singleCampaign?.description}
+                      </p>
                     </div>
-                    <div className="modal-des2-img">
-                      <img src={decimg} alt="dec" />
-                      <p>Lorem Ipsum is simply</p>
+                    <div>
+                      <p className="modal-paragraph ">
+                        DeadLine: {singleCampaign?.deadline.toString()}
+                      </p>
                     </div>
-                  </div>
-                  <div className="review-container ">
-                    <p className="review-heading">REVIEWS</p>
-                    <div className="row">
-                      <div className="col-md-4">
-                        <Review />
+                    <div>
+                      <p className="modal-paragraph ">
+                        Target: {singleCampaign?.target.toString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="modal-paragraph ">
+                        Total donation: {singleCampaign?.donations.toString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="modal-paragraph">Donators:</p>
+                      <ul>
+                        {singleCampaign?.donators.map(
+                          (donator, index: number) => (
+                            <li
+                              key={index}
+                              style={{
+                                color: "white",
+                              }}
+                              className="list-donation"
+                            >
+                              {donator.toString()}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <p
+                        className="modal-paragraph ownercampgain"
+                        style={{
+                          color: "white",
+                        }}
+                      >
+                        Owner: {singleCampaign?.owner.toString()}
+                      </p>
+                    </div>
+                    <div className="modal-tags">
+                      <Tag text="green" />
+                      <Tag text="green" />
+                      <Tag text="green" />
+                    </div>
+
+                    <div className="modal-rating-location">
+                      <div className="modal-rating">
+                        <div className="star-rating">{renderStarRating()}</div>
+                        <p>234567 Ratings</p>
                       </div>
-                      <div className="col-md-4">
-                        <Review />
-                      </div>
-                      <div className="col-md-4">
-                        <Review />
+                      <div className="modal-location-date">
+                        <div className="modal-location">
+                          <MdOutlineLocationOn />
+                          <p>Bemowo, Warsaw, Poland</p>
+                        </div>
+                        <div className="modal-date">
+                          <AiOutlineCalendar />
+                          <p>Jan 2023</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="d-flex justify-content-center align-items-center">
-                    <p
-                      className="modal-footer"
-                      style={{
-                        textAlign: "center",
-                        color: "#FA541C",
-                        margin: "3% 3% 5%",
-                        paddingBottom: "5%",
-                      }}
-                    >
-                      <MdOutlineReportProblem style={{ marginRight: "5px" }} />{" "}
-                      Flag for Inappropriate Content
-                    </p>
+                    <div className="modal-support-project">
+                      <CardText
+                        style={{
+                          color: "#FFFFFF",
+                          fontSize: "13px",
+                          fontWeight: 400,
+                          fontFamily: "Montserrat",
+                          textAlign: "center",
+                          marginTop: "4%",
+                        }}
+                      >
+                        <span style={{ color: "#BFBFBF" }}>Example:</span>{" "}
+                        &nbsp; 10 UDC{" "}
+                        <img
+                          src={wrapperswap}
+                          alt="swap"
+                          style={{ height: "17px" }}
+                        />{" "}
+                        100 ARTcredits
+                        <br />
+                        <span style={{ color: "#BFBFBF" }}>
+                          Support with minimum of 1 USDC and get ART credits
+                        </span>
+                      </CardText>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginBottom: "5%",
+                        }}
+                      >
+                        <button
+                          style={{
+                            background: getSupportButton(compaingData)
+                              ? "grey"
+                              : "#52C41A",
+                            color: "white",
+                            border: "none",
+                            paddingTop: "2%",
+                            paddingBottom: "2%",
+                            paddingLeft: "2%",
+                            paddingRight: "2%",
+                            fontSize: "15px",
+                          }}
+                          disabled={getSupportButton(compaingData)}
+                          onClick={handleGetDiscountClick}
+                        >
+                          <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
+                          &nbsp; &nbsp; Support This Project
+                        </button>
+                      </div>
+                    </div>
+                    {showDiscount && (
+                      <div>
+                        <Box sx={{ marginTop: "3%", marginBottom: "3%" }}>
+                          <Dicount />
+                        </Box>
+                      </div>
+                    )}
+                    {showFeedBack && (
+                      <Box sx={{ marginTop: "3%", marginBottom: "3%" }}>
+                        <ThankYou />
+                      </Box>
+                    )}
+
+                    <div>
+                      <p className="modal-description">
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book
+                        <br />
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s,
+                        when an unknown printer took a galley of type and
+                        scrambled it to make a type specimen book.Lorem Ipsum is
+                        simply dummy text of the printing and typesetting
+                        industry. Lorem Ipsum has been the industry's standard
+                        dummy text ever since the 1500s, when an unknown printer
+                        took a galley of type and scrambled it to make a type
+                        specimen book.
+                      </p>
+                    </div>
+                    <div className="modal-des-img">
+                      <div className="modal-des1-img">
+                        <img src={decimg} alt="dec" />
+                        <p>Lorem Ipsum is simply</p>
+                      </div>
+                      <div className="modal-des2-img">
+                        <img src={decimg} alt="dec" />
+                        <p>Lorem Ipsum is simply</p>
+                      </div>
+                    </div>
+                    <div className="review-container ">
+                      <p className="review-heading">REVIEWS</p>
+                      <div className="row">
+                        <div className="col-md-4">
+                          <Review />
+                        </div>
+                        <div className="col-md-4">
+                          <Review />
+                        </div>
+                        <div className="col-md-4">
+                          <Review />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <p
+                        className="modal-footer"
+                        style={{
+                          textAlign: "center",
+                          color: "#FA541C",
+                          margin: "3% 3% 5%",
+                          paddingBottom: "5%",
+                        }}
+                      >
+                        <MdOutlineReportProblem
+                          style={{ marginRight: "5px" }}
+                        />{" "}
+                        Flag for Inappropriate Content
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </motion.div>
       </Modal>
