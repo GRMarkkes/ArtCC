@@ -6,7 +6,7 @@ export * from '@stellar/stellar-sdk/lib/contract_client/index.js';
 export * from '@stellar/stellar-sdk/lib/rust_types/index.js';
 export declare const networks: {
     readonly futurenet: {
-        readonly networkPassphrase: "Test SDF Future Network ; October 2022";
+        readonly networkPassphrase: "Public Global Stellar Network ; September 2015";
         readonly contractId: "CARS7VK2FA2EDVOI446XSJSGXHDIU4D3GPWCDQ6OJZR7U3C3D6F7M4EX";
     };
 };
