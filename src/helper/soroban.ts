@@ -38,7 +38,7 @@ export const SendTxStatus = {
 export const XLM_DECIMALS = 7;
 
 export const RPC_URLS: { [key: string]: string } = {
-  [import.meta.env.VITE_NETWORK]: import.meta.env.VITE_NETWORK_URL,
+  [import.meta.env.VITE_NETWORK_NEW]: import.meta.env.VITE_NETWORK_URL_NEW,
 };
 
 // Can be used whenever you need an Address argument for a contract method

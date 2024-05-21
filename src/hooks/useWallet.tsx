@@ -18,13 +18,13 @@ import { BASE_FEE } from "soroban-client";
 import { Campaign } from "../../types";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
-const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";
-const SECRET_KEY = import.meta.env.VITE_SECRET_KEY || "";
-const HORIZON_SERVER = import.meta.env.VITE_NETWORK_URL || "";
-const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY || "";
-const contractIdCrowdFund = import.meta.env.VITE_CONTRACT_CROWD_FUND_ID || "";
+const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN_NEW || "";
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY_NEW || "";
+const HORIZON_SERVER = import.meta.env.VITE_NETWORK_URL_NEW || "";
+const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY_NEW || "";
+const contractIdCrowdFund = import.meta.env.VITE_CONTRACT_CROWD_FUND_ID_NEW || "";
 
-const contractIdToken = import.meta.env.VITE_CONTRACT_TOKEN_ID || "";
+const contractIdToken = import.meta.env.VITE_CONTRACT_TOKEN_ID_NEW || "";
 
 type Props = {
   networkDetails: NetworkDetails;
