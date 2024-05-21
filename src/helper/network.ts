@@ -10,7 +10,7 @@ export interface NetworkDetails {
 export const FUTURENET_DETAILS = {
   network: import.meta.env.VITE_NETWORK,
   networkUrl: import.meta.env.VITE_NETWORK_URL,
-  networkPassphrase: import.meta.env.VITE_NETWORK_PASSPHRASE,
+  networkPassphrase: import.meta.env.VITE_NETWORK_PASS,
 };
 
 export const signTx = async (
