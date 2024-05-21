@@ -6,8 +6,6 @@ import {
   getCampaignById,
   getCampaigns,
   getServer,
-  getTokenBalance,
-  getTokenName,
   getTxBuilder,
   submitTx,
 } from "../helper/soroban";
@@ -50,6 +48,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   const [balance, setBalance] = useState<number>(0);
 
   const horizonServer = new StellarSdk.Horizon.Server(HORIZON_SERVER);
+
   const createCampaign = useCallback(
     async ({
       category,
@@ -156,7 +155,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
       const receiverAccount = await horizonServer.loadAccount(pubKey);
       const transaction = new StellarSdk.TransactionBuilder(receiverAccount, {
         fee: StellarSdk.BASE_FEE,
-        networkPassphrase: StellarSdk.Networks.FUTURENET,
+        networkPassphrase: StellarSdk.Networks.PUBLIC,
       })
         .addOperation(
           StellarSdk.Operation.changeTrust({
@@ -190,7 +189,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
 
       const transaction = new StellarSdk.TransactionBuilder(issuerAccount, {
         fee: StellarSdk.BASE_FEE,
-        networkPassphrase: StellarSdk.Networks.FUTURENET,
+        networkPassphrase: StellarSdk.Networks.PUBLIC,
       })
         .addOperation(
           StellarSdk.Operation.payment({
@@ -220,49 +219,49 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
       await getCampaignList(false);
 
       {
-        const txBuilder = await getTxBuilder(
-          key,
-          BASE_FEE,
-          server,
-          networkDetails.networkPassphrase
-        );
-        const tokenName = await getTokenName(
-          contractIdToken,
-          txBuilder,
-          server
-        );
-        setTokenName(tokenName);
+        // const txBuilder = await getTxBuilder(
+        //   key,
+        //   BASE_FEE,
+        //   server,
+        //   networkDetails.networkPassphrase
+        // );
+        // const tokenName = await getTokenName(
+        //   contractIdToken,
+        //   txBuilder,
+        //   server
+        // );
+        // setTokenName(tokenName);
       }
       {
-        const txBuilder = await getTxBuilder(
-          key,
-          BASE_FEE,
-          server,
-          networkDetails.networkPassphrase
-        );
-        const tokenSymbol = await getTokenName(
-          contractIdToken,
-          txBuilder,
-          server
-        );
-        setTokenSymbol(tokenSymbol);
+        // const txBuilder = await getTxBuilder(
+        //   key,
+        //   BASE_FEE,
+        //   server,
+        //   networkDetails.networkPassphrase
+        // );
+        // const tokenSymbol = await getTokenName(
+        //   contractIdToken,
+        //   txBuilder,
+        //   server
+        // );
+        // setTokenSymbol(tokenSymbol);
       }
 
       {
         if (!pubKey) return setLoading(false);
-        const txBuilder = await getTxBuilder(
-          key,
-          BASE_FEE,
-          server,
-          networkDetails.networkPassphrase
-        );
-        const balance = await getTokenBalance(
-          pubKey,
-          contractIdToken,
-          txBuilder,
-          server
-        );
-        setBalance(balance);
+        // const txBuilder = await getTxBuilder(
+        //   key,
+        //   BASE_FEE,
+        //   server,
+        //   networkDetails.networkPassphrase
+        // );
+        // const balance = await getTokenBalance(
+        //   pubKey,
+        //   contractIdToken,
+        //   txBuilder,
+        //   server
+        // );
+        // setBalance(balance);
       }
       setLoading(false);
     },
