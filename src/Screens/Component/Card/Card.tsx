@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import "../CardMarketPlace/CardMarketPlace.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -69,7 +70,7 @@ export type Duration = bigint;
 const CardArtProject = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Campaign>();
   const { donateToCampaign, getCampaignById, loading } = useWallet(props);
-  let movieData = props?.movieData;
+  const movieData = props?.movieData;
 
   useEffect(() => {
     if (movieData) {
@@ -102,7 +103,8 @@ const CardArtProject = (props: Web3PageProps) => {
   const handleInputChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
-    const numericValue = event?.target?.value?.replace(/\D/g, "");
+    const stringValue = event?.target?.value as string;
+    const numericValue = stringValue?.replace(/\D/g, "");
     setDonationAmount(numericValue);
   };
   const handleGetDiscountClick = () => {
@@ -276,7 +278,7 @@ const CardArtProject = (props: Web3PageProps) => {
                 {donationAmount}0 <span>ARTcredits</span>
               </Typography>
               <button
-                disabled={donationAmount > 0 ? false : true}
+                disabled={parseInt(donationAmount) > 0 ? false : true}
                 className="discountNow"
                 onClick={() => handleButtonClick(singleCampaign?.id)}
               >
@@ -406,9 +408,9 @@ const CardArtProject = (props: Web3PageProps) => {
     }
   }, [isModalOpen]);
 
-  const getSupportButton = (data: unknown) => {
+  const getSupportButton = (data: any) => {
     let donateDisabled = false;
-    let date: unknown = null;
+    let date: any = null;
     const todayDate = new Date();
     if (data?.deadline) {
       date = new Date(parseInt(data?.deadline?.toString()) * 1000);
@@ -418,7 +420,7 @@ const CardArtProject = (props: Web3PageProps) => {
     } else {
       if (data?.donations?.length > 0) {
         const sum = data?.donations?.reduce(
-          (accumulator, currentValue) => accumulator + currentValue
+          (accumulator: any, currentValue: any) => accumulator + currentValue
         );
         if (sum?.toString() >= data?.target) {
           donateDisabled = true;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NetworkDetails, signTx } from "../helper/network";
 import {
@@ -145,7 +146,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const trustAsset = async ({ asset, limit }) => {
+  const trustAsset = async ({ asset, limit }: { asset: any; limit: any }) => {
     try {
       const receiverAccount = await horizonServer.loadAccount(pubKey);
       const transaction = new StellarSdk.TransactionBuilder(receiverAccount, {
@@ -163,11 +164,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
 
       const signedTx = await signTx(transaction?.toXDR(), pubKey, swkKit);
       const server = getServer(networkDetails);
-      await submitTx(
-        signedTx,
-        networkDetails.networkPassphrase,
-        server
-      );
+      await submitTx(signedTx, networkDetails.networkPassphrase, server);
 
       console.log("Trustline established successfully.");
     } catch (error) {
@@ -175,7 +172,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
     }
   };
 
-  const sendPayment = async ({ issuerKeys, asset, amount }) => {
+  const sendPayment = async ({ issuerKeys, asset, amount }: { issuerKeys: any, asset: any, amount: any }) => {
     try {
       const issuerAccount = await horizonServer.loadAccount(
         issuerKeys.publicKey()
@@ -205,61 +202,58 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
     }
   };
 
-  const getDetails = useCallback(
-    async () => {
-      setLoading(true);
+  const getDetails = useCallback(async () => {
+    setLoading(true);
 
-      await getCampaignList(false);
+    await getCampaignList(false);
 
-      {
-        // const txBuilder = await getTxBuilder(
-        //   key,
-        //   BASE_FEE,
-        //   server,
-        //   networkDetails.networkPassphrase
-        // );
-        // const tokenName = await getTokenName(
-        //   contractIdToken,
-        //   txBuilder,
-        //   server
-        // );
-        // setTokenName(tokenName);
-      }
-      {
-        // const txBuilder = await getTxBuilder(
-        //   key,
-        //   BASE_FEE,
-        //   server,
-        //   networkDetails.networkPassphrase
-        // );
-        // const tokenSymbol = await getTokenName(
-        //   contractIdToken,
-        //   txBuilder,
-        //   server
-        // );
-        // setTokenSymbol(tokenSymbol);
-      }
+    {
+      // const txBuilder = await getTxBuilder(
+      //   key,
+      //   BASE_FEE,
+      //   server,
+      //   networkDetails.networkPassphrase
+      // );
+      // const tokenName = await getTokenName(
+      //   contractIdToken,
+      //   txBuilder,
+      //   server
+      // );
+      // setTokenName(tokenName);
+    }
+    {
+      // const txBuilder = await getTxBuilder(
+      //   key,
+      //   BASE_FEE,
+      //   server,
+      //   networkDetails.networkPassphrase
+      // );
+      // const tokenSymbol = await getTokenName(
+      //   contractIdToken,
+      //   txBuilder,
+      //   server
+      // );
+      // setTokenSymbol(tokenSymbol);
+    }
 
-      {
-        if (!pubKey) return setLoading(false);
-        // const txBuilder = await getTxBuilder(
-        //   key,
-        //   BASE_FEE,
-        //   server,
-        //   networkDetails.networkPassphrase
-        // );
-        // const balance = await getTokenBalance(
-        //   pubKey,
-        //   contractIdToken,
-        //   txBuilder,
-        //   server
-        // );
-        // setBalance(balance);
-      }
-      setLoading(false);
-    },
-    [pubKey, swkKit, networkDetails]
-  );
+    {
+      if (!pubKey) return setLoading(false);
+      // const txBuilder = await getTxBuilder(
+      //   key,
+      //   BASE_FEE,
+      //   server,
+      //   networkDetails.networkPassphrase
+      // );
+      // const balance = await getTokenBalance(
+      //   pubKey,
+      //   contractIdToken,
+      //   txBuilder,
+      //   server
+      // );
+      // setBalance(balance);
+    }
+    setLoading(false);
+  }, [pubKey, swkKit, networkDetails]);
 
   const getSingleCampaign = useCallback(
     async (id: number) => {
