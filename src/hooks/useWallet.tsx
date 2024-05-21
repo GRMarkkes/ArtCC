@@ -20,7 +20,7 @@ import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY || "";
-const HORIZON_SERVER = import.meta.env.VITE_HORIZON_SERVER || "";
+const HORIZON_SERVER = import.meta.env.VITE_NETWORK_URL || "";
 const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY || "";
 const contractIdCrowdFund = import.meta.env.VITE_CONTRACT_CROWD_FUND_ID || "";
 
