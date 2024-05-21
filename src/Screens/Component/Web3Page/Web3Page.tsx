@@ -10,7 +10,7 @@ interface Web3PageProps {
 
 const dataTransform = (data: string, key: string): string => {
   try {
-    let dataObj = JSON.parse(data);
+    const dataObj = JSON.parse(data);
 
     return dataObj[key] || "";
   } catch (error) {
@@ -21,9 +21,6 @@ const Web3Page = (props: Web3PageProps) => {
   const {
     createCampaign,
     campaigns,
-    tokenName,
-    tokenSymbol,
-    balance,
     tokenAddress,
     donateToCampaign,
   } = useWallet(props);
@@ -45,11 +42,11 @@ const Web3Page = (props: Web3PageProps) => {
         Connected Wallet Address: {props.pubKey}
       </div>
       <h3>Token Detail</h3>
-      <h4>Token Name: {tokenName}</h4>
-      <h4>Symbol: {tokenSymbol}</h4>
+      <h4>Token Name:</h4>
+      <h4>Symbol:</h4>
       <h5>Token Contract Address: {tokenAddress}</h5>
       <h3>
-        Balance: {balance} {tokenSymbol}
+        Balance: 
       </h3>
       <div>
         <h1>Create Campaign</h1>

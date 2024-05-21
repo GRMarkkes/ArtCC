@@ -43,9 +43,6 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [createloading, setCreateLoading] = useState<boolean>(false);
-  const [tokenName, setTokenName] = useState("");
-  const [tokenSymbol, setTokenSymbol] = useState("");
-  const [balance, setBalance] = useState<number>(0);
 
   const horizonServer = new StellarSdk.Horizon.Server(HORIZON_SERVER);
 
@@ -86,7 +83,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         });
         const signedTx = await signTx(preparedTransaction, pubKey, swkKit);
         await submitTx(signedTx, networkDetails.networkPassphrase, server);
-        await getDetails(pubKey);
+        await getDetails();
         setCreateLoading(false);
       } catch (error) {
         setCreateLoading(false);
@@ -102,11 +99,9 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
       try {
         setLoading(true);
         const issuingKeys = StellarSdk.Keypair.fromSecret(SECRET_KEY);
-
         const trustAssetVal = new Asset("ARTY", issuingKeys.publicKey());
 
         await trustAsset({
-          source: issuingKeys.publicKey(),
           asset: trustAssetVal,
           limit: parseInt(amount) + 1000,
         });
@@ -140,7 +135,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
 
         setLoading(false);
 
-        await getDetails(pubKey);
+        await getDetails();
       } catch (error) {
         setLoading(false);
         throw error;
@@ -150,7 +145,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const trustAsset = async ({ source, asset, limit }) => {
+  const trustAsset = async ({ asset, limit }) => {
     try {
       const receiverAccount = await horizonServer.loadAccount(pubKey);
       const transaction = new StellarSdk.TransactionBuilder(receiverAccount, {
@@ -168,8 +163,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
 
       const signedTx = await signTx(transaction?.toXDR(), pubKey, swkKit);
       const server = getServer(networkDetails);
-
-      const submitTran = await submitTx(
+      await submitTx(
         signedTx,
         networkDetails.networkPassphrase,
         server
@@ -212,9 +206,8 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   };
 
   const getDetails = useCallback(
-    async (key: string) => {
+    async () => {
       setLoading(true);
-      const server = getServer(networkDetails);
 
       await getCampaignList(false);
 
@@ -310,16 +303,13 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
     [pubKey, swkKit, networkDetails]
   );
   useEffect(() => {
-    getDetails(pubKey || PUBLIC_KEY);
+    getDetails();
   }, [pubKey, swkKit, networkDetails]);
 
   return {
     campaigns,
-    tokenName,
-    tokenSymbol,
     loading,
     tokenAddress: contractIdToken,
-    balance,
     selectedNetwork: networkDetails,
     createloading,
     donateToCampaign,
