@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 const Balanace = () => {
 
-  const contractIdToken = import.meta.env.VITE_CONTRACT_TOKEN_ID_NEW || "";
+  const contractIdToken = import.meta.env.VITE_CONTRACT_TOKEN_ID || "";
   const [tokenAddress, setTokenAddress] = useState("");
 
   async function tokenDetail() {

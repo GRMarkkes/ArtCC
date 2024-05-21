@@ -8,9 +8,9 @@ export interface NetworkDetails {
 
 // Soroban is only supported on Futurenet right now
 export const FUTURENET_DETAILS = {
-  network: import.meta.env.VITE_NETWORK_NEW,
-  networkUrl: import.meta.env.VITE_NETWORK_URL_NEW,
-  networkPassphrase: import.meta.env.VITE_NETWORK_PASSPHRASE_NEW,
+  network: import.meta.env.VITE_NETWORK,
+  networkUrl: import.meta.env.VITE_NETWORK_URL,
+  networkPassphrase: import.meta.env.VITE_NETWORK_PASSPHRASE,
 };
 
 export const signTx = async (

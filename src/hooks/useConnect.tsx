@@ -15,7 +15,7 @@ const useConnect = () => {
 
   const SWKKit: StellarWalletsKit = new StellarWalletsKit({
     network:
-      WalletNetwork[import.meta.env.VITE_NETWORK_NEW as keyof typeof WalletNetwork],
+      WalletNetwork[import.meta.env.VITE_NETWORK as keyof typeof WalletNetwork],
     selectedWalletId: FREIGHTER_ID,
     modules: allowAllModules(),
   });
@@ -32,7 +32,7 @@ const useConnect = () => {
 
           SWKKit.setNetwork(
             WalletNetwork[
-              import.meta.env.VITE_NETWORK_NEW as keyof typeof WalletNetwork
+              import.meta.env.VITE_NETWORK as keyof typeof WalletNetwork
             ]
           );
         } catch (error) {
