@@ -69,7 +69,7 @@ export type Duration = bigint;
 
 const CardArtProject = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Campaign>();
-  const [metadata, setMetadata] = useState(null);
+  const [metadata, setMetadata] = useState<any>();
   const { donateToCampaign, getCampaignById, loading } = useWallet(props);
   const movieData = props?.movieData;
 
@@ -85,22 +85,19 @@ const CardArtProject = (props: Web3PageProps) => {
       const data = await getCampaignById(id);
       setSingleCampaign(data);
       const parsedMetadata = JSON.parse(data?.metadata);
-      console.log(parsedMetadata,"parsedMetadata");
-      
       setMetadata(parsedMetadata);
-      
     } catch (error) {
       console.log(error);
     }
   };
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: any) => {
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = date.toLocaleString('default', { month: 'short' });
+    const month = date.toLocaleString("default", { month: "short" });
     const year = date.getFullYear();
     return `${day}${month}${year}`;
   };
-  
+
   const [isHovered, setIsHovered] = useState(false);
   const [compaingData, setCompaingData] = useState<unknown>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -759,7 +756,7 @@ const CardArtProject = (props: Web3PageProps) => {
                     <AiOutlineCalendar
                       style={{ marginTop: "-1%", fontSize: "18px" }}
                     />{" "}
-                     {metadata?.date ? formatDate(metadata.date) : ''}
+                    {metadata?.date ? formatDate(metadata.date) : ""}
                   </CardText>
                 </Box>
                 <CardText
@@ -948,7 +945,10 @@ const CardArtProject = (props: Web3PageProps) => {
                         </div>
                         <div className="modal-date">
                           <AiOutlineCalendar />
-                          <p> {metadata?.date ? formatDate(metadata.date) : ''}</p>
+                          <p>
+                            {" "}
+                            {metadata?.date ? formatDate(metadata.date) : ""}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -996,7 +996,7 @@ const CardArtProject = (props: Web3PageProps) => {
                             paddingRight: "2%",
                             fontSize: "15px",
                           }}
-                          // disabled={getSupportButton(compaingData)}
+                          disabled={getSupportButton(compaingData)}
                           onClick={handleGetDiscountClick}
                         >
                           <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
