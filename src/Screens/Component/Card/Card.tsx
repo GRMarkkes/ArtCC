@@ -420,28 +420,35 @@ const CardArtProject = (props: Web3PageProps) => {
 
   const getSupportButton = (data: any) => {
     let donateDisabled = false;
+    let message = "Support this project!";
     let date: any = null;
     const todayDate = new Date();
+
     if (data?.deadline) {
-      date = new Date(parseInt(data?.deadline?.toString()) * 1000);
+      date = new Date(parseInt(data.deadline.toString()) * 1000);
     }
+
     if (data?.owner.toString() == props?.pubKey) {
       donateDisabled = true;
-    } else {
-      if (data?.donations?.length > 0) {
-        const sum = data?.donations?.reduce(
-          (accumulator: any, currentValue: any) => accumulator + currentValue
-        );
-        if (sum?.toString() >= data?.target) {
-          donateDisabled = true;
-        }
+      message = "You cannot donate to your own campgain.";
+    } else if (data?.donations?.length > 0) {
+      const sum = data.donations.reduce(
+        (accumulator: any, currentValue: any) => accumulator + currentValue
+      );
+      if (sum?.toString() >= data?.target) {
+        donateDisabled = true;
+        message = "The donation target has been reached.";
       }
     }
+
     if (todayDate >= date) {
       donateDisabled = true;
+      message = "The deadline for this project has passed.";
     }
-    return donateDisabled;
+
+    return { donateDisabled, message };
   };
+  const supportButtonData = getSupportButton(compaingData);
 
   return (
     <Container
@@ -985,7 +992,7 @@ const CardArtProject = (props: Web3PageProps) => {
                       >
                         <button
                           style={{
-                            background: getSupportButton(compaingData)
+                            background: supportButtonData.donateDisabled
                               ? "grey"
                               : "#52C41A",
                             color: "white",
@@ -996,12 +1003,17 @@ const CardArtProject = (props: Web3PageProps) => {
                             paddingRight: "2%",
                             fontSize: "15px",
                           }}
-                          disabled={getSupportButton(compaingData)}
+                          disabled={supportButtonData.donateDisabled}
                           onClick={handleGetDiscountClick}
                         >
                           <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
-                          &nbsp; &nbsp; Support This Project
+                          &nbsp; &nbsp;  {supportButtonData.message}
                         </button>
+                        {/* {supportButtonData.donateDisabled && (
+                          <p style={{ color: "red" }}>
+                            {supportButtonData.message}
+                          </p>
+                        )} */}
                       </div>
                     </div>
                     {showDiscount && (

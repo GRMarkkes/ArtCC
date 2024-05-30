@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-pascal-case */
 
 import "./Header.css";
-
 import { AiOutlineCloseCircle, AiOutlineSave } from "react-icons/ai";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import React, { ChangeEvent, DragEvent, useState } from "react";
+import React, { ChangeEvent, DragEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Avitar from "../../../assets/Avatar.png";
@@ -71,9 +70,7 @@ interface Web3PageProps {
 
 function Header(props: Web3PageProps) {
   const [CreateList, setCreateList] = useState([
-    ImageCreate,
-    ImageCreate,
-    ImageCreate,
+    
   ]);
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -130,6 +127,8 @@ function Header(props: Web3PageProps) {
       reader.readAsDataURL(file);
     }
   };
+
+  
   const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
   };
@@ -198,6 +197,9 @@ function Header(props: Web3PageProps) {
         imageUrl = data.url;
       });
 
+      const scrollImages = CreateList.map(image => ({ url: image }));
+console.log(scrollImages,"scrollImage: scrollImages");
+console.log(JSON.stringify(scrollImages),"scrollImage: scrollImages");
       await createCampaign({
         title: values.title,
         desc: values.desc,
@@ -210,6 +212,7 @@ function Header(props: Web3PageProps) {
           email: values.email,
           shortDescription: values.shortDescription,
           tempLocation: values.tempLocation,
+         
         }),
         imageUrl,
         target: values.target.toString(),
@@ -322,6 +325,7 @@ function Header(props: Web3PageProps) {
                     }}
                     onClick={() => {
                       setConnectWallet(true);
+                      // localStorage.setItem('connectWallet', 'true');
                     }}
                   >
                     CONNECT&nbsp;WALLET
