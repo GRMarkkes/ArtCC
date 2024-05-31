@@ -37,6 +37,9 @@ import graphimage from "../../../assets/Graphic.png";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { useWallet } from "../../../hooks";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
 import wrapperswap from "../../../assets/wrapper 2.png";
 
 // import { Link } from "react-router-dom";
@@ -70,6 +73,7 @@ export type Duration = bigint;
 const CardArtProject = (props: Web3PageProps) => {
   const [singleCampaign, setSingleCampaign] = useState<Campaign>();
   const [metadata, setMetadata] = useState<any>();
+  const [dataImage, setDataImage] = useState<any>();
   const { donateToCampaign, getCampaignById, loading } = useWallet(props);
   const movieData = props?.movieData;
 
@@ -85,11 +89,20 @@ const CardArtProject = (props: Web3PageProps) => {
       const data = await getCampaignById(id);
       setSingleCampaign(data);
       const parsedMetadata = JSON.parse(data?.metadata);
+    
       setMetadata(parsedMetadata);
+  
+
+        setDataImage(JSON.parse(data?.image));
+      
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(dataImage,"thishshs");
+  
+  
+
   const formatDate = (dateString: any) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -478,21 +491,26 @@ const CardArtProject = (props: Web3PageProps) => {
       }}
     >
       {isWideScreen ? (
+       
         <img
           src={
-            singleCampaign?.image.includes("s.com")
-              ? singleCampaign?.image
-              : cardImg
+            dataImage?.url1
+              ? dataImage.url1
+              : singleCampaign?.image.includes('s.com')
+              ? singleCampaign.image
+              : ''
           }
           alt="card"
         />
       ) : (
         <img
-          src={
-            singleCampaign?.image.includes("s.com")
-              ? singleCampaign?.image
-              : cardImg
-          }
+        src={
+          dataImage?.url1
+            ? dataImage.url1
+            : singleCampaign?.image.includes('s.com')
+            ? singleCampaign.image
+            : ''
+        }
           alt="card"
           onClick={openModal}
         />
@@ -520,10 +538,12 @@ const CardArtProject = (props: Web3PageProps) => {
         >
           <div className="image-video-container">
             <img
-              src={
-                singleCampaign?.image.includes("s.com")
-                  ? singleCampaign?.image
-                  : cardImg
+               src={
+                dataImage?.url1
+                  ? dataImage.url1
+                  : singleCampaign?.image.includes('s.com')
+                  ? singleCampaign.image
+                  : ''
               }
               alt="card"
             />
@@ -652,15 +672,20 @@ const CardArtProject = (props: Web3PageProps) => {
                 borderRadius: "0px",
               }}
             >
-              <img
-                style={{ height: "162px" }}
-                alt="Sample"
-                src={
-                  singleCampaign?.image.includes("s.com")
-                    ? singleCampaign?.image
-                    : cardImg
-                }
-              />
+              
+                <img
+                  style={{ height: "162px" }}
+                  alt="Sample"
+                  src={
+                    dataImage?.url1
+                      ? dataImage.url1
+                      : singleCampaign?.image.includes('s.com')
+                      ? singleCampaign.image
+                      : ''
+                  }
+                />
+            
+
               <CardBody color="white" style={{ background: "#1F1F1F" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <div>
@@ -863,16 +888,23 @@ const CardArtProject = (props: Web3PageProps) => {
             ) : (
               <div className="modal-length">
                 <div className="col-md-12">
+                 
                   <img
-                    src={
-                      singleCampaign?.image.includes("s.com")
-                        ? singleCampaign?.image
-                        : cardImg
+                     src={
+                      dataImage?.url1
+                        ? dataImage.url1
+                        : singleCampaign?.image.includes('s.com')
+                        ? singleCampaign.image
+                        : ''
                     }
                     alt="card"
                     className="img-fluid"
                     style={{ width: "100%", background: "#6c757d" }}
                   />
+
+
+
+                  
                 </div>
                 <div className="container bg-custom">
                   <div className="modal-main" style={{ marginLeft: "3%" }}>
@@ -1007,7 +1039,7 @@ const CardArtProject = (props: Web3PageProps) => {
                           onClick={handleGetDiscountClick}
                         >
                           <AiOutlineAreaChart style={{ marginTop: "-1%" }} />
-                          &nbsp; &nbsp;  {supportButtonData.message}
+                          &nbsp; &nbsp; {supportButtonData.message}
                         </button>
                         {/* {supportButtonData.donateDisabled && (
                           <p style={{ color: "red" }}>

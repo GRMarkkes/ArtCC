@@ -35,6 +35,7 @@ interface Web3PageProps {
   title: string;
   onPress?: (created: any) => void;
 }
+
 const CardNewSlider = (props: Web3PageProps) => {
   const [data, setData] = useState<Campaign[]>([]);
   useEffect(() => {
@@ -42,6 +43,8 @@ const CardNewSlider = (props: Web3PageProps) => {
       setData(props?.data);
     }
   }, [props]);
+
+ 
   return (
     <div className="container" style={{ paddingTop: "2rem" }}>
       <h1

@@ -126,13 +126,15 @@ export const submitTx = async (
 ) => {
   console.log(networkPassphrase,"this is tx");
   const tx = TransactionBuilder.fromXDR(signedXDR, networkPassphrase);
+  console.log(tx,"thois is tx response ");
   
-  
-
   const sendResponse = await server.sendTransaction(tx);
+console.log(sendResponse,"sendResponse");
 
   if (sendResponse.errorResult) {
-    throw new Error(ERRORS.UNABLE_TO_SUBMIT_TX);
+    throw new Error(ERRORS.UNABLE_TO_SUBMIT_TX),
+    console.log(ERRORS.UNABLE_TO_SUBMIT_TX,"ERRORS.UNABLE_TO_SUBMIT_TX");
+    
   }
 
   if (sendResponse.status == SendTxStatus.Pending) {
@@ -152,8 +154,11 @@ export const submitTx = async (
       return txResponse.resultXdr.toXDR("base64");
     }
   } else {
+    console.log(sendResponse.status,"sendResponse.status");
     throw new Error(
       `Unabled to submit transaction, status: ${sendResponse.status}`
+
+      
     );
   }
 };
