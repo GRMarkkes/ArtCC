@@ -33,6 +33,8 @@ interface Web3PageProps {
 }
 
 const Slider = (props: Web3PageProps) => {
+
+  
   return (
     <Container>
       {props.categoriesData.map((categoryItem) => (

@@ -1,11 +1,11 @@
+/* eslint-disable prefer-const */
 /* eslint-disable react/jsx-pascal-case */
 
 import "./Header.css";
-
 import { AiOutlineCloseCircle, AiOutlineSave } from "react-icons/ai";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import React, { ChangeEvent, DragEvent, useState } from "react";
+import React, { ChangeEvent, DragEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Avitar from "../../../assets/Avatar.png";
@@ -70,11 +70,8 @@ interface Web3PageProps {
 }
 
 function Header(props: Web3PageProps) {
-  const [CreateList, setCreateList] = useState([
-    ImageCreate,
-    ImageCreate,
-    ImageCreate,
-  ]);
+  const [CreateList, setCreateList] = useState<File[]>([]);
+  const [displayList, setDisplayList] = useState<any[]>([]);
   const [showMenu, setShowMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -122,14 +119,20 @@ function Header(props: Web3PageProps) {
       reader.onload = (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
-          let array: any = [event.target.result, ...CreateList];
-          setCreateList([...array]);
+          let newCreateList = [file, ...CreateList];
+          setCreateList(newCreateList);
+          let array: any = [event.target.result, ...displayList];
+          // setCreateList([...array]);
+          // let newDisplayImages = [event.target.result as string, ...displayImages];
+          setDisplayList([...array]);
         }
       };
 
       reader.readAsDataURL(file);
     }
   };
+
+  
   const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
   };
@@ -181,23 +184,49 @@ function Header(props: Web3PageProps) {
   const Tag: React.FC<TagProps> = ({ text }) => {
     return <div className="tag">{text}</div>;
   };
-
+  console.log(baseImage,"baseImage");
   const create: SubmitHandler<ValidationSchema> = async (values) => {
     setLoading(true);
 
-    try {
-      const bodyFormData = new FormData();
-      bodyFormData.append("image", baseImage);
-      let imageUrl = "";
-      await axios({
-        method: "post",
-        url: `${import.meta.env.VITE_IMAGE_SERVER_URL}/upload`,
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then(function ({ data }) {
-        imageUrl = data.url;
-      });
 
+    try {
+      // const bodyFormData = new FormData();
+      // bodyFormData.append("image", baseImage);
+      // let imageUrl = "";
+      // await axios({
+      //   method: "post",
+      //   url: `${import.meta.env.VITE_IMAGE_SERVER_URL}/upload`,
+      //   data: bodyFormData,
+      //   headers: { "Content-Type": "multipart/form-data" },
+      // }).then(function ({ data }) {
+      //   imageUrl = data.url;
+      // });
+      const scrollImagesArray = await Promise.all(
+        CreateList.map(async (image) => {
+          const imageFormData = new FormData();
+          imageFormData.append("image", image);
+          const { data } = await axios({
+            method: "post",
+            url: `${import.meta.env.VITE_IMAGE_SERVER_URL}/upload`,
+            data: imageFormData,
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          return data.url;
+        })
+      );
+  
+      // Transform the array of URLs into an object
+      const scrollImages = scrollImagesArray.reduce((acc, url, index) => {
+        acc[`url${index + 1}`] = url;
+        return acc;
+      }, {});
+  
+      console.log(scrollImages, "scrollImages");
+      const scrollImagesStringify = JSON.stringify(scrollImages);
+
+    console.log(scrollImagesStringify, "scrollImages");
+  
+   
       await createCampaign({
         title: values.title,
         desc: values.desc,
@@ -209,9 +238,10 @@ function Header(props: Web3PageProps) {
           addressAccount: values.addressAccount,
           email: values.email,
           shortDescription: values.shortDescription,
-          tempLocation: values.tempLocation,
+          tempLocation: values.tempLocation, 
+          
         }),
-        imageUrl,
+        imageUrl: scrollImagesStringify,
         target: values.target.toString(),
       });
 
@@ -225,12 +255,19 @@ function Header(props: Web3PageProps) {
       console.log(error);
     }
   };
+
   const handleDelete = (index: number) => {
     // Create a new array excluding the item to be deleted
-    const updatedList = [...CreateList];
-    updatedList.splice(index, 1);
-    setCreateList(updatedList);
+    const updatedCreateList = [...CreateList];
+    const updatedDisplayList = [...displayList];
+  
+    updatedCreateList.splice(index, 1);
+    updatedDisplayList.splice(index, 1);
+  
+    setCreateList(updatedCreateList);
+    setDisplayList(updatedDisplayList);
   };
+  
 
   return (
     <div>
@@ -322,6 +359,7 @@ function Header(props: Web3PageProps) {
                     }}
                     onClick={() => {
                       setConnectWallet(true);
+                      // localStorage.setItem('connectWallet', 'true');
                     }}
                   >
                     CONNECT&nbsp;WALLET
@@ -795,7 +833,7 @@ function Header(props: Web3PageProps) {
                   </div>
                 </div>
                 <div className="image-file">
-                  {CreateList?.map((images, index) => (
+                  {displayList?.map((images, index) => (
                     <Create
                       key={index}
                       ImageCreate={images}

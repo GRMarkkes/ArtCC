@@ -45,7 +45,9 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [createloading, setCreateLoading] = useState<boolean>(false);
 
-  const horizonServer = new StellarSdk.Horizon.Server(HORIZON_SERVER);
+  const horizonServer = new StellarSdk.Horizon.Server(
+    "https://mainnet.stellar.validationcloud.io/v1/4z-MLCSzmKvrdrwaEjFE-OPxS_bi7IHIW985PkEhhv8"
+  );
 
   const createCampaign = useCallback(
     async ({
@@ -99,8 +101,8 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
       // eslint-disable-next-line no-useless-catch
       try {
         setLoading(true);
-        const issuingKeys = StellarSdk.Keypair.fromSecret(SECRET_KEY);
-        const trustAssetVal = new Asset("ARTY", issuingKeys.publicKey());
+        const sourceKeypair = StellarSdk.Keypair.fromSecret(SECRET_KEY);
+        const trustAssetVal = new Asset("ARTY", 'GBUPZFFRD22WIGIHVZFTC2SZZZR5YWNN25TKQENOFKO2BV6HQK5PFLEQ');
 
         await trustAsset({
           asset: trustAssetVal,
@@ -129,7 +131,7 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         await submitTx(signedTx, networkDetails.networkPassphrase, server);
 
         await sendPayment({
-          issuerKeys: issuingKeys,
+          sourceKeypair: sourceKeypair,
           asset: trustAssetVal,
           amount: amount,
         });
@@ -148,7 +150,9 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const trustAsset = async ({ asset, limit }: { asset: any; limit: any }) => {
     try {
-      const receiverAccount = await horizonServer.loadAccount(pubKey);
+      // const receiverAccount = await horizonServer.loadAccount(pubKey);
+      const server = getServer(networkDetails);
+      const receiverAccount = await server.getAccount(pubKey);
       const transaction = new StellarSdk.TransactionBuilder(receiverAccount, {
         fee: StellarSdk.BASE_FEE,
         networkPassphrase: StellarSdk.Networks.PUBLIC,
@@ -163,7 +167,8 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         .build();
 
       const signedTx = await signTx(transaction?.toXDR(), pubKey, swkKit);
-      const server = getServer(networkDetails);
+      console.log(pubKey, "thidhs");
+
       await submitTx(signedTx, networkDetails.networkPassphrase, server);
 
       console.log("Trustline established successfully.");
@@ -172,13 +177,31 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
     }
   };
 
-  const sendPayment = async ({ issuerKeys, asset, amount }: { issuerKeys: any, asset: any, amount: any }) => {
+  const sendPayment = async ({
+    sourceKeypair,
+    asset,
+    amount,
+    
+  }: {
+    sourceKeypair: any;
+    asset: any;
+    amount: any;
+  }) => {
     try {
-      const issuerAccount = await horizonServer.loadAccount(
-        issuerKeys.publicKey()
+      const paymentServer = new StellarSdk.Horizon.Server(
+        "https://horizon.stellar.org"
+      );
+      // sourceKeypair
+      const sourceAccount = await paymentServer.loadAccount(
+        sourceKeypair.publicKey()
       );
 
-      const transaction = new StellarSdk.TransactionBuilder(issuerAccount, {
+      // console.log(JSON.stringify(issuerAccount, null, 2), "issuerAccount");
+      // const server = getServer(networkDetails);
+      // const issuerAccount = await server.getAccount(issuerKeys.publicKey());
+      // console.log(JSON.stringify(issuerAccount, null, 2), "issuerAccount");
+
+      const transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
         fee: StellarSdk.BASE_FEE,
         networkPassphrase: StellarSdk.Networks.PUBLIC,
       })
@@ -192,9 +215,9 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
         .setTimeout(100)
         .build();
 
-      await transaction.sign(issuerKeys);
+      await transaction.sign(sourceKeypair);
 
-      await horizonServer.submitTransaction(transaction);
+      await paymentServer.submitTransaction(transaction);
       console.log("Payment sent successfully.");
     } catch (error) {
       console.error("Error sending payment:", error);
