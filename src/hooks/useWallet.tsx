@@ -20,7 +20,7 @@ import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
 
 const NATIVE_TOKEN = import.meta.env.VITE_NATIVE_TOKEN || "";
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY || "";
-const HORIZON_SERVER = import.meta.env.VITE_NETWORK_URL || "";
+// const HORIZON_SERVER = import.meta.env.VITE_NETWORK_URL || "";
 const PUBLIC_KEY = import.meta.env.VITE_PUBLIC_KEY || "";
 const contractIdCrowdFund = import.meta.env.VITE_CONTRACT_CROWD_FUND_ID || "";
 
@@ -45,9 +45,9 @@ export const useWallet = ({ networkDetails, pubKey, swkKit }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [createloading, setCreateLoading] = useState<boolean>(false);
 
-  const horizonServer = new StellarSdk.Horizon.Server(
-    "https://mainnet.stellar.validationcloud.io/v1/4z-MLCSzmKvrdrwaEjFE-OPxS_bi7IHIW985PkEhhv8"
-  );
+  // const horizonServer = new StellarSdk.Horizon.Server(
+  //   "https://mainnet.stellar.validationcloud.io/v1/4z-MLCSzmKvrdrwaEjFE-OPxS_bi7IHIW985PkEhhv8"
+  // );
 
   const createCampaign = useCallback(
     async ({

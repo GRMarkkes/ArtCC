@@ -31,13 +31,11 @@ import { MdOutlineReportProblem } from "react-icons/md";
 import Modal from "react-modal";
 import { NetworkDetails } from "../../../helper/network";
 import { StellarWalletsKit } from "@creit.tech/stellar-wallets-kit";
-import cardImg from "../../../assets/Images/Card_Image.png";
 import decimg from "../../../assets/ModalImg.png";
 import graphimage from "../../../assets/Graphic.png";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { useWallet } from "../../../hooks";
-import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 import wrapperswap from "../../../assets/wrapper 2.png";
