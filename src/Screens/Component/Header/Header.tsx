@@ -1,16 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
-/* eslint-disable react/jsx-pascal-case */
+
 
 import "./Header.css";
 import { AiOutlineCloseCircle, AiOutlineSave } from "react-icons/ai";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import React, { ChangeEvent, DragEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, DragEvent, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-
 import Avitar from "../../../assets/Avatar.png";
 import Create from "../Create/Create";
-import ImageCreate from "../../../assets/Rectangle 3.png";
 import Inbox from "../../../assets/Inbox.png";
 import { MdOutlineLocationSearching } from "react-icons/md";
 import Menu_Icon from "../../../assets/Menu_Icon.png";
@@ -138,24 +137,51 @@ function Header(props: Web3PageProps) {
   };
 
   const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    const file = e.dataTransfer.files[0]; // Get the dropped file
+    // const file = e.dataTransfer.files[0]; // Get the dropped file
+
+    // if (file) {
+    //   setBaseImage(file);
+
+    //   const reader = new FileReader();
+    //   reader.onload = (event) => {
+    //     if (event.target && event.target.result) {
+    //       setDisplayImage(event.target.result as string);
+    //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //       let array: any = [event.target.result, ...CreateList];
+    //       setCreateList([...array]);
+    //     }
+    //   };
+
+    //   reader.readAsDataURL(file);
+    // }
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
 
     if (file) {
       setBaseImage(file);
+    }
 
+    if (file) {
       const reader = new FileReader();
-      reader.onload = (event) => {
+
+      reader.onload = (event: ProgressEvent<FileReader>) => {
         if (event.target && event.target.result) {
           setDisplayImage(event.target.result as string);
-          let array: any = [event.target.result, ...CreateList];
-          setCreateList([...array]);
+          let newCreateList = [file, ...CreateList];
+          setCreateList(newCreateList);
+          let array: any = [event.target.result, ...displayList];
+          // setCreateList([...array]);
+          // let newDisplayImages = [event.target.result as string, ...displayImages];
+          setDisplayList([...array]);
         }
       };
 
       reader.readAsDataURL(file);
     }
+
+
   };
 
   const navigate = useNavigate();

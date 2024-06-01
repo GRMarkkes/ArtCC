@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./ArtProjectMain.css";
 
 import { useCallback, useEffect, useState } from "react";
@@ -39,6 +40,7 @@ const ArtProject = (props: Web3PageProps) => {
     const uniqueCategories = [
       ...new Set(campaigns.map((campaign) => campaign.category)),
     ];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const allCampgainGroup: any = [];
     uniqueCategories.forEach((category) => {
       const matchingCampaigns = campaigns.filter(
@@ -53,6 +55,8 @@ const ArtProject = (props: Web3PageProps) => {
       }
     });
     setCategoriesCampgains(allCampgainGroup);
+
+    
   }, [campaigns]);
 
   useEffect(() => {
@@ -64,7 +68,7 @@ const ArtProject = (props: Web3PageProps) => {
       getCampaigns();
     }
   };
-
+  console.log();
   return (
     <div>
       <Header

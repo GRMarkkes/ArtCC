@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Address,
   Contract,
@@ -247,6 +248,7 @@ export const createNewCampaign = async ({
 }) => {
   const contract = new Contract(contractID);
 
+  // eslint-disable-next-line no-useless-catch
   try {
     const tx = txBuilderC
       .addOperation(
@@ -305,6 +307,7 @@ export const donateToCampaignByID = async ({
 }) => {
   const contract = new Contract(contractID);
 
+  // eslint-disable-next-line no-useless-catch
   try {
     const tx = txBuilderC
       .addOperation(
@@ -428,6 +431,7 @@ export const getTokenBalance = async (
     .build();
 
   const result = await simulateTx<string>(tx, server);
+  // eslint-disable-next-line prefer-const
   let formatted_balance = Number(result) / 100000000;
 
   return formatted_balance;

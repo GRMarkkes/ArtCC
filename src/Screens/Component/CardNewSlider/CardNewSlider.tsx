@@ -33,6 +33,7 @@ interface Web3PageProps {
   pubKey: string;
   data: Campaign[];
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onPress?: (created: any) => void;
 }
 

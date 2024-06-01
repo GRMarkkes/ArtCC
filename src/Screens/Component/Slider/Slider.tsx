@@ -29,6 +29,7 @@ interface Web3PageProps {
   pubKey: string;
   // campaigns: Crowdfund.Campaign[];
   categoriesData: CategoryData[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onPress?: (created: any) => void;
 }
 
