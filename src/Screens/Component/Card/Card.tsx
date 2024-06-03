@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import "../CardMarketPlace/CardMarketPlace.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import "../NewCard/NewCard.css";
 import "./Card.css";
 
@@ -39,6 +40,8 @@ import { useWallet } from "../../../hooks";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 import wrapperswap from "../../../assets/wrapper 2.png";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Make sure you have the carousel CSS
+import { Carousel } from "react-responsive-carousel";
 
 // import { Link } from "react-router-dom";
 
@@ -87,19 +90,22 @@ const CardArtProject = (props: Web3PageProps) => {
       const data = await getCampaignById(id);
       setSingleCampaign(data);
       const parsedMetadata = JSON.parse(data?.metadata);
-    
-      setMetadata(parsedMetadata);
-  
 
-        setDataImage(JSON.parse(data?.image));
-      
+      setMetadata(parsedMetadata);
+      if (data?.image) {
+        try {
+          const parsedImages = JSON.parse(data.image);
+          setDataImage(parsedImages);
+        } catch (error) {
+          console.log("Error parsing images", error);
+        }
+      }
+      // setDataImage(JSON.parse(data?.image));
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(dataImage,"thishshs");
-  
-  
+  console.log(dataImage, "thishshs");
 
   const formatDate = (dateString: any) => {
     const date = new Date(dateString);
@@ -461,6 +467,9 @@ const CardArtProject = (props: Web3PageProps) => {
   };
   const supportButtonData = getSupportButton(compaingData);
 
+  // const imageUrls = Object.keys(dataImage).map(key => dataImage[key]);
+  console.log(dataImage, "dataImage");
+
   return (
     <Container
       onMouseEnter={() => {
@@ -489,26 +498,25 @@ const CardArtProject = (props: Web3PageProps) => {
       }}
     >
       {isWideScreen ? (
-       
         <img
           src={
             dataImage?.url1
               ? dataImage.url1
-              : singleCampaign?.image.includes('s.com')
+              : singleCampaign?.image.includes("s.com")
               ? singleCampaign.image
-              : ''
+              : ""
           }
           alt="card"
         />
       ) : (
         <img
-        src={
-          dataImage?.url1
-            ? dataImage.url1
-            : singleCampaign?.image.includes('s.com')
-            ? singleCampaign.image
-            : ''
-        }
+          src={
+            dataImage?.url1
+              ? dataImage.url1
+              : singleCampaign?.image.includes("s.com")
+              ? singleCampaign.image
+              : ""
+          }
           alt="card"
           onClick={openModal}
         />
@@ -536,12 +544,12 @@ const CardArtProject = (props: Web3PageProps) => {
         >
           <div className="image-video-container">
             <img
-               src={
+              src={
                 dataImage?.url1
                   ? dataImage.url1
-                  : singleCampaign?.image.includes('s.com')
+                  : singleCampaign?.image.includes("s.com")
                   ? singleCampaign.image
-                  : ''
+                  : ""
               }
               alt="card"
             />
@@ -670,19 +678,17 @@ const CardArtProject = (props: Web3PageProps) => {
                 borderRadius: "0px",
               }}
             >
-              
-                <img
-                  style={{ height: "162px" }}
-                  alt="Sample"
-                  src={
-                    dataImage?.url1
-                      ? dataImage.url1
-                      : singleCampaign?.image.includes('s.com')
-                      ? singleCampaign.image
-                      : ''
-                  }
-                />
-            
+              <img
+                style={{ height: "162px" }}
+                alt="Sample"
+                src={
+                  dataImage?.url1
+                    ? dataImage.url1
+                    : singleCampaign?.image.includes("s.com")
+                    ? singleCampaign.image
+                    : ""
+                }
+              />
 
               <CardBody color="white" style={{ background: "#1F1F1F" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -886,23 +892,43 @@ const CardArtProject = (props: Web3PageProps) => {
             ) : (
               <div className="modal-length">
                 <div className="col-md-12">
-                 
-                  <img
-                     src={
-                      dataImage?.url1
-                        ? dataImage.url1
-                        : singleCampaign?.image.includes('s.com')
-                        ? singleCampaign.image
-                        : ''
-                    }
-                    alt="card"
-                    className="img-fluid"
-                    style={{ width: "100%", background: "#6c757d" }}
-                  />
-
-
-
-                  
+                  {dataImage && Object.keys(dataImage).length > 1 ? (
+                    <Carousel
+                      showThumbs={false}
+                      showStatus={false}
+                      showIndicators={true}
+                    >
+                      {(Object.values(dataImage) as string[]).map(
+                        (url, index) => (
+                          <div key={index}>
+                            <img
+                              src={url}
+                              alt={`Carousel ${index + 1}`}
+                              style={{
+                                width: "100%",
+                                background: "#6c757d",
+                                height: "80vh",
+                              }}
+                            />
+                          </div>
+                        )
+                      )}
+                    </Carousel>
+                  ) : (
+                    <img
+                      src={
+                        dataImage && dataImage.url1
+                          ? dataImage.url1
+                          : singleCampaign?.image &&
+                            singleCampaign.image.includes("s.com")
+                          ? singleCampaign.image
+                          : ""
+                      }
+                      alt="card"
+                      className="img-fluid"
+                      style={{ width: "100%", background: "#6c757d" }}
+                    />
+                  )}
                 </div>
                 <div className="container bg-custom">
                   <div className="modal-main" style={{ marginLeft: "3%" }}>
